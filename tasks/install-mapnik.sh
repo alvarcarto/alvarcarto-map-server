@@ -3,9 +3,6 @@
 set -e
 set -x
 
-sudo apt-get update
-sudo apt-get upgrade
-
 cd $HOME
 git clone https://github.com/mapnik/mapnik mapnik-3.x --depth 10
 cd mapnik-3.x
@@ -16,3 +13,5 @@ source bootstrap.sh
 make
 make test
 sudo make install
+
+sudo apt-get install mapnik-utils

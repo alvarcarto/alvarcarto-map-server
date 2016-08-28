@@ -36,14 +36,39 @@ rm -rf alvarcarto-map-server/.git
 tar cvvfz alvarcarto-map-server.tar.gz alvarcarto-map-server
 
 scp alvarcarto-map-server.tar.gz $SERVER_USER@$SERVER_IP:~
+
+cd ..
+rm -r tmp
+
 ssh $SERVER_USER@$SERVER_IP
 ```
 where $SERVER_USER should be a sudo user in $SERVER_IP server.
 
+
+**Note! Configure install.sh variables to suit the installation environment.
+The variables define data directory which should have at least 350GB free disk
+space. The default data directory is `/mnt/volume1/alvar`.**
+
 In the remote server, run:
 
 ```
+sudo apt-get install screen
 tar xvvfz alvarcarto-map-server.tar.gz
 cd alvarcarto-map-server
+
+screen -S install
 ./install.sh
 ```
+
+Now press `Ctrl` + `a` + `d` and wait, it may take 6 - 48 hours to install.
+
+## Mapnik XML stylehseets
+
+All Mapnik stylesheets should be modified to reference to following files:
+
+* `$ALVAR_MAP_SERVER_DATA_DIR/land-polygons-split-3857/land_polygons.shp`
+* `$ALVAR_MAP_SERVER_DATA_DIR/ne_10m_populated_places/ne_10m_populated_places.shp`
+* `$ALVAR_MAP_SERVER_DATA_DIR/simplified-land-polygons-complete-3857/simplified_land_polygons.shp`
+
+Where `$ALVAR_MAP_SERVER_DATA_DIR` is the directory specified in [install.sh](install.sh)
+variables.
