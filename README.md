@@ -5,11 +5,24 @@ Requirements:
 * Fresh Ubuntu 16.04 installation
 * 350GB disk space
 
-This package will install:
+This package will:
 
-* Mapnik and tile serving plugins
-* Postgres 9.5 with Postgis extension
-* Required tools to import OSM data into postgres
+* Install Mapnik and tile serving plugins
+* Install Postgres 9.5 with Postgis extension
+* Install Mapnik & OSM data related tools
+* Download [latest planet OSM data](http://planet.openstreetmap.org/)
+* Download necessary shapefiles required by [osm-bright](https://github.com/mapbox/osm-bright/) and our themes
+
+    All Mapnik stylesheets should be modified to reference to following files:
+
+    * `$ALVAR_MAP_SERVER_DATA_DIR/land-polygons-split-3857/land_polygons.shp`
+    * `$ALVAR_MAP_SERVER_DATA_DIR/ne_10m_populated_places/ne_10m_populated_places.shp`
+    * `$ALVAR_MAP_SERVER_DATA_DIR/simplified-land-polygons-complete-3857/simplified_land_polygons.shp`
+
+    Where `$ALVAR_MAP_SERVER_DATA_DIR` is the directory specified in [install.sh](install.sh)
+    variables. The default is `/mnt/volume1/alvar`.
+* Simplify downloaded .shp files using `shapeindex`.
+* Import latest OSM data to Postgis server using [imposm3](https://github.com/omniscale/imposm3)
 
 ## Usage
 
@@ -61,14 +74,3 @@ screen -S install
 ```
 
 Now press `Ctrl` + `a` + `d` and wait, it may take 6 - 48 hours to install.
-
-## Mapnik XML stylehseets
-
-All Mapnik stylesheets should be modified to reference to following files:
-
-* `$ALVAR_MAP_SERVER_DATA_DIR/land-polygons-split-3857/land_polygons.shp`
-* `$ALVAR_MAP_SERVER_DATA_DIR/ne_10m_populated_places/ne_10m_populated_places.shp`
-* `$ALVAR_MAP_SERVER_DATA_DIR/simplified-land-polygons-complete-3857/simplified_land_polygons.shp`
-
-Where `$ALVAR_MAP_SERVER_DATA_DIR` is the directory specified in [install.sh](install.sh)
-variables.
