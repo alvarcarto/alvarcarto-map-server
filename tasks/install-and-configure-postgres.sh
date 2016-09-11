@@ -12,7 +12,7 @@ if [ -d "$NEW_POSTGRES_DATA_DIRECTORY" ]; then
   exit 1
 fi
 
-sudo apt-get install postgresql-9.5 postgresql-9.5-postgis-2.2
+sudo apt-get install -y postgresql-9.5 postgresql-9.5-postgis-2.2
 
 # Move data directory to bigger volume
 sudo /etc/init.d/postgresql stop

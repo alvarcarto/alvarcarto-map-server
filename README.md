@@ -6,9 +6,7 @@ Requirements:
 * At least 16GB RAM for the installation phase
 * 450GB disk space (tested: 350GB disk space was not enough)
 
-For example in DigitalOcean:
-* 16GB Memory, 8 Core Processor, 160GB SSD Disk, 6TB Transfer ($160/mo)
-* 450GB SSD Block storage attached
+See [DigitalOcean install](#digitalocean-install) to complete example.
 
 This package will:
 
@@ -71,7 +69,7 @@ space. The default data directory is `/mnt/volume1/alvar`.**
 In the remote server, run:
 
 ```
-sudo apt-get install screen
+sudo apt-get install -y screen
 tar xvvfz alvarcarto-map-server.tar.gz
 cd alvarcarto-map-server
 
@@ -80,3 +78,17 @@ screen -S install
 ```
 
 Now press `Ctrl` + `a` + `d` and wait, it may take 6 - 48 hours to install.
+
+
+## DigitalOcean Install
+
+Fire up a new Droplet and an SSD Volume:
+
+* 16GB Memory, 8 Core Processor, 160GB SSD Disk, 6TB Transfer ($160/mo)
+* 450GB SSD Block storage attached
+
+1. Login as root. You will get the root password of the droplet to your email.
+2. Set root password and alvar user password as in 1password.
+3. Go to https://cloud.digitalocean.com/droplets/volumes and click "More" link near the attached Volume. Press "Config instructions".
+4. Copy the instructions to an editor. Replace all `/mnt/volume-fra1-01` references with `/mnt/volume1`.
+5. Follow the instructions until you have /mnt/volume1 available in the Droplet.

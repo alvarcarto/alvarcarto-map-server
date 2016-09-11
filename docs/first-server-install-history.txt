@@ -11,7 +11,7 @@
 11  rm -r mapnik-3.x/
 12  rm -fr mapnik-3.x/
 13  ls
-14  sudo apt-get install screen
+14  sudo apt-get install -y screen
 15  screen -S install
 16  screen -r
 17  df -h
@@ -181,11 +181,11 @@
 181  wget http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/cultural/ne_10m_populated_places.zip
 182  ls
 183  unzip ne_10m_populated_places.zip
-184  sudo apt-get install unzip
+184  sudo apt-get install -y unzip
 185  unzip ne_10m_populated_places.zip
 186  ls
 187  shapeindex
-188  sudo apt-get install mapnik-utils
+188  sudo apt-get install -y mapnik-utils
 189  shapeindex
 190  ls
 191  rm -rf ne_10m_populated_places.
@@ -230,7 +230,7 @@
 230  apt-cache search postgres
 231  apt-cache search postgresql
 232  apt-cache search postgresql | grep postgis
-233  sudo apt-get install postgresql-9.5 postgresql-9.5-postgis-2.2
+233  sudo apt-get install -y postgresql-9.5 postgresql-9.5-postgis-2.2
 234  cd alvarcarto-map-server/
 235  ls
 236  ./install.sh
@@ -349,7 +349,7 @@
 349  screen -r
 350  screen -S import
 351  python --version
-352  sudo apt-get install python-pip
+352  sudo apt-get install -y python-pip
 353  sudo pip install nik2img
 354  nik2img.py
 355  sudo pip uninstall nik2img

@@ -4,7 +4,7 @@ set -e
 set -x
 [ -z "$ALVAR_MAP_SERVER_DATA_DIR" ] && echo "ALVAR_MAP_SERVER_DATA_DIR environment variable is not set." && exit 1;
 
-sudo apt-get install unzip
+sudo apt-get install -y unzip
 
 echo -e "Downloading shape data ..\n"
 cd $ALVAR_MAP_SERVER_DATA_DIR
