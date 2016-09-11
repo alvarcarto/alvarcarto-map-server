@@ -42,7 +42,12 @@ sudo chown $(whoami):$(whoami) $ALVAR_MAP_SERVER_DATA_DIR
 sudo apt-get update
 sudo apt-get upgrade
 
+export ALVAR_MAP_SERVER_REPOSITORY_DIR=$(pwd)
+
 source tasks/install-mapnik.sh
+cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 source tasks/install-and-configure-postgres.sh
+cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 source tasks/download-osm-data.sh
+cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 source tasks/import-osm-data.sh
