@@ -1,0 +1,177 @@
+[Aug 30 11:18:07] [INFO] [16h46m0s] C:       0/s ( 0.0%) N:       0/s ( 0.0%) W:    6600/s (97.4%) R:    380/s (100.0%)
+[Aug 30 11:19:07] [INFO] [16h47m0s] C:       0/s ( 0.0%) N:       0/s ( 0.0%) W:    6600/s (97.5%) R:    380/s (100.0%)
+[Aug 30 11:20:07] [INFO] [16h48m0s] C:       0/s ( 0.0%) N:       0/s ( 0.0%) W:    6600/s (97.7%) R:    380/s (100.0%)
+[Aug 30 11:21:07] [INFO] [16h49m0s] C:       0/s ( 0.0%) N:       0/s ( 0.0%) W:    6600/s (97.8%) R:    380/s (100.0%)
+[Aug 30 11:22:07] [INFO] [16h50m0s] C:       0/s ( 0.0%) N:       0/s ( 0.0%) W:    6600/s (97.9%) R:    380/s (100.0%)
+[Aug 30 11:23:07] [INFO] [16h51m0s] C:       0/s ( 0.0%) N:       0/s ( 0.0%) W:    6600/s (98.1%) R:    380/s (100.0%)
+[Aug 30 11:24:07] [INFO] [16h52m0s] C:       0/s ( 0.0%) N:       0/s ( 0.0%) W:    6600/s (98.2%) R:    380/s (100.0%)
+[Aug 30 11:25:07] [INFO] [16h53m0s] C:       0/s ( 0.0%) N:       0/s ( 0.0%) W:    6600/s (98.3%) R:    380/s (100.0%)
+[Aug 30 11:26:07] [INFO] [16h54m0s] C:       0/s ( 0.0%) N:       0/s ( 0.0%) W:    6600/s (98.4%) R:    380/s (100.0%)
+[Aug 30 11:27:07] [INFO] [16h55m0s] C:       0/s ( 0.0%) N:       0/s ( 0.0%) W:    6600/s (98.5%) R:    380/s (100.0%)
+[Aug 30 11:28:07] [INFO] [16h56m0s] C:       0/s ( 0.0%) N:       0/s ( 0.0%) W:    6600/s (98.7%) R:    380/s (100.0%)
+[Aug 30 11:29:07] [INFO] [16h57m0s] C:       0/s ( 0.0%) N:       0/s ( 0.0%) W:    6600/s (98.8%) R:    380/s (100.0%)
+[Aug 30 11:30:07] [INFO] [16h58m0s] C:       0/s ( 0.0%) N:       0/s ( 0.0%) W:    6600/s (98.9%) R:    380/s (100.0%)
+[Aug 30 11:31:07] [INFO] [16h59m0s] C:       0/s ( 0.0%) N:       0/s ( 0.0%) W:    6600/s (99.1%) R:    380/s (100.0%)
+[Aug 30 11:32:07] [INFO] [17h0m0s] C:       0/s ( 0.0%) N:       0/s ( 0.0%) W:    6600/s (99.2%) R:    380/s (100.0%)
+[Aug 30 11:33:07] [INFO] [17h1m0s] C:       0/s ( 0.0%) N:       0/s ( 0.0%) W:    6600/s (99.3%) R:    380/s (100.0%)
+[Aug 30 11:34:07] [INFO] [17h2m0s] C:       0/s ( 0.0%) N:       0/s ( 0.0%) W:    6600/s (99.4%) R:    380/s (100.0%)
+[Aug 30 11:35:07] [INFO] [17h3m0s] C:       0/s ( 0.0%) N:       0/s ( 0.0%) W:    6600/s (99.6%) R:    380/s (100.0%)
+[Aug 30 11:36:07] [INFO] [17h4m0s] C:       0/s ( 0.0%) N:       0/s ( 0.0%) W:    6600/s (99.7%) R:    380/s (100.0%)
+[Aug 30 11:37:07] [INFO] [17h5m0s] C:       0/s ( 0.0%) N:       0/s ( 0.0%) W:    6600/s (99.8%) R:    380/s (100.0%)
+[Aug 30 11:38:07] [INFO] [17h6m0s] C:       0/s ( 0.0%) N:       0/s ( 0.0%) W:    6600/s (99.9%) R:    380/s (100.0%)
+[Aug 30 11:39:07] [INFO] [17h7m0s] C:       0/s ( 0.0%) N:   30200/s ( 0.8%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 11:40:07] [INFO] [17h8m0s] C:       0/s ( 0.0%) N:   31100/s ( 4.9%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 11:41:07] [INFO] [17h9m0s] C:       0/s ( 0.0%) N:   31100/s ( 8.9%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 11:42:07] [INFO] [17h10m0s] C:       0/s ( 0.0%) N:   30600/s (12.7%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 11:43:07] [INFO] [17h11m0s] C:       0/s ( 0.0%) N:   30700/s (16.6%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 11:44:07] [INFO] [17h12m0s] C:       0/s ( 0.0%) N:   30600/s (20.5%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 11:45:07] [INFO] [17h13m0s] C:       0/s ( 0.0%) N:   30600/s (24.5%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 11:46:07] [INFO] [17h14m0s] C:       0/s ( 0.0%) N:   30600/s (28.4%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 11:47:07] [INFO] [17h15m0s] C:       0/s ( 0.0%) N:   30600/s (32.3%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 11:48:07] [INFO] [17h16m0s] C:       0/s ( 0.0%) N:   30600/s (36.3%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 11:49:07] [INFO] [17h17m0s] C:       0/s ( 0.0%) N:   30600/s (40.2%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 11:50:07] [INFO] [17h18m0s] C:       0/s ( 0.0%) N:   30700/s (44.2%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 11:51:07] [INFO] [17h19m0s] C:       0/s ( 0.0%) N:   30800/s (48.3%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 11:52:07] [INFO] [17h20m0s] C:       0/s ( 0.0%) N:   30900/s (52.5%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 11:53:07] [INFO] [17h21m0s] C:       0/s ( 0.0%) N:   31000/s (56.7%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 11:54:07] [INFO] [17h22m0s] C:       0/s ( 0.0%) N:   31100/s (60.8%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 11:55:07] [INFO] [17h23m0s] C:       0/s ( 0.0%) N:   31100/s (64.9%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 11:56:07] [INFO] [17h24m0s] C:       0/s ( 0.0%) N:   31200/s (69.1%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 11:57:07] [INFO] [17h25m0s] C:       0/s ( 0.0%) N:   31300/s (73.3%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 11:58:07] [INFO] [17h26m0s] C:       0/s ( 0.0%) N:   31400/s (77.5%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 11:59:07] [INFO] [17h27m0s] C:       0/s ( 0.0%) N:   31400/s (81.6%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 12:00:07] [INFO] [17h28m0s] C:       0/s ( 0.0%) N:   31400/s (85.6%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 12:01:07] [INFO] [17h29m0s] C:       0/s ( 0.0%) N:   31300/s (89.3%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 12:02:07] [INFO] [17h30m0s] C:       0/s ( 0.0%) N:   31300/s (93.5%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 12:03:07] [INFO] [17h31m0s] C:       0/s ( 0.0%) N:   31400/s (97.7%) W:    6600/s (100.0%) R:    380/s (100.0%)
+
+[Aug 30 12:03:45] [INFO] Writing OSM data took: 17h31m37.857839039s
+[Aug 30 12:03:45] [INFO] [17h31m37s] C:       0/s ( 0.0%) N:   31300/s (100.0%) W:    6600/s (100.0%) R:    380/s (100.0%)
+[Aug 30 12:29:17] [INFO] [PostGIS] Generalizing osm_waterareas into osm_waterareas_gen1 took: 25m31.761829843s
+[Aug 30 12:31:49] [INFO] [PostGIS] Generalizing osm_roads into osm_roads_gen1 took: 28m4.062699565s
+[Aug 30 12:36:05] [INFO] [PostGIS] Generalizing osm_waterways into osm_waterways_gen1 took: 32m19.871513633s
+[Aug 30 13:18:23] [INFO] [PostGIS] Generalizing osm_landusages into osm_landusages_gen1 took: 1h14m37.559349156s
+[Aug 30 13:22:46] [INFO] [PostGIS] Generalizing osm_waterareas into osm_waterareas_gen0 took: 4m23.34554128s
+[Aug 30 13:22:54] [INFO] [PostGIS] Generalizing osm_roads into osm_roads_gen0 took: 4m30.936628209s
+[Aug 30 13:24:32] [INFO] [PostGIS] Generalizing osm_waterways into osm_waterways_gen0 took: 6m9.080712299s
+[Aug 30 13:34:32] [INFO] [PostGIS] Generalizing osm_landusages into osm_landusages_gen0 took: 16m9.551067788s
+[Aug 30 13:34:32] [INFO] [PostGIS] Creating generalized tables took: 1h30m47.114883218s
+[Aug 30 13:34:34] [INFO] [PostGIS] Creating OSM id index on osm_transport_areas took: 1.50600612s
+[Aug 30 13:34:37] [INFO] [PostGIS] Creating geometry index on osm_transport_areas took: 3.000498447s
+[Aug 30 13:34:37] [INFO] [PostGIS] Creating OSM id index on osm_amenities took: 4.516123244s
+[Aug 30 13:34:49] [INFO] [PostGIS] Creating OSM id index on osm_housenumbers_interpolated took: 17.037799296s
+[Aug 30 13:34:58] [INFO] [PostGIS] Creating OSM id index on osm_places took: 21.696915282s
+[Aug 30 13:35:03] [INFO] [PostGIS] Creating OSM id index on osm_transport_points took: 30.956512953s
+[Aug 30 13:35:19] [INFO] [PostGIS] Creating geometry index on osm_amenities took: 42.599394014s
+[Aug 30 13:35:23] [INFO] [PostGIS] Creating OSM id index on osm_admin took: 50.971056933s
+[Aug 30 13:36:36] [INFO] [PostGIS] Creating geometry index on osm_housenumbers_interpolated took: 1m46.697182971s
+[Aug 30 13:37:18] [INFO] [PostGIS] Creating OSM id index on osm_barrierways took: 41.54774856s
+[Aug 30 13:37:53] [INFO] [PostGIS] Creating geometry index on osm_places took: 2m55.022755959s
+[Aug 30 13:38:09] [INFO] [PostGIS] Creating OSM id index on osm_waterareas took: 2m49.960595555s
+[Aug 30 13:38:48] [INFO] [PostGIS] Creating geometry index on osm_transport_points took: 3m44.652808154s
+[Aug 30 13:38:55] [INFO] [PostGIS] Creating OSM id index on osm_waterways took: 4m23.204713367s
+[Aug 30 13:39:16] [INFO] [PostGIS] Creating OSM id index on osm_housenumbers took: 4m43.424503662s
+[Aug 30 13:40:42] [INFO] [PostGIS] Creating geometry index on osm_admin took: 5m18.496050929s
+[Aug 30 13:40:43] [INFO] [PostGIS] Creating OSM id index on osm_aeroways took: 979.160523ms
+[Aug 30 13:40:48] [INFO] [PostGIS] Creating geometry index on osm_aeroways took: 5.708219644s
+[Aug 30 13:40:57] [INFO] [PostGIS] Creating OSM id index on osm_barrierpoints took: 8.893956464s
+[Aug 30 13:42:23] [INFO] [PostGIS] Creating geometry index on osm_barrierpoints took: 1m25.790066575s
+[Aug 30 13:42:29] [INFO] [PostGIS] Creating OSM id index on osm_waterareas_gen0 took: 6.416819666s
+[Aug 30 13:42:43] [INFO] [PostGIS] Creating geometry index on osm_barrierways took: 5m25.862896923s
+[Aug 30 13:42:55] [INFO] [PostGIS] Creating geometry index on osm_waterareas_gen0 took: 25.236577761s
+[Aug 30 13:44:22] [INFO] [PostGIS] Creating OSM id index on osm_landusages took: 9m49.683515015s
+[Aug 30 13:44:53] [INFO] [PostGIS] Creating OSM id index on osm_roads_gen0 took: 2m9.476305666s
+[Aug 30 13:45:10] [INFO] [PostGIS] Creating OSM id index on osm_roads_gen1 took: 2m15.447821475s
+[Aug 30 13:58:05] [INFO] [PostGIS] Creating geometry index on osm_waterareas took: 19m55.29257244s
+[Aug 30 13:59:48] [INFO] [PostGIS] Creating OSM id index on osm_waterways_gen0 took: 1m43.859859812s
+[Aug 30 14:01:50] [INFO] [PostGIS] Creating OSM id index on osm_roads took: 23m2.108196937s
+[Aug 30 14:11:37] [INFO] [PostGIS] Creating geometry index on osm_waterways took: 32m41.452722562s
+[Aug 30 14:13:39] [INFO] [PostGIS] Creating OSM id index on osm_waterways_gen1 took: 2m1.985566559s
+[Aug 30 14:17:29] [INFO] [PostGIS] Creating OSM id index on osm_buildings took: 39m35.586546242s
+[Aug 30 14:37:24] [INFO] [PostGIS] Creating geometry index on osm_roads_gen1 took: 52m14.272811073s
+[Aug 30 14:37:37] [INFO] [PostGIS] Creating geometry index on osm_roads_gen0 took: 52m44.445046786s
+[Aug 30 14:38:36] [INFO] [PostGIS] Creating OSM id index on osm_landusages_gen0 took: 58.503666239s
+[Aug 30 14:39:35] [INFO] [PostGIS] Creating OSM id index on osm_landusages_gen1 took: 2m10.228209223s
+[Aug 30 14:43:12] [INFO] [PostGIS] Creating geometry index on osm_waterways_gen0 took: 43m23.423478774s
+[Aug 30 14:43:36] [INFO] [PostGIS] Creating OSM id index on osm_waterareas_gen1 took: 24.178793382s
+[Aug 30 14:43:36] [INFO] [PostGIS] Creating geometry index on osm_landusages_gen0 took: 5m0.447042184s
+[Aug 30 14:46:05] [INFO] [PostGIS] Creating geometry index on osm_waterareas_gen1 took: 2m28.666688662s
+[Aug 30 14:51:08] [INFO] [PostGIS] Creating geometry index on osm_waterways_gen1 took: 37m29.017066842s
+[Aug 30 14:58:11] [INFO] [PostGIS] Creating geometry index on osm_landusages_gen1 took: 18m36.64771434s
+[Aug 30 15:21:39] [INFO] [PostGIS] Creating geometry index on osm_housenumbers took: 1h42m22.924616132s
+[Aug 30 15:23:48] [INFO] [PostGIS] Creating geometry index on osm_landusages took: 1h39m26.352101356s
+[Aug 30 17:05:53] [INFO] [PostGIS] Creating geometry index on osm_roads took: 3h4m2.678603498s
+[Aug 30 17:49:23] [INFO] [PostGIS] Creating geometry index on osm_buildings took: 3h31m53.652484218s
+[Aug 30 17:49:23] [INFO] [PostGIS] Creating geometry indices took: 4h14m50.470418737s
+[Aug 30 17:49:23] [INFO] Importing OSM data took: 23h17m15.447768984s
+[Aug 30 17:49:26] [INFO] [PostGIS] Indexing osm_transport_areas on geohash took: 3.252505838s
+[Aug 30 17:49:31] [INFO] [PostGIS] Clustering osm_transport_areas on geohash took: 5.157417809s
+[Aug 30 17:49:32] [INFO] [PostGIS] Analysing osm_transport_areas took: 821.419945ms
+[Aug 30 17:49:39] [INFO] [PostGIS] Indexing osm_amenities on geohash took: 16.301577523s
+[Aug 30 17:50:23] [INFO] [PostGIS] Clustering osm_amenities on geohash took: 44.294767328s
+[Aug 30 17:50:27] [INFO] [PostGIS] Analysing osm_amenities took: 3.739896343s
+[Aug 30 17:50:30] [INFO] [PostGIS] Indexing osm_aeroways on geohash took: 3.269960227s
+[Aug 30 17:50:37] [INFO] [PostGIS] Clustering osm_aeroways on geohash took: 7.190975359s
+[Aug 30 17:50:38] [INFO] [PostGIS] Analysing osm_aeroways took: 558.039165ms
+[Aug 30 17:50:47] [INFO] [PostGIS] Indexing osm_places on geohash took: 1m24.388157847s
+[Aug 30 17:50:54] [INFO] [PostGIS] Indexing osm_admin on geohash took: 1m31.701683732s
+[Aug 30 17:51:22] [INFO] [PostGIS] Indexing osm_barrierpoints on geohash took: 43.958281604s
+[Aug 30 17:53:14] [INFO] [PostGIS] Clustering osm_barrierpoints on geohash took: 1m52.204772158s
+[Aug 30 17:53:15] [INFO] [PostGIS] Analysing osm_barrierpoints took: 1.154312006s
+[Aug 30 17:55:23] [INFO] [PostGIS] Indexing osm_barrierways on geohash took: 2m7.665963345s
+[Aug 30 17:55:25] [INFO] [PostGIS] Clustering osm_places on geohash took: 4m38.123010562s
+[Aug 30 17:55:29] [INFO] [PostGIS] Analysing osm_places took: 3.402400186s
+[Aug 30 17:55:33] [INFO] [PostGIS] Indexing osm_waterareas on geohash took: 6m10.453863846s
+[Aug 30 17:57:10] [INFO] [PostGIS] Indexing osm_transport_points on geohash took: 1m41.359044687s
+[Aug 30 17:57:47] [INFO] [PostGIS] Indexing osm_waterways on geohash took: 8m24.695132048s
+[Aug 30 18:02:07] [INFO] [PostGIS] Clustering osm_transport_points on geohash took: 4m57.147732978s
+[Aug 30 18:02:08] [INFO] [PostGIS] Analysing osm_transport_points took: 1.197332868s
+[Aug 30 18:02:41] [INFO] [PostGIS] Clustering osm_admin on geohash took: 11m47.049918211s
+[Aug 30 18:02:47] [INFO] [PostGIS] Analysing osm_admin took: 5.127208663s
+[Aug 30 18:03:27] [INFO] [PostGIS] Indexing osm_housenumbers_interpolated on geohash took: 40.061717634s
+[Aug 30 18:04:01] [INFO] [PostGIS] Clustering osm_barrierways on geohash took: 8m37.930795514s
+[Aug 30 18:04:03] [INFO] [PostGIS] Analysing osm_barrierways took: 1.611370734s
+[Aug 30 18:05:36] [INFO] [PostGIS] Clustering osm_housenumbers_interpolated on geohash took: 2m9.362963053s
+[Aug 30 18:05:37] [INFO] [PostGIS] Analysing osm_housenumbers_interpolated took: 1.334733306s
+[Aug 30 18:07:03] [INFO] [PostGIS] Indexing osm_landusages_gen0 on geohash took: 1m25.581614131s
+[Aug 30 18:09:19] [INFO] [PostGIS] Indexing osm_landusages_gen1 on geohash took: 5m15.919713525s
+[Aug 30 18:09:40] [INFO] [PostGIS] Indexing osm_landusages on geohash took: 20m16.985165945s
+[Aug 30 18:10:38] [INFO] [PostGIS] Clustering osm_landusages_gen0 on geohash took: 3m34.664587397s
+[Aug 30 18:10:39] [INFO] [PostGIS] Analysing osm_landusages_gen0 took: 1.219435231s
+[Aug 30 18:11:16] [INFO] [PostGIS] Indexing osm_waterareas_gen1 on geohash took: 36.707043964s
+[Aug 30 18:13:14] [INFO] [PostGIS] Clustering osm_waterareas_gen1 on geohash took: 1m58.367124915s
+[Aug 30 18:13:15] [INFO] [PostGIS] Analysing osm_waterareas_gen1 took: 1.394369594s
+[Aug 30 18:13:25] [INFO] [PostGIS] Indexing osm_waterareas_gen0 on geohash took: 9.445189251s
+[Aug 30 18:13:51] [INFO] [PostGIS] Clustering osm_waterareas_gen0 on geohash took: 26.083102632s
+[Aug 30 18:13:52] [INFO] [PostGIS] Analysing osm_waterareas_gen0 took: 881.814502ms
+[Aug 30 18:19:54] [INFO] [PostGIS] Indexing osm_roads_gen0 on geohash took: 6m2.285918583s
+[Aug 30 18:20:05] [INFO] [PostGIS] Indexing osm_housenumbers on geohash took: 17m56.901140029s
+[Aug 30 18:41:09] [INFO] [PostGIS] Clustering osm_landusages_gen1 on geohash took: 31m50.187877968s
+[Aug 30 18:41:30] [INFO] [PostGIS] Analysing osm_landusages_gen1 took: 21.226310513s
+[Aug 30 18:44:39] [INFO] [PostGIS] Clustering osm_roads_gen0 on geohash took: 24m45.371360062s
+[Aug 30 18:44:58] [INFO] [PostGIS] Clustering osm_waterareas on geohash took: 49m24.644400039s
+[Aug 30 18:45:00] [INFO] [PostGIS] Analysing osm_waterareas took: 2.216506297s
+[Aug 30 18:45:07] [INFO] [PostGIS] Analysing osm_roads_gen0 took: 27.212825175s
+[Aug 30 18:46:28] [INFO] [PostGIS] Indexing osm_roads on geohash took: 56m55.708237385s
+[Aug 30 18:47:34] [INFO] [PostGIS] Indexing osm_roads_gen1 on geohash took: 6m4.392748128s
+[Aug 30 18:49:50] [INFO] [PostGIS] Indexing osm_waterways_gen0 on geohash took: 4m49.870073756s
+[Aug 30 18:50:12] [INFO] [PostGIS] Indexing osm_waterways_gen1 on geohash took: 5m5.624116346s
+[Aug 30 19:05:41] [INFO] [PostGIS] Clustering osm_waterways_gen0 on geohash took: 15m51.236028442s
+[Aug 30 19:05:42] [INFO] [PostGIS] Analysing osm_waterways_gen0 took: 1.282184195s
+[Aug 30 19:07:24] [INFO] [PostGIS] Clustering osm_waterways_gen1 on geohash took: 17m11.870599453s
+[Aug 30 19:07:25] [INFO] [PostGIS] Analysing osm_waterways_gen1 took: 1.108753462s
+[Aug 30 19:10:05] [INFO] [PostGIS] Clustering osm_roads_gen1 on geohash took: 22m31.077821702s
+[Aug 30 19:10:07] [INFO] [PostGIS] Analysing osm_roads_gen1 took: 1.790179243s
+^[[B^[^[[A[Aug 30 19:36:36] [INFO] [PostGIS] Indexing osm_buildings on geohash took: 1h47m13.252338971s
+^[[B^[[C^[[D^[[C^[[C^[[Dring osm_buildings on geohash
+
+
+[Aug 30 20:15:10] [INFO] [PostGIS] Clustering osm_waterways on geohash took: 2h17m22.460956549s
+[Aug 30 20:15:11] [INFO] [PostGIS] Analysing osm_waterways took: 1.15100751s
+[Aug 30 22:02:38] [INFO] [PostGIS] Clustering osm_housenumbers on geohash took: 3h42m32.288379185s
+[Aug 30 22:02:39] [INFO] [PostGIS] Analysing osm_housenumbers took: 1.314753757s
+[Aug 30 23:49:54] [INFO] [PostGIS] Clustering osm_landusages on geohash took: 5h40m14.250805437s
+[Aug 30 23:50:22] [INFO] [PostGIS] Analysing osm_landusages took: 28.060277478s
+[Aug 31 05:04:52] [INFO] [PostGIS] Clustering osm_buildings on geohash took: 9h28m15.943340628s
+[Aug 31 05:04:52] [INFO] [PostGIS] Clustering on geometry took: 11h15m29.201990462s
+[Aug 31 05:04:52] pq: could not write block 3712763 of temporary file: No space left on device

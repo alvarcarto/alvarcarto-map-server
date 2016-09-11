@@ -15,3 +15,6 @@ make test
 sudo make install
 
 sudo apt-get install mapnik-utils
+sudo apt-get install python-pip
+
+pip install nik2img mapnik

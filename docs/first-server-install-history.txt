@@ -1,0 +1,435 @@
+1  ls
+ 2  deluser alvar
+ 3  ls
+ 4  tar xvvfz alvarcarto-map-server.tar.gz
+ 5  cd alvarcarto-map-server
+ 6  ls
+ 7  ./install.sh
+ 8  ls
+ 9  cd ..
+10  ls
+11  rm -r mapnik-3.x/
+12  rm -fr mapnik-3.x/
+13  ls
+14  sudo apt-get install screen
+15  screen -S install
+16  screen -r
+17  df -h
+18  cd /dev/
+19  ls
+20  sudo mkfs.ext4 -F /dev/disk/by-id/scsi-0DO_Volume_volume-nyc1-01
+21  sudo mkdir -p /mnt/volume1
+22  sudo mount -o discard,defaults /dev/disk/by-id/scsi-0DO_Volume_volume-nyc1-01 /mnt/volume1/
+23  echo /dev/disk/by-id/scsi-0DO_Volume_volume-nyc1-01 /mnt/volume1 ext4 defaults,nofail,discard 0 0 | sudo tee -a /etc/fstab
+24  cd /mnt/volume1/
+25  ls
+26  df -h
+27  screen -r download
+28  screen -r
+29  screen -S download
+30  ls
+31  wget https://imposm.org/static/rel/imposm3-0.2.0dev-20160615-d495ca4-linux-x86-64.tar.gz
+32  ls
+33  tar zvvf imposm3-0.2.0dev-20160615-d495ca4-linux-x86-64.tar.gz
+34  tar zxvvf imposm3-0.2.0dev-20160615-d495ca4-linux-x86-64.tar.gz
+35  cd imposm3-0.2.0dev-20160615-d495ca4-linux-x86-64/
+36  ls
+37  ./imposm3
+38  ./imposm3 help
+39  ./imposm3 -h
+40  ls
+41  ls lib/
+42  cat mapping.json
+43  ls
+44  ls /var/lib/postgresql/9.5/main/
+45  sudo ls /var/lib/postgresql/9.5/main/
+46  sudo su
+47  sudo su postgres
+48  sudo service start postgres
+49  sudo service start postgresql
+50  sudo service postgresql start
+51  psql
+52  sudo /etc/init.d/postgresql restart
+53  sudo /etc/init.d/postgresql start
+54  psql
+55  psql -h localhost
+56  sudo /etc/init.d/postgresql restart
+57  psql -h localhost
+58  psql
+59  dmesg
+60  tail /var/log/postgresql/
+61  tail /var/log/postgresql/postgresql-9.5-main.log
+62  sudo tail /var/log/postgresql/postgresql-9.5-main.log
+63  sudo -u postgres psql -c "SHOW unix_socket_directories;"
+64  sudo -u postgres psql postgres
+65  sudo locale-gen en_US.UTF-8
+66  sudo -u postgres psql postgres
+67  sudo dpkg-reconfigure locales
+68  sudo locale-gen en_US en_US.UTF-8
+69  sudo locale-gen UTF-8 en_US en_US.UTF-8
+70  sudo locale-gen en_US en_US.UTF-8
+71  cat /etc/environment
+72  echo "export LC_ALL="en_US.UTF-8" >> cat /etc/environment
+73  echo 'export LC_ALL="en_US.UTF-8"' >> cat /etc/environment
+74  cat /etc/environment
+75  echo "export LC_ALL=\"en_US.UTF-8\"" >> /etc/environment
+76  sudo echo "export LC_ALL=\"en_US.UTF-8\"" >> /etc/environment
+77  sudo -H -u root -c 'echo "export LC_ALL=\"en_US.UTF-8\"" >> /etc/environment'
+78  sudo -H -u root bash -c 'echo "export LC_ALL=\"en_US.UTF-8\"" >> /etc/environment'
+79  cat /etc/environment
+80  ls
+81  sudo /etc/init.d/postgresql restart
+82  psql
+83  /etc/init.d/postgresql status
+84  sudo chown postgres:postgres /mnt/volume1/alvar/pg-data
+85  sudo /etc/init.d/postgresql restart
+86  psql
+87  sudo chmod 700 /mnt/volume1/alvar/pg-data
+88  sudo start postgresql
+89  sudo /etc/init.d/postgresql restar
+90  sudo /etc/init.d/postgresql restart
+91  tail /var/log/postgresql/postgresql-9.5-main.log
+92  sudo tail /var/log/postgresql/postgresql-9.5-main.log
+93  sudo cat /var/log/postgresql/postgresql-9.5-main.log
+94  psql
+95  ps aux | grep pgsql
+96  ls /usr/local/pgsql/data
+97  pg
+98  cat /etc/init.d/postgresql
+99  echo $PGDATA
+100  echo $PG_DATA
+101  sudo nano /etc/postgresql/9.5/main/start.conf
+102  sudo nano /etc/postgresql/9.5/main/postgresql.conf
+103  sudo /etc/init.d/postgresql restart
+104  sudo nano /etc/postgresql/9.5/main/postgresql.conf
+105  syslog
+106  tail -n 100 /var/log/sys
+107  tail -n 100 /var/log/syslog
+108  sudo tail -n 100 /var/log/syslog
+109  cd /mnt/volume1/
+110  ls
+111  cd alvar/
+112  ls -la
+113  cd pg-data/
+114  sudo ls -la pg-data/
+115  sudo chown -R postgres:postgres pg-data/
+116  sudo /etc/init.d/postgresql restart
+117  psql
+118  sudo -u postgres 'psql -c "create database osm;"'
+119  sudo -u postgres psql -c "create database osm;"
+120  sudo -u postgres psql -c "CREATE DATABASE osm;"
+121  sudo -u postgres psql -c -d osm "CREATE EXTENSION postgis;"
+122  sudo -u postgres psql -c "CREATE USER osm WITH PASSWORD 'osm';"
+123  sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE osm to osm;"
+124  sudo -u postgres psql -d osm -c "CREATE EXTENSION postgis;"
+125  sudo -u postgres psql -c "CREATE USER osm WITH PASSWORD 'osm';"
+126  sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE osm to osm;"
+127  ls
+128  cd alvarcarto-map-server/
+129  ls
+130  cd /mnt/volume1/
+131  ls
+132  cd alvar/
+133  ls
+134  cd simplified-land-polygons-complete-3857
+135  ls
+136  shapeindex simplified_land_polygons.shp
+137  cd ..
+138  ls
+139  cd
+140  cd -
+141  cd land-polygons-split-3857
+142  ls
+143  shapeindex land_polygons.shp
+144  cd ..
+145  ls ne_10m_populated_places/
+146  cd ne_10m_populated_places
+147  ls
+148  shapeindex ne_10m_populated_places.shp
+149  cd ..
+150  ls
+151  pwd
+152  cd land-polygons-split-3857/
+153  pwd
+154  ls
+155  cd ..
+156  ls
+157  cd ne_10m_populated_places
+158  pwd
+159  ls
+160  cd ..
+161  ls
+162  cd simplified-land-polygons-complete-3857/
+163  ls
+164  cd
+165  ls
+166  cd imposm3-0.2.0dev-20160615-d495ca4-linux-x86-64/
+167  ls
+168  ls /mnt/volume1/alvar/
+169  ls
+170  psql localhost
+171  psql -h localhost
+172  history | grep wget
+173  ls
+174  cd /mnt/
+175  ls
+176  cd bol
+177  cd volume1/
+178  ls
+179  cd alvar/
+180  ls
+181  wget http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/cultural/ne_10m_populated_places.zip
+182  ls
+183  unzip ne_10m_populated_places.zip
+184  sudo apt-get install unzip
+185  unzip ne_10m_populated_places.zip
+186  ls
+187  shapeindex
+188  sudo apt-get install mapnik-utils
+189  shapeindex
+190  ls
+191  rm -rf ne_10m_populated_places.
+192  ls
+193  rm -rf ne_10m_populated_places.*
+194  ls
+195  wget http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/cultural/ne_10m_populated_places.zip
+196  mkdir ne_10m_populated_places
+197  mv ne_10m_populated_places.zip ne_10m_populated_places
+198  cd ne_10m_populated_places
+199  unzip ne_10m_populated_places.zip
+200  ls
+201  cd ..
+202  ls
+203  wget http://data.openstreetmapdata.com/simplified-land-polygons-complete-3857.zip
+204  unzip simplified-land-polygons-complete-3857.zip
+205  wget http://data.openstreetmapdata.com/land-polygons-split-3857.zip
+206  unzip land-polygons-split-3857.zip
+207  ls
+208  du -sh *
+209  cd
+210  ls
+211  pwd
+212  apt-cache search mapnik
+213  curl -O http://planet.openstreetmap.org/pbf/planet-latest.osm.pbf
+214  curl -O http://mirror2.shellbot.com/osm/planet-latest.osm.pbf
+215  ls
+216  ls -lah
+217  mkdir alvar
+218  sudo mkdir alvar
+219  cd alvar/
+220  ls
+221  cd ..
+222  ls
+223  ls -lah
+224  sudo chown alvar:alvar alvar
+225  ls
+226  cd alvar/
+227  curl -O http://planet.openstreetmap.org/pbf/planet-latest.osm.pbf
+228  ls
+229  sudo apt-cache search postgres
+230  apt-cache search postgres
+231  apt-cache search postgresql
+232  apt-cache search postgresql | grep postgis
+233  sudo apt-get install postgresql-9.5 postgresql-9.5-postgis-2.2
+234  cd alvarcarto-map-server/
+235  ls
+236  ./install.sh
+237  ls
+238  ls
+239  cd imposm3-0.2.0dev-20160615-d495ca4-linux-x86-64
+240  ./imposm3 -mapping mapping.json -read /mnt/volume1/alvar/planet-latest.osm.pbf -write -connection postgis://osm:osm@localhost/osm -optimize -deployproduction
+241  ./imposm3 import -mapping mapping.json -read /mnt/volume1/alvar/planet-latest.osm.pbf -write -connection postgis://osm:osm@localhost/osm -optimize -deployproduction
+242  screen -S import
+243  screen -r
+244  screen -r imp
+245  screen -r do
+246  screen -r down
+247  ls
+248  screen -r
+249  screen -r download
+250  screen -r
+251  screen -r install
+252  screen -r
+253  df -h
+254  screen -r
+255  ls
+256  cat mapping.json | grep hstore
+257  screen -r
+258  df -h
+259  cd /mnt/volume1/alvar/
+260  ls
+261  du -sh .
+262  sudo du -sh .
+263  sudo du -sh *
+264  sudo du -sh pg-data
+265  ls
+266  cd pg-data/
+267  sudo su postgres
+268  ls
+269  du -sh * .*
+270  sudo du -sh * .*
+271  sudo du -sh .imposmcache/
+272  df -h
+273  screen -r
+274  df -h
+275  screen -r
+276  ./imposm3 import -mapping mapping.json -read /mnt/volume1/alvar/planet-latest.osm.pbf -write -connection postgis://osm:osm@localhost/osm -optimize -deployproduction
+277  ./imposm3 import -mapping mapping.json -read /mnt/volume1/alvar/planet-latest.osm.pbf -write -connection postgis://osm:osm@localhost/osm -optimize -deployproduction -overwritecache
+278  IMPOSM_CACHE_DIR=/mnt/volume1/alvar/.imposmcache
+279  mkdir -p $IMPOSM_CACHE_DIR
+280  ./imposm3 import -mapping mapping.json -read /mnt/volume1/alvar/planet-latest.osm.pbf -write -connection postgis://osm:osm@localhost/osm -optimize -deployproduction -overwritecache -cachedir $IMPOSM_CACHE_DIR
+281  df -h
+282  cat /proc/meminfo
+283  shutdown -h now
+284  sudo shutdown -h now
+285  ls
+286  screen -S import
+287  df -h
+288  cat /proc/meminfo
+289  cat /proc/cpuinfo
+290  screen -r
+291  ls
+292  screen -r
+293  df -h
+294  screen -r
+295  date
+296  screen -r
+297  df -h
+298  screen -r
+299  df -h
+300  cat /proc/meminfo
+301  top
+302  screen -r
+303  cd imposm3-0.2.0dev-20160615-d495ca4-linux-x86-64/
+304  ls
+305  psql
+306  export IMPOSM_CACHE_DIR=/mnt/volume1/alvar/.imposmcache
+307  ./imposm3 import -mapping mapping.json -read /mnt/volume1/alvar/planet-latest.osm.pbf -write -connection postgis://osm:osm@localhost/osm -optimize -deployproduction -appendcache -cachedir $IMPOSM_CACHE_DIR
+308  ls
+309  echo $IMPOSM_CACHE_DIR
+310  ./imposm3 import -mapping mapping.json -read /mnt/volume1/alvar/planet-latest.osm.pbf -write -connection postgis://osm:osm@localhost/osm -optimize -deployproduction -overwritecache -cachedir $IMPOSM_CACHE_DIR
+311  ls
+312  [A
+313  df -h
+314  ls
+315  df -h
+316  ls
+317  screen -r
+318  ls
+319  sudo shutdown -h now
+320  ./imposm3 import -mapping mapping.json -optimize -cachedir /mnt/volume1/data/.imposmcache
+321  ls /mnt/volume1/data/.imposmcache
+322  ls /mnt/volume1/alvar/
+323  ls /mnt/volume1/alvar/.imposmcache/
+324  du -sh /mnt/volume1/alvar/.imposmcache/
+325  psql
+326  ./imposm3 import -mapping mapping.json -connection postgis://osm:osm@localhost/osm -optimize -cachedir /mnt/volume1/alvar/.imposmcache
+327  ./imposm3 import -mapping mapping.json -connection postgis://osm:osm@localhost/osm -deployproduction -optimize -cachedir /mnt/volume1/alvar/.imposmcache
+328  mapnik
+329  ./imposm3 import -mapping mapping.json -connection postgis://osm:osm@localhost/osm -deployproduction -optimize -cachedir /mnt/volume1/alvar/.imposmcache
+330  mapnik
+331  ./imposm3 import -mapping mapping.json -connection postgis://osm:osm@localhost/osm -deployproduction -optimize -cachedir /mnt/volume1/alvar/.imposmcache
+332  mapnik
+333  ./imposm3 import -mapping mapping.json -connection postgis://osm:osm@localhost/osm -deployproduction -optimize -cachedir /mnt/volume1/alvar/.imposmcache
+334  ls
+335  cd ..
+336  ls
+337  cd mapnik-3.x/
+338  ls
+339  mapnik-render
+340  ps aux | grep mapnik
+341  pip
+342  python -v
+343  sudo ls /dev/disk/by-id/
+344  sudo lsblk --fs /dev/disk/by-id/scsi-0DO_Volume_volume-nyc1-01
+345  sudo resize2fs /dev/disk/by-id/scsi-0DO_Volume_volume-nyc1-01
+346  df -h -x tmpfs -x devtmpfs
+347  cd imposm3-0.2.0dev-20160615-d495ca4-linux-x86-64/
+348  ls
+349  screen -r
+350  screen -S import
+351  python --version
+352  sudo apt-get install python-pip
+353  sudo pip install nik2img
+354  nik2img.py
+355  sudo pip uninstall nik2img
+356  sudo chown alvar:alvar ~/.cache/pip
+357  sudo ls -lah ~/.cache/
+358  ls /home/alvar/.cache/pip/http
+359  ls /home/alvar/.cache/
+360  ls -lah /home/alvar/
+361  cd .ca
+362  pip install nik2img mapnik
+363  nik2img.py
+364  ls
+365  cd ..
+366  ls
+367  j /mnt/volume1/
+368  ls
+369  cd /mnt/volume1/
+370  ls
+371  cd alvar/
+372  ls
+373  nano black-and-white.xml
+374  cd /mnt/volume1/alvar/
+375  ls
+376  rm black-and-white.xml.save
+377  ls
+378  nik2img.py -b 24.887995 60.188287 24.992709 60.133794 OSMBright.xml -d 5000 7000 -f pdf image.pdf
+379  nik2img.py -b 24.887995 60.188287 24.992709 60.133794 black-and-white.xml -d 5000 7000 -f pdf image.pdf
+380  psql
+381  sudo su postgres
+382  psql -u osm
+383  psql -U osm
+384  psql -U osm -p
+385  psql -U osm -p osm
+386  psql -U osm -P osqm
+387  psql -U osm
+388  sudo su postgres
+389  nik2img.py -b 24.887995 60.188287 24.992709 60.133794 black-and-white.xml -d 5000 7000 -f pdf image.pdf
+390  ls
+391  cd imposm3-0.2.0dev-20160615-d495ca4-linux-x86-64/
+392  ls
+393  cat mapping.json
+394  ls
+395  sudo shutdown -h now
+396  ls
+397  cd imposm3-0.2.0dev-20160615-d495ca4-linux-x86-64/
+398  LS
+399  cd /mnt/volume1/alvar/
+400  ls
+401  wget http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_countries.zip
+402  mkdir ne_110m_admin_0_countries
+403  mv ne_110m_admin_0_countries.zip ne_110m_admin_0_countries
+404  cd ne_110m_admin_0_countries
+405  unzip ne_110m_admin_0_countries.zip
+406  ls
+407  shapeindex ne_110m_admin_0_countries.shp
+408  cd ..
+409  wget http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_countries.zip
+410  mkdir ne_110m_admin_0_countries
+411  mv ne_110m_admin_0_countries.zip ne_110m_admin_0_countries
+412  cd ne_110m_admin_0_countries
+413  unzip ne_110m_admin_0_countries.zip
+414  ls
+415  cd ..
+416  ls
+417  wget http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/cultural/ne_10m_admin_0_boundary_lines_land.zip
+418  mkdir ne_10m_admin_0_boundary_lines_land
+419  mv ne_10m_admin_0_boundary_lines_land.zip ne_10m_admin_0_boundary_lines_land
+420  cd ne_10m_admin_0_boundary_lines_land
+421  unzip ne_10m_admin_0_boundary_lines_land.zip
+422  shapeindex ne_10m_admin_0_boundary_lines_land.shp
+423  cd ..
+424  wget http://www.naturalearthdata.com/http//www.naturalearthdata.com/download/110m/cultural/ne_110m_admin_0_countries.zip
+425  mkdir ne_110m_admin_0_countries
+426  mv ne_110m_admin_0_countries.zip ne_110m_admin_0_countries
+427  cd ne_110m_admin_0_countries
+428  unzip ne_110m_admin_0_countries.zip
+429  shapeindex ne_110m_admin_0_countries.shp
+430  cd ..
+431  ls
+432  sls
+433  cd
+434  ls
+435  history
