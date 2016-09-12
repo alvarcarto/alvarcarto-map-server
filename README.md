@@ -80,7 +80,8 @@ screen -S install
 **Note:** sudo password is asked a couple of times. When the imposm3 import starts,
 you'll know nothing is prompted at least for the next 15 hours.
 
-Now press `Ctrl` + `a` + `d` and wait, it may take 6 - 48 hours to install.
+Now press `Ctrl` + `a` + `d` and wait. With the DigitalOcean example machine,
+it takes around 32 hours. `imposm3` takes most of the time: 20h25m.
 
 
 ## DigitalOcean Install
