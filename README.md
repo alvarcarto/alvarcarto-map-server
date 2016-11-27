@@ -43,7 +43,7 @@ In your local computer, run:
 
 ```
 export SERVER_USER=alvar
-export SERVER_IP=
+export SERVER_IP=alvar-map2
 
 mkdir tmp
 cd tmp
