@@ -81,7 +81,7 @@ screen -S install
 you'll know nothing is prompted at least for the next 15 hours.
 
 Now press `Ctrl` + `a` + `d` and wait. With the DigitalOcean example machine,
-it takes around 32 hours. `imposm3` takes most of the time: 20h25m.
+it takes around 70 hours. `imposm3` takes most of the time: 63h34m.
 
 
 ## DigitalOcean Install
@@ -96,3 +96,50 @@ Fire up a new Droplet and an SSD Volume:
 3. Go to https://cloud.digitalocean.com/droplets/volumes and click "More" link near the attached Volume. Press "Config instructions".
 4. Copy the instructions to an editor. Replace all `/mnt/volume-fra1-01` references with `/mnt/volume1`.
 5. Follow the instructions until you have /mnt/volume1 available in the Droplet.
+
+
+
+## Fonts
+
+Required:
+
+```
+/mnt/volume1/alvar/fonts/dejavu-fonts-ttf-2.37/DejaVuSans-Bold.ttf
+/mnt/volume1/alvar/fonts/dejavu-fonts-ttf-2.37/DejaVuSans.ttf
+/mnt/volume1/alvar/fonts/unifont/unifont-9.0.02.ttf
+/mnt/volume1/alvar/fonts/opensans/OpenSans-Bold.ttf
+/mnt/volume1/alvar/fonts/opensans/OpenSans-SemiboldItalic.ttf
+/mnt/volume1/alvar/fonts/opensans/OpenSans-Semibold.ttf
+```
+
+
+## Known errors
+
+
+### Mapnik `make test` fails
+
+First it may fail to: `Postgis Plugin: FATAL:  role "alvar" does not exist`.
+
+Fix:
+```
+sudo su postgres
+psql
+CREATE USER alvar;
+ALTER USER alvar CREATEDB;
+```
+
+Then it may fail to: `ERROR (Postgis Plugin: FATAL:  database "template_postgis" does not exist`.
+
+Fix, create postgis_template:
+
+```
+sudo su postgres
+createdb template_postgis -E UTF-8
+createlang plpgsql template_postgis  # may say this is already done
+psql -d template_postgis -f /usr/share/postgresql/9.5/contrib/postgis-2.2/postgis.sql
+psql -d template_postgis -f /usr/share/postgresql/9.5/contrib/postgis-2.2/spatial_ref_sys.sql
+psql
+UPDATE pg_database SET datistemplate = TRUE WHERE datname = 'template_postgis';
+```
+
+Or read more how to create template_postgis: https://wiki.archlinux.org/index.php/PostGIS

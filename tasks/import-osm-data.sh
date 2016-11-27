@@ -17,5 +17,5 @@ tar xzvvf imposm3-0.2.0dev-20160615-d495ca4-linux-x86-64.tar.gz
 cd imposm3-0.2.0dev-20160615-d495ca4-linux-x86-64
 
 mkdir -p $IMPOSM_CACHE_DIR
-echo -e "\n\nImporting entire planet data to Postgis.. This may take even 6 - 48 hours ! \n\n"
+echo -e "\n\nImporting entire planet data to Postgis.. This took 63h34m the last time ! \n\n"
 ./imposm3 import -mapping $HOME/lyrk-mapstyle-master/imposm/mapping.json -read $ALVAR_MAP_SERVER_DATA_DIR/planet-latest.osm.pbf -write -connection postgis://osm:osm@localhost/osm -optimize -deployproduction -cachedir $IMPOSM_CACHE_DIR

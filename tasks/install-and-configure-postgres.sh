@@ -13,6 +13,7 @@ if [ -d "$NEW_POSTGRES_DATA_DIRECTORY" ]; then
 fi
 
 sudo apt-get install -y postgresql-9.5 postgresql-9.5-postgis-2.2
+sudo update-rc.d postgresql enable
 
 # Move data directory to bigger volume
 sudo /etc/init.d/postgresql stop
@@ -24,6 +25,8 @@ sudo chown -R postgres:postgres $NEW_POSTGRES_DATA_DIRECTORY
 sudo chmod 700 $NEW_POSTGRES_DATA_DIRECTORY
 sudo rm -rf $POSTGRES_DEFAULT_DATA_DIRECTORY
 sudo ln -s $NEW_POSTGRES_DATA_DIRECTORY $POSTGRES_DEFAULT_DATA_DIRECTORY
+
+sudo cp confs/postgresql.conf /etc/postgresql/9.5/main/postgresql.conf
 
 sudo /etc/init.d/postgresql start
 

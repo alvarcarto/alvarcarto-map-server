@@ -35,6 +35,7 @@ fi
 
 # Fix locale errors
 sudo -H -u root bash -c 'echo "export LC_ALL=\"en_US.UTF-8\"" >> /etc/environment'
+source /etc/environment
 
 sudo mkdir -p $ALVAR_MAP_SERVER_DATA_DIR
 sudo chown $(whoami):$(whoami) $ALVAR_MAP_SERVER_DATA_DIR
@@ -50,4 +51,8 @@ source tasks/install-and-configure-postgres.sh
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 source tasks/download-osm-data.sh
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
+source tasks/download-fonts.sh
+cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 source tasks/import-osm-data.sh
+cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
+source tasks/install-node.sh
