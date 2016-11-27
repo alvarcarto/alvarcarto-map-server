@@ -23,6 +23,9 @@ set -e
 # Path MUST NOT contain a trailing slash
 export ALVAR_MAP_SERVER_DATA_DIR=/mnt/volume1/alvar
 
+# Available themes: "lyrk", "openstreetmap"
+export MAPNIK_STYLE=openstreetmap
+
 if [ $(id -u) = 0 ]; then
     echo "This script must not be run as a root!"
     exit 1
@@ -46,13 +49,15 @@ sudo apt-get upgrade
 export ALVAR_MAP_SERVER_REPOSITORY_DIR=$(pwd)
 
 source tasks/install-mapnik.sh
+
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 source tasks/install-and-configure-postgres.sh
+
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
-source tasks/download-osm-data.sh
+source tasks/download-pbf.sh
+
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
-source tasks/download-fonts.sh
-cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
-source tasks/import-osm-data.sh
+source tasks/import-data-and-install-style.sh
+
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 source tasks/install-node.sh

@@ -88,8 +88,10 @@ it takes around 70 hours. `imposm3` takes most of the time: 63h34m.
 
 Fire up a new Droplet and an SSD Volume:
 
-* 16GB Memory, 8 Core Processor, 160GB SSD Disk, 6TB Transfer ($160/mo)
-* 450GB SSD Block storage attached
+* First create an 1GB droplet with 450GB SSD Block storage attached
+* Resize the droplet to 16GB Memory, 8 Core Processor, 160GB SSD Disk, 6TB Transfer ($160/mo)
+
+This allows changing the droplet size back to 1GB RAM when it's not used.
 
 1. Login as root. You will get the root password of the droplet to your email.
 2. Set root password and alvar user password as in 1password.
