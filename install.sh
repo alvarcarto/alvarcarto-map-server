@@ -48,6 +48,10 @@ sudo apt-get upgrade
 
 export ALVAR_MAP_SERVER_REPOSITORY_DIR=$(pwd)
 
+cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
+source tasks/install-node.sh
+
+cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 source tasks/install-mapnik.sh
 
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
@@ -59,5 +63,3 @@ source tasks/download-pbf.sh
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 source tasks/import-data-and-install-style.sh
 
-cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
-source tasks/install-node.sh

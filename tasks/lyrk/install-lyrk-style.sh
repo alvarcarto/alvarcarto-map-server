@@ -27,7 +27,7 @@ mkdir -p $IMPORT_CACHE_DIR
 echo -e "\n\nImporting entire planet data to Postgis.. This took 63h34m the last time ! \n\n"
 ./imposm3 import \
     -mapping $HOME/lyrk-mapstyle-master/imposm/mapping.json \
-    -read $ALVAR_MAP_SERVER_DATA_DIR/planet-latest.osm.pbf \
+    -read $ALVAR_MAP_SERVER_DATA_DIR/import-data.osm.pbf \
     -write -connection postgis://osm:osm@localhost/osm \
     -optimize -deployproduction \
     -cachedir $IMPORT_CACHE_DIR

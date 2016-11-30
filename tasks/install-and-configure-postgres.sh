@@ -20,7 +20,7 @@ sudo /etc/init.d/postgresql stop
 
 # Copy existing postgres data to the new location and create a symlink
 # from the default location to the new one
-sudo rsync -avr --ignore-errors $POSTGRES_DEFAULT_DATA_DIRECTORY $NEW_POSTGRES_DATA_DIRECTORY
+sudo cp -r $POSTGRES_DEFAULT_DATA_DIRECTORY $NEW_POSTGRES_DATA_DIRECTORY
 sudo chown -R postgres:postgres $NEW_POSTGRES_DATA_DIRECTORY
 sudo chmod 700 $NEW_POSTGRES_DATA_DIRECTORY
 sudo rm -rf $POSTGRES_DEFAULT_DATA_DIRECTORY
@@ -29,6 +29,10 @@ sudo ln -s $NEW_POSTGRES_DATA_DIRECTORY $POSTGRES_DEFAULT_DATA_DIRECTORY
 sudo cp confs/postgresql.conf /etc/postgresql/9.5/main/postgresql.conf
 
 sudo /etc/init.d/postgresql start
+
+# In few cases postgres hasn't
+echo "Waiting for postgres to start up .. "
+sleep 5
 
 # Setup osm database
 sudo -u postgres psql -c "CREATE DATABASE osm;"
