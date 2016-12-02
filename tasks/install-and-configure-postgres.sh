@@ -37,5 +37,6 @@ sleep 5
 # Setup osm database
 sudo -u postgres psql -c "CREATE DATABASE osm;"
 sudo -u postgres psql -d osm -c "CREATE EXTENSION postgis;"
+sudo -u postgres psql -d osm -c "CREATE EXTENSION hstore;"
 sudo -u postgres psql -c "CREATE USER osm WITH PASSWORD 'osm';"
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE osm to osm;"

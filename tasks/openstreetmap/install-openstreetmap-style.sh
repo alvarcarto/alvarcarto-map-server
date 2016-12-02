@@ -21,7 +21,7 @@ cd openstreetmap-carto
 export PGPASSWORD=osm
 osm2pgsql -U osm -d osm -H localhost -P 5432 --create --slim \
   --flat-nodes $ALVAR_MAP_SERVER_DATA_DIR/osm2pgsql_flat_nodes.bin \
-  --cache 14000 --number-processes 8 --hstore \
+  --cache 14000 --number-processes 4 --hstore \
   --style openstreetmap-carto.style --multi-geometry \
   $ALVAR_MAP_SERVER_DATA_DIR/import-data.osm.pbf
 

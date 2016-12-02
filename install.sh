@@ -21,7 +21,7 @@ set -e
 # /mnt/volume1 should exist, but /mnt/volume1/alvar shouldn't. This script
 # creates that directory.
 # Path MUST NOT contain a trailing slash
-export ALVAR_MAP_SERVER_DATA_DIR=/mnt/volume1/alvar
+export ALVAR_MAP_SERVER_DATA_DIR=/home/alvar/data
 
 # Available themes: "lyrk", "openstreetmap"
 export MAPNIK_STYLE=openstreetmap
@@ -44,7 +44,7 @@ sudo mkdir -p $ALVAR_MAP_SERVER_DATA_DIR
 sudo chown $(whoami):$(whoami) $ALVAR_MAP_SERVER_DATA_DIR
 
 sudo apt-get update
-sudo apt-get upgrade
+sudo apt-get upgrade -y
 
 export ALVAR_MAP_SERVER_REPOSITORY_DIR=$(pwd)
 
