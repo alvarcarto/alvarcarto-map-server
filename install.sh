@@ -23,8 +23,8 @@ set -e
 # Path MUST NOT contain a trailing slash
 export ALVAR_MAP_SERVER_DATA_DIR=/home/alvar/data
 
-# Available themes: "lyrk", "openstreetmap"
-export MAPNIK_STYLE=openstreetmap
+# Available themes: "lyrk", "openstreetmap", "osm-bright"
+export MAPNIK_STYLE=osm-bright
 
 if [ $(id -u) = 0 ]; then
     echo "This script must not be run as a root!"
