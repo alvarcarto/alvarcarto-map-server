@@ -18,6 +18,7 @@ git clone https://github.com/mapbox/osm-bright.git osm-bright
 cd osm-bright
 
 source $ALVAR_MAP_SERVER_REPOSITORY_DIR/tasks/osm-bright/download-osm-data.sh
+cd $HOME/osm-bright
 source $ALVAR_MAP_SERVER_REPOSITORY_DIR/tasks/osm-bright/download-fonts.sh
 
 export PGPASSWORD=osm
