@@ -45,6 +45,7 @@ sudo chown $(whoami):$(whoami) $ALVAR_MAP_SERVER_DATA_DIR
 
 sudo apt-get update
 sudo apt-get upgrade -y
+sudo apt-get install git -y
 
 export ALVAR_MAP_SERVER_REPOSITORY_DIR=$(pwd)
 
