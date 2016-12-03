@@ -17,6 +17,8 @@ sudo update-rc.d postgresql enable
 
 # Move data directory to bigger volume
 sudo /etc/init.d/postgresql stop
+echo "Waiting for postgres to stop .. "
+sleep 5
 
 # Copy existing postgres data to the new location and create a symlink
 # from the default location to the new one

@@ -73,6 +73,13 @@ sudo apt-get install -y screen
 tar xvvfz alvarcarto-map-server.tar.gz
 cd alvarcarto-map-server
 
+# Add:
+#    Defaults    timestamp_timeout=-1
+# to sudo configuration to extend the sudo timeout
+#
+# REMEMBER: remove the infinite timeout after install!
+sudo visudo
+
 screen -S install
 ./install.sh
 ```
