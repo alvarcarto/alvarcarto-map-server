@@ -99,7 +99,7 @@ sudo mkdir -p /etc/caddy
 sudo nano /etc/caddy/cert.pem
 
 # Add private key from 1password
-sudo nano /etc/caddy/cert.pem
+sudo nano /etc/caddy/key.pem
 
 sudo chown www-data:www-data /etc/caddy/cert.pem /etc/caddy/key.pem
 sudo chmod 644 /etc/caddy/cert.pem
