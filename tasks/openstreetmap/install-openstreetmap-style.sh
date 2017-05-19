@@ -19,12 +19,24 @@ git clone https://github.com/gravitystorm/openstreetmap-carto.git openstreetmap-
 cd openstreetmap-carto
 
 export PGPASSWORD=osm
-osm2pgsql -U osm -d osm -H localhost -P 5432 --create --slim \
-  --flat-nodes $ALVAR_MAP_SERVER_DATA_DIR/osm2pgsql_flat_nodes.bin \
-  --cache 24000 --number-processes 4 --hstore \
-  --disable-parallel-indexing \
-  --style openstreetmap-carto.style --multi-geometry \
-  $ALVAR_MAP_SERVER_DATA_DIR/import-data.osm.pbf
+
+if [ "$ALVAR_ENV" = "qa" ]; then
+    echo -e "Running qa osm2pgsql command .."
+    osm2pgsql -U osm -d osm -H localhost -P 5432 --create --slim \
+      --flat-nodes $ALVAR_MAP_SERVER_DATA_DIR/osm2pgsql_flat_nodes.bin \
+      --cache 4096 --number-processes 2 --hstore \
+      --disable-parallel-indexing \
+      --style openstreetmap-carto.style --multi-geometry \
+      $ALVAR_MAP_SERVER_DATA_DIR/import-data.osm.pbf
+else
+    echo -e "Running prod osm2pgsql command .."
+    osm2pgsql -U osm -d osm -H localhost -P 5432 --create --slim \
+      --flat-nodes $ALVAR_MAP_SERVER_DATA_DIR/osm2pgsql_flat_nodes.bin \
+      --cache 24000 --number-processes 4 --hstore \
+      --disable-parallel-indexing \
+      --style openstreetmap-carto.style --multi-geometry \
+      $ALVAR_MAP_SERVER_DATA_DIR/import-data.osm.pbf
+fi
 
 psql -f indexes.sql postgres://osm:osm@localhost:5432/osm
 ./scripts/get-shapefiles.py

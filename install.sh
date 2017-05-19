@@ -21,7 +21,10 @@ set -e
 # /mnt/volume1 should exist, but /mnt/volume1/alvar shouldn't. This script
 # creates that directory.
 # Path MUST NOT contain a trailing slash
+
+# If this is an install in DO, remember to change this to /mnt/volume1/alvar
 export ALVAR_MAP_SERVER_DATA_DIR=/home/alvar/data
+export ALVAR_ENV=prod
 
 # Available themes: "lyrk", "openstreetmap", "osm-bright"
 export MAPNIK_STYLE=openstreetmap
@@ -49,6 +52,9 @@ sudo apt-get install git -y
 
 export ALVAR_MAP_SERVER_REPOSITORY_DIR=$(pwd)
 
+echo -e "Creating $ALVAR_MAP_SERVER_DATA_DIR/mapnik-styles dir .. "
+mkdir -p $ALVAR_MAP_SERVER_DATA_DIR/mapnik-styles
+
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 source tasks/install-node.sh
 
@@ -63,4 +69,12 @@ source tasks/download-pbf.sh
 
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 source tasks/import-data-and-install-style.sh
+
+cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
+if [ "$ALVAR_ENV" = "qa" ]; then
+    echo -e "Copying qa postgres configuration for runtime .. "
+    sudo /etc/init.d/postgresql stop
+    sudo cp confs/postgresql.qa.conf /etc/postgresql/9.5/main/postgresql.conf
+    sudo /etc/init.d/postgresql start
+fi
 

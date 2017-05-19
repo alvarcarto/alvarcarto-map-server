@@ -6,7 +6,9 @@ Requirements:
 * At least 16GB RAM for the installation phase
 * 450GB disk space (tested: 350GB disk space was not enough)
 
-See [DigitalOcean install](#digitalocean-install) to complete example.
+The full planet import should be done in a dedicated OVH server.
+
+See [DigitalOcean install](#digitalocean-install) for QA install example.
 
 This package will:
 
@@ -79,7 +81,13 @@ cd alvarcarto-map-server
 #
 # REMEMBER: remove the infinite timeout after install!
 sudo visudo
+```
 
+If this is a QA install, change `ALVAR_ENV=qa` in install.sh.
+
+Then run:
+
+```
 screen -S install
 ./install.sh
 ```
@@ -91,11 +99,13 @@ Now press `Ctrl` + `a` + `d` and wait. With the DigitalOcean example machine,
 it takes around 70 hours. `imposm3` takes most of the time: 63h34m.
 
 
-## DigitalOcean Install
+If this is a QA install, remember to scale down DO droplet after install.
+
+## DigitalOcean Install (QA)
 
 Fire up a new Droplet and an SSD Volume:
 
-* First create an 1GB droplet with 450GB SSD Block storage attached
+* First create an 1GB droplet with 50GB SSD Block storage attached
 * Resize the droplet to 16GB Memory, 8 Core Processor, 160GB SSD Disk, 6TB Transfer ($160/mo)
 
 This allows changing the droplet size back to 1GB RAM when it's not used.
@@ -106,7 +116,7 @@ This allows changing the droplet size back to 1GB RAM when it's not used.
 4. Copy the instructions to an editor. Replace all `/mnt/volume-fra1-01` references with `/mnt/volume1`.
 5. Follow the instructions until you have /mnt/volume1 available in the Droplet.
 
-
+After following the software install steps, remember to scale down the droplet for runtime.
 
 ## Fonts
 

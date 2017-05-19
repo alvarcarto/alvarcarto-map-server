@@ -28,6 +28,7 @@ sudo chmod 700 $NEW_POSTGRES_DATA_DIRECTORY
 sudo rm -rf $POSTGRES_DEFAULT_DATA_DIRECTORY
 sudo ln -s $NEW_POSTGRES_DATA_DIRECTORY $POSTGRES_DEFAULT_DATA_DIRECTORY
 
+echo -e "Copying production postgres configuration .. "
 sudo cp confs/postgresql.conf /etc/postgresql/9.5/main/postgresql.conf
 
 sudo /etc/init.d/postgresql start
