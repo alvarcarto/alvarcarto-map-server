@@ -4,6 +4,7 @@ set -e
 set -x
 [ -z "$ALVAR_MAP_SERVER_DATA_DIR" ] && echo "ALVAR_MAP_SERVER_DATA_DIR environment variable is not set." && exit 1;
 
+echo -e "Installing openstreetmap style.. "
 echo -e "\nUsing osm2pgsql (openstreetmap-carto style) to import data ..\n"
 
 source $ALVAR_MAP_SERVER_REPOSITORY_DIR/tasks/openstreetmap/install-osm2pgsql.sh
@@ -17,6 +18,7 @@ mkdir -p $HOME/osm
 cd $HOME/osm
 git clone https://github.com/gravitystorm/openstreetmap-carto.git openstreetmap-carto
 cd openstreetmap-carto
+git checkout 9f8fbffc4b1d177cf3dc2c173f68323ed792efdd
 
 export PGPASSWORD=osm
 

@@ -1,0 +1,1186 @@
+ls
+cd ..
+rm -r tmp
+sudo apt-get install -y screen
+tar xvvfz alvarcarto-map-server.tar.gz
+cd alvarcarto-map-server
+# Add:
+#    Defaults    timestamp_timeout=-1
+# to sudo configuration to extend the sudo timeout
+#
+# REMEMBER: remove the infinite timeout after install!
+sudo visudo
+screen -S install
+cd ..
+ls
+screen -
+screen -r
+df -h
+top
+ls
+screen -r
+df -h
+top
+screen -r
+df -h
+screen -r
+ls df -h
+df -h
+ls
+du -sh tilelive-server/
+cd tilelive-server/
+ls
+ls -lah
+cat tessera.json
+ls
+cd ..
+ls
+screen -r
+top
+ls
+screen -r
+top
+sudo su postgres
+sudo apt-get install pg-activity
+sudo visudo
+sudo su postgres
+ls
+screen -r
+ls
+top
+ls /usr/local/lib/osmesa/lib
+ls
+mv planet_2016-06-20_3d4cb571d3d0d828d230aac185281e97_z0-z14.mbtiles planet.mbtiles
+cd vector-render/
+cd ..
+npm i -g tileserver-gl-light
+tileserver-gl-light planet.mbtiles
+tileserver-gl-light planet.mbtiles -p 8000
+screen -S vector
+ls
+screen -S download
+ls
+cd vector-render/
+ls
+npm i
+nvm install 4
+npm i
+ls
+nano src/render.js
+node src/render.js
+nano src/render.js
+node src/render.js
+sudo apt-get install
+sudo apt-get install xvfb
+cd ..
+git clone https://github.com/mapbox/mapbox-gl-native.git
+cd mapbox-gl-native/
+ls
+sudo apt-get install xvfb xfonts-100dpi xfonts-75dpi   xfonts-scalable xfonts-cyrillic gdb clang-3.5 g++-4.9 gcc-4.9   libstdc++-4.9-dev libstdc++6 libllvm3.4   libllvm3.4 xutils-dev libxxf86vm-dev   x11proto-xf86vidmode-dev mesa-utils   -y
+sudo apt-cache search libllvm3.4
+sudo apt-cache search libllvm
+sudo apt-get install xvfb xfonts-100dpi xfonts-75dpi   xfonts-scalable xfonts-cyrillic gdb clang-3.5 g++-4.9 gcc-4.9   libstdc++-4.9-dev libstdc++6 libllvm3.8   xutils-dev libxxf86vm-dev   x11proto-xf86vidmode-dev mesa-utils   -y
+${CXX} --version
+CXX=clang++-3.5
+CC=clang-3.5
+${CXX} --version
+export PATH="`pwd`/.mason:${PATH}" MASON_DIR="`pwd`/.mason"
+echo $PATH
+
+sudo /etc/init.d/xvfb start
+sudo service xvfb
+sudo apt-get install xvfb
+cd ..
+ls
+cd vector-render/
+ls
+cd tools/xvfb-init.sh
+nano tools/xvfb-init.sh
+chmod +x tools/xvfb-init.sh
+ls
+sudo cp ./tools/xfvb-init.sh /etc/init.d/xvfb
+cd ..
+cd  vector-render/
+ls
+cd tools/
+ls
+cd ..
+sudo cp ./tools/xvfb-init.sh /etc/init.d/xvfb
+ls -lah /etc/init.d
+sudo update-rc.d xvfb defaults
+sudo /etc/init.d/xvfb start
+export DISPLAY=:1
+sudo sh -c "echo 'DISPLAY=\":1\"' >> /etc/environment"
+sudo sh -c "echo 'export DISPLAY=\":1\"' >> /etc/environment"
+cd $HOME
+cd mapbox-gl-native
+git submodule update --init .mason
+mason install mesa 10.4.3
+export LD_LIBRARY_PATH="`mason prefix mesa 10.4.3`/lib:${LD_LIBRARY_PATH:-}"
+echo $LD_LIBRARY_PATH
+export PATH="`pwd`/.mason:${PATH}" MASON_DIR="`pwd`/.mason"
+make linux
+submodule initgit
+git submodule init
+npm install --build-from-source
+cmake
+cmake --verion
+cmake -v
+curl
+pk-config
+pkg-config
+ls
+qmake
+which qmake
+echo /usr/bin/qmake
+cat /usr/bin/qmake
+which qmake
+qmake
+find . | grep /usr/lib/x86_64-linux-gnu/qt4/bin/qmake
+find . | grep '/usr/lib/x86_64-linux-gnu/qt4/bin/qmake'
+ls /usr/lib/x86_64-linux-gnu/qt4/bin/
+echo $LD_LIBRARY_PATH
+find . | grep 'QT_SELECT'
+qtconfig
+sudo apt-get install qt-sdk
+make linux
+sudo apt-get install libcurl
+apt-cache search curl
+apt-cache search libcurl
+sudo apt-get install libcurl4-openssl-dev
+make linux
+sudo apt-get install xvfb xfonts-100dpi xfonts-75dpi   xfonts-scalable xfonts-cyrillic gdb clang-3.8 g++-4.9 gcc-4.9   gcc-5 g++-5   libstdc++-4.9-dev libstdc++6 libstdc++-5-dev libllvm3.8   xutils-dev libxxf86vm-dev qt-sdk libcurl4-openssl-dev   x11proto-xf86vidmode-dev mesa-utils   libgles2-mesa-dev libgbm-dev   libxrandr-dev libxcursor-dev libxinerama-dev   -y
+WITH_OSMESA=1
+nvm use 4
+npm install --build-from-source
+cd ..
+cd mapbox-gl-native/
+ls
+make node
+make test-node
+cd ..
+ls
+cd vector-render/
+ls
+node src/render.js
+nano src/render.js
+node src/render.js
+cd ..
+ls
+cd mapbox-gl-native/
+ls
+sudo xvfb :1 -ac
+xvfb
+sudo Xvfb :1 -ac
+Xvfb
+make clean
+rm -r node_modules/
+CXX=g++-4.9 HEADLESS=osmesa npm install --build-from-source && LD_LIBRARY_PATH=/usr/local/lib/osmesa/lib npm test
+rm -r node_modules/
+make clean
+ls
+cd mason_packages/
+ls
+cd linux-x86_64/
+ls
+cd ..
+ls
+cd ..
+ls
+cd mapbox-gl-native/
+ls
+sudo apt-get install libgles2-mesa-dev
+locate mesa
+ls /usr/lib/x86_64-linux-gnu/mesa
+CXX=g++-4.9 HEADLESS=osmesa npm install --build-from-source
+node -v
+CXX=g++-5.0 HEADLESS=osmesa npm install --build-from-source
+g++-5
+CXX=g++-5 HEADLESS=osmesa npm install --build-from-source
+locate mesa
+LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/mesa npm test
+cd ..
+cd vector-render/
+ls
+rm image.png
+nano src/render.js
+node src/render.js
+nano src/render.js
+node src/render.js
+cd ..
+ls
+cd mapbox-gl-native/
+git checkout b928ac5bd407efb8e4fad1e47d843eb203014841
+make node
+gco master
+gs
+make node
+gco master
+git checkout master
+make node
+cd ..
+cd vector-render/
+node src/render.js
+cd ..
+cd mapbox-gl-native/
+ls
+cd ..
+cd mapbox-gl-native/
+ls
+git log
+git checkout 11281d15e9c36b82dda3361c518161fb11c13ef9
+make node
+cd ..
+cd vector-render/
+node src/render.js
+cd ..
+cd mapbox-gl-native/
+gs
+git log
+git checkout 16def0311745c9887f47f1ba9b2c3f28878b8ab5
+make node
+node ../vector-render/src/render.js
+cd ..
+cd vector-render/
+node src/render.js
+nano src/render.js
+node src/render.js
+nano src/render.js
+time node src/render.js
+nano src/render.js
+time node src/render.js
+nano src/render.js
+time node src/render.js
+nano src/render.js
+time node src/render.js
+nano src/render.js
+time node src/render.js
+nano src/render.js
+time node src/render.js
+nano src/render.js
+time node src/render.js
+nano src/render.js
+time node src/render.js
+ls
+cat /etc/init.d/xvfb
+nano src/render.js
+time node src/render.js
+curl -O https://osm2vectortiles-downloads.os.zhdk.cloud.switch.ch/v2.0/planet_2016-06-20_3d4cb571d3d0d828d230aac185281e97_z0-z14.mbtiles
+ls
+screen -r
+screen -r vector
+ls
+screen -r down
+screen -r install
+cd vector-render/
+ls
+cd ..
+rm -r vector-render/
+rm -rf vector-render/
+cd vector-render/
+ls
+npm i
+npm start
+nano package.json
+npm i
+node src/server.js
+nvm use 4
+rm -r node_modules/
+npm i
+node src/server.js
+npm i --save lodash
+node src/server.js
+npm i --save lwip
+node src/server.js
+screen -r
+screen -S api
+screen -r api
+node src/server.js
+nvm use 4
+node src/server.js
+ls
+cd src/
+ls
+node src/server.js
+cd ..
+node src/server.js
+ls
+node src/server.js
+nano src/server.js
+rm -r src/src/
+node src/server.js
+nano src/render.js
+nano src/server.js
+nano src/render.js
+node src/server.js
+nano src/server.js
+node src/server.js
+nano src/server.js
+node src/server.js
+ls
+screen -r api
+screen -r
+screen -S api
+screen -r
+screen -r ins
+ls
+screen -r
+screen -r insta
+ls
+screen -r in
+cat /etc/init.d/xvfb
+nik2img
+nik2img.py
+nik2img.py -b 24.887995 60.188287 24.992709 60.133794 osm/openstreetmap-carto/osm.xml -d 5000 7000 -f pdf image.pdf
+ls
+cd osm
+cd openstreetmap-carto/
+l
+nik2img.py -b 24.887995 60.188287 24.992709 60.133794 osm/openstreetmap-carto/osm.xml -d 5000 7000 -f pdf image.pdf
+nik2img.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml -d 5000 7000 -f pdf image.pdf
+nik2img.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml -d 5000 7000 -f pdf ~/image.pdf
+nik2img.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml -d 5000 7000 -f pdf ~/image.pdf --help
+nik2img.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml -d 5000 7000 -v -f pdf ~/image.pdf
+ls
+nano osm.xml
+nik2img.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml -d 5000 7000 -v -f pdf ~/image.pdf
+ls
+cat osm.xml
+head osm.xml
+nano osm.xml
+nik2img.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml -d 5000 7000 -v -f pdf ~/image.pdf
+ls
+cat osm.xml
+nano osm.xml
+nik2img.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml -d 5000 7000 -v -f pdf ~/image.pdf
+nano osm.xml
+nik2img.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml -d 5000 7000 -v -f pdf ~/image.pdf
+ls
+nano osm.xml
+nik2img.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml -d 5000 7000 -v -f pdf ~/image.pdf
+ls
+nano osm.xml
+ls /home/alvar/osm/openstreetmap-carto/data/land-polygons-split-3857/land_polygons.shp
+nik2img.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml -d 5000 7000 -v -f pdf ~/image.pdf
+nano osm.xml
+nano bw.xml
+screen -S down
+screen -r down
+screen -r d
+ls
+ls -lah
+ls -lh
+npm i -g http-server
+http-server -p 9999 .
+screen -r d
+screen -S serv
+screen -r d
+screen -r
+screen -r se
+screen -r d
+ls
+ls
+cd data/
+ls
+cd ..
+ls
+screen -r
+screen -r down
+screen -r i
+screen -r vector
+ls
+nik2img.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml -d 5000 7000 -v -f png ~/image.png
+ls
+cd alvarcarto-map-server/
+ls
+cd ..
+ls
+cd osm
+ls
+cd openstreetmap-carto/
+ls
+nik2img.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml -d 5000 7000 -v -f png ~/image.png
+nik2img.py  osm.xml -d 5000 7000 -v -f png ~/image.png
+nik2img.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml -d 5000 7000 -v -f png ~/image.png
+ls
+ls data/
+ls data/simplified-land-polygons-complete-3857/simplified_land_polygons.shp
+ls data/land-polygons-split-3857/land_polygons.shp
+nik2img.py -h
+nik4
+nik4.py
+pip install nik4
+nik4
+nik4.py
+history | grep nik4.py
+nik4.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml --size-px 5000 7000 -v ~/image.png
+cd data/
+pwd
+cd ..
+nik4.py
+nik4.py -h
+nik4.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml --size-px 5000 7000 -v ~/image.png
+nik4.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml --size-px 500 700 -v ~/image.png
+ls
+cat bw.xml.save
+cat bw.xml.save.1
+head bw.xml.save.1
+head bw.xml.save.1 -n 1000
+grep bw.xml.save.1 'world'
+cat bw.xml.save.1 | grep 'world'
+cat bw.xml.save.1 | grep 'coast'
+cat osm.xml | grep 'coast'
+ls home/alvar/osm/openstreetmap-carto/data/land-polygons-split-3857/land_polygons.shp
+ls /home/alvar/osm/openstreetmap-carto/data/land-polygons-split-3857/land_polygons.shp
+cat /home/alvar/osm/openstreetmap-carto/data/land-polygons-split-3857/land_polygons.shp
+nik4.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml --size-px 500 700 -v ~/image.png
+mapnik
+ls
+nik4.py -b 24.887995 60.188287 24.992709 60.133794 osm-orig.xml --size-px 500 700 -v ~/image.png
+cd ..
+ls
+git clone git@github.com:gravitystorm/openstreetmap-carto.git openstreetmap-carto-original
+git clone https://github.com/gravitystorm/openstreetmap-carto.git openstreetmap-carto-original
+cd openstreetmap-carto-original/
+ls
+cp ../openstreetmap-carto/osm-orig.xml .
+cd ..
+rm -fr openstreetmap-carto-original/
+cd openstreetmap-carto/
+ls
+gs
+git status
+git pull
+nik4.py -b 24.887995 60.188287 24.992709 60.133794 osm-orig.xml --size-px 500 700 -v ~/image.png
+ls
+nik4.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml --size-px 500 700 -v ~/image.png
+which nik4.py
+cd ..
+ls
+cat .bashrc
+cp .bashrc .bash_profile
+cd osm/openstreetmap-carto/
+nik4.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml --size-px 500 700 -v ~/image.png
+cd ..
+screen -S serve-map
+cd osm/openstreetmap-carto/
+
+nik4.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml --size-px 500 700 -v ~/image.png
+nik4.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml --size-px 1000 1400 -v ~/image.png
+nik4.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml --size-px 500 700 -v ~/image.png
+nik4.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml --size-px 1000 1400 -v ~/image.png
+screen -r
+screen -r api
+screen -r install
+nik4.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml --size-px 1000 1400 -v ~/image.png
+screen -r install
+ls
+cd osm/openstreetmap-carto/
+ls
+nik4.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml --size-px 1000 1400 -v ~/image.png
+nik4
+pip install nik4
+nik4.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml --size-px 1000 1400 -v ~/image.png
+nik4
+which nik4
+ls
+workon
+pip
+nik2img.py
+nik4.py
+nik4.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml --size-px 1000 1400 -v ~/image.png
+nik2img.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml -d 5000 7000 -v -f png ~/image.png
+cd osm/openstreetmap-carto/
+ls
+nik2img.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml -d 1000 1400 -v -f png ~/image.png
+nik2img.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml -d 1000 1400 -z 13 -v -f png ~/image.png
+nik2img.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml -d 1000 1400 -z 10 -v -f png ~/image.png
+nik2img.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml -d 1000 1400 -z 4 -v -f png ~/image.png
+nik2img.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml -d 1000 1400 -z 8 -v -f png ~/image.png
+nik2img.py -b 24.9349 60.1554 24.9510 60.1492 osm.xml -d 1000 1400 -v -f png ~/image.png
+ls
+cd osm/openstreetmap-carto/
+nik2img.py -b 24.9349 60.1554 24.9510 60.1492 osm.xml -d 1000 1400 -v -f png ~/image.png
+gs
+nik2img.py -b 24.9349 60.1554 24.9510 60.1492 osm.xml -d 1000 1400 -v -f png ~/image.png
+ls
+cd data/
+ls
+cd ..
+ls
+sudo pip install nik4
+mv ~/.bash_profile ~/.backup_bash_profile
+cd osm/openstreetmap-carto/
+nik4
+nik4.py
+nik2img.py -b 24.9349 60.1554 24.9510 60.1492 osm.xml -d 1000 1400 -v -f png ~/image.png
+nik4
+nik4.py
+cd osm/openstreetmap-carto/
+nik4.py -b 24.887995 60.188287 24.992709 60.133794 osm.xml --size-px 1000 1400 -v ~/image.png
+ls
+nik4.py -b 24.887995 60.188287 24.992709 60.133794 osm-orig.xml --size-px 1000 1400 -v ~/image.png
+cd ..
+ls
+cd ..
+ls
+cd alvarcarto-map-server/
+ls
+cd ..
+ls
+history | grep nik2img
+ls
+tar cvvf tilestrata-server.tar tilestrata-server/
+tar cvvzf tilestrata-server.tar.gz tilestrata-server/
+ls -lah
+screen -r install
+history | grep top
+history | grep op
+history | grep pg
+pg_activity
+sudo su postgres
+screen -r install
+screen -r i
+screen -r in
+screen -r install
+screen -rd i
+ls
+screen -r install
+ls
+screen -r install
+ls
+git clone git@github.com:kimmobrunfeldt/alvarcarto-cartocss-bw.git
+ls
+git clone https://b87a485f25d9ea03b77f46deb9348eb541020c13@github.com/kimmobrunfeldt/alvarcarto-cartocss-bw.git
+rm -r alvarcarto-cartocss-bw/
+rm -fr alvarcarto-cartocss-bw/
+git clone https://b87a485f25d9ea03b77f46deb9348eb541020c13@github.com/kimmobrunfeldt/alvarcarto-cartocss-bw.git
+git clone https://b87a485f25d9ea03b7@github.com/kimmobrunfeldt/alvarcarto-cartocss-bw.git
+git clone https://alvarcarto:b87a485f25d9ea03b77f46deb9348eb541020c13@github.com/kimmobrunfeldt/alvarcarto-cartocss-bw.git
+git clone https://github.com/kimmobrunfeldt/alvarcarto-cartocss-bw.git
+git clone https://alvarcarto:b87a485f25d9ea03b77f46deb9348eb541020c13@github.com/kimmobrunfeldt/alvarcarto-cartocss-bw.git
+cd alvarcarto-cartocss-bw/
+ls
+git pull
+carto
+carto project.mml > osm.xml
+cat osm.xml
+./zoom.sh
+cat zoom.sh
+nik2img.py -c 24.940023 60.188081 -z 10 -d 7583 9767 -f png osm.xml map.png
+nik2img.py
+nik2img.py -c 24.940023 60.188081 -z 10 -d 7583 9767 -f png osm.xml map.png
+nik4.py
+nik4.py -c 24.940023 60.188081 -z 10 --size-px 7583 9767  osm.xml map.png
+cat osm.xml
+carto project.mml > osm.xml
+nik4.py -c 24.940023 60.188081 -z 10 --size-px 7583 9767  osm.xml map.png
+ls
+./scripts/get-shapefiles.py
+nik4.py -c 24.940023 60.188081 -z 10 --size-px 7583 9767  osm.xml map.png
+http-server -p 20000
+http-server -p 20001
+cd ..
+nik4.py -c 24.940023 60.188081 -z 10 --size-px 200 280  osm.xml map.png
+cd alvarcarto-cartocss-bw/
+nik4.py -c 24.940023 60.188081 -z 10 --size-px 200 280  osm.xml map.png
+ls
+wget http://data.openstreetmapdata.com/coastlines-split-4326.zip
+mv coastlines-split-4326.zip data/
+cd data/
+wget http://data.openstreetmapdata.com/coastlines-split-3857.zip
+ls
+unzip coastlines-split-3857.zip
+cd coastlines-split-3857/
+shapeindex lines.shp
+ls
+cd ..
+ls
+rm coastlines-split-4326.zip
+cd ..
+ls
+cd data/
+wget http://data.openstreetmapdata.com/land-polygons-split-4326.zip
+ls
+wget http://data.openstreetmapdata.com/land-polygons-split-3857.zip
+cat ../scripts/get-shapefiles.py
+ls
+rm land-polygons-split-4326.zip
+ls -lah
+rm land-polygons-split-3857.zip.1
+ls
+cd ..
+ls
+ls data/land-polygons-split-3857
+ls
+cd alvarcarto-cartocss-bw/
+gs
+git status
+git pull
+carto project.mml > osm.xml
+nik4.py -c 24.940023 60.188081 -z 10 --size-px 200 280  osm.xml map.png
+screen -S test
+nik4.py -c 24.940023 60.188081 -z 10 --size-p 1000 1400  osm.xml map.png
+ls
+cd data/
+ls
+cd land-polygons-split-3857/
+ls
+cat land_polygons.prj
+nano land_polygons.prj
+cd ..
+nik4.py -c 24.940023 60.188081 -z 10 --size-p 1000 1400  osm.xml map.png
+nik4.py -c 24.940023 60.188081 -z 14 --size-p 1000 1400  osm.xml map.png
+pip uninstall nik2img
+sudo pip uninstall nik2img
+pip install mapnik
+pip install nik2img
+nik2img.py -c 24.940023 60.188081 -z 14 -d 1000 1400 -f png osm.xml map.png
+ls
+cd ..
+ls
+cd vector-render/
+ls
+cat package.json
+npm i mapnik
+npm install mapnik
+node -v
+nvm install 6
+nvm install 6.9.4
+npm install mapnik
+ls
+cd ..
+ls
+cd render
+ls
+rm -r node_modules/
+npm install mapnik
+ls
+subl .
+ls
+cat app.js
+ls
+nano app.js
+./app.js ../alvarcarto-cartocss-bw/osm.xml map.png
+node ./app.js ../alvarcarto-cartocss-bw/osm.xml map.png
+cp map.png ../alvarcarto-cartocss-bw/
+cat app.js
+node ./app.js ../alvarcarto-cartocss-bw/osm.xml ../alvarcarto-cartocss-bw/map.pdf
+nano app.js
+node ./app.js ../alvarcarto-cartocss-bw/osm.xml ../alvarcarto-cartocss-bw/map.pdf
+ls
+cd data/
+ls
+cd ..
+ls
+ls data
+cd ..
+ls
+cd render/
+ls
+cd render/
+ls
+cat render.js .
+nano render.js
+node render.js ../../alvarcarto-cartocss-bw/osm.xml ../../alvarcarto-cartocss-bw/map.png
+npm i
+node render.js ../../alvarcarto-cartocss-bw/osm.xml ../../alvarcarto-cartocss-bw/map.png
+ls
+cat render.js
+nik2img.py --help
+ls
+nano render.js
+node render.js ../../alvarcarto-cartocss-bw/osm.xml ../../alvarcarto-cartocss-bw/map.png
+nano render.js
+node render.js ../../alvarcarto-cartocss-bw/osm.xml ../../alvarcarto-cartocss-bw/map.png
+cat render.js
+nano render.js
+node render.js ../../alvarcarto-cartocss-bw/osm.xml ../../alvarcarto-cartocss-bw/map.png
+nano spherical.js
+nano render.js
+node render.js ../../alvarcarto-cartocss-bw/osm.xml ../../alvarcarto-cartocss-bw/map.png
+nano render.js
+node render.js ../../alvarcarto-cartocss-bw/osm.xml ../../alvarcarto-cartocss-bw/map.png
+nano render.js
+node render.js ../../alvarcarto-cartocss-bw/osm.xml ../../alvarcarto-cartocss-bw/map.png
+nano render.js
+node render.js ../../alvarcarto-cartocss-bw/osm.xml ../../alvarcarto-cartocss-bw/map.png
+cat ../../alvarcarto-cartocss-bw/osm.xml
+ls
+cat render.js
+nano render.js
+node render.js ../../alvarcarto-cartocss-bw/osm.xml ../../alvarcarto-cartocss-bw/map.png
+ls -lah
+ls
+cd ..
+ls
+cp render/render/render.js alvarcarto-cartocss-bw/
+cp render/render/spherical.js alvarcarto-cartocss-bw/
+cp render/render/package.json alvarcarto-cartocss-bw/
+cd alvarcarto-cartocss-bw/
+ls
+npm i
+node render.js osm.xml map.png
+ls
+nano render.js
+node render.js osm.xml map.png
+ls
+screen -r install
+cd render/
+nano test.js
+node test.js
+npm i
+nvm use 6.9.4
+npm i
+ls
+mv test.js render/
+cd render/
+ls
+node test.
+node test.js
+node test.js a b
+rm test.js
+nano test.js
+node test.
+node test.js
+node test.js a b
+rm test.js && nano test.js && node test.js
+rm test.js && nano test.js && node test.js a b
+node test.js ../../alvarcarto-cartocss-bw/osm.xml test.png
+screen -r
+screen -r test
+ls
+mapnik-config -v
+ls
+cd ..
+ls
+git clone https://github.com/mapnik/node-mapnik.git
+cd node-mapnik/
+nvm use 6.9.4
+npm install --build-from-source
+ls
+cd ..
+ls
+cd render/render/
+ls
+rm -r node_modules/
+npm i mapnik@3.x
+ls /home/alvar/render/render/node_modules/mapnik/lib/binding/node-v48-linux-x64/mapnik.node
+npm i
+rm test.js
+nano test.js
+node test.js ../../alvarcarto-cartocss-bw/osm.xml test.png
+nano test.js
+node test.js ../../alvarcarto-cartocss-bw/osm.xml test.png
+sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+sudo apt-get update -y
+sudo apt-get install -y libstdc++-5-dev
+cd ..
+cd node-mapnik/
+npm install --build-from-source
+gcc -v
+g++ --version
+g++ -v
+gcc -v
+ls
+make
+cat mak
+cat Makefile
+gcc
+gcc -v
+GCC=5.4.1 make
+GCC=5.4.1 GPP=5.4.1 make
+update-alternatives --query gcc
+update-alternatives --query g++
+which gcc
+which gcc -v
+CC="gcc-5.4" make
+CXX="gcc-5.4" CC="gcc-5.4" make
+gcc-5.4
+++c-5.4
+g++-5.4
+gcc -v
+g++-5
+CXX="g++-5" CC="g++-5" make
+GCC="g++-5" CC="g++-5" make
+nano Makefile
+g++-5 -Wc++14-extensions
+ls
+cd node-mapnik/
+make
+GCC="g++-5" CC="g++-5" make
+GXX="g++-5" GCC="g++-5" CC="g++-5" make
+CXX="g++-5" GCC="g++-5" CC="g++-5" make
+CXX="g++-5" CC="g++-5" make
+g++ -v
+make
+g++
+clang
+CXX="clang" CC="g++-5" make
+CXX="clang" npm install --build-from-source
+mapnik-config
+npm i
+cd ..
+ls
+cd render/
+ls
+cd render/
+ls
+node render.js osm.xml map.png
+nano render.js
+node render.js osm.xml map.png
+nano render.js
+nano spherical.js
+nano render.js
+node render.js osm.xml map.png
+node render.js ../../alvarcarto-cartocss-bw/osm.xml map.png
+cat render.js
+cd ..
+ls
+cd node-mapnik/
+ls
+make clean
+CXX="clang" npm install --build-from-source
+git submodule init
+mapnik-config -v
+ls
+git checkout v3.5.14
+CXX="clang" npm install --build-from-source
+mapnik-config -v
+CXX="clang" npm install --build-from-source
+npm install --build-from-source
+ls
+cd node-mapnik/
+make clean
+npm i
+cd ..
+ls
+cd render/render/
+ls
+cd ..
+cd node-mapnik/
+ls
+nvm use 4
+make clean
+npm i
+cd ..
+cd render/render/
+ls
+rm -r node_modules/
+npm i
+nppm i
+npm i lodash
+npm i
+node render.js ../../alvarcarto-cartocss-bw/osm.xml map.png
+ls
+cat map.png
+ls
+node render.js ../../alvarcarto-cartocss-bw/osm.xml map.jpg
+nano render.js
+rm render.js
+nano render.js
+node render.js ../../alvarcarto-cartocss-bw/osm.xml map.jpg
+nano render.js
+node render.js ../../alvarcarto-cartocss-bw/osm.xml map.jpg
+ls
+nano render.js
+node render.js ../../alvarcarto-cartocss-bw/osm.xml map.jpg
+node render.js ../../alvarcarto-cartocss-bw/osm.xml map.png
+ls
+nvm use t6
+nvm use 6
+node render.js ../../alvarcarto-cartocss-bw/osm.xml map.png
+rm -r node_modules/
+npm i lodash
+npm i
+nvm use 6.9.4
+rm -r node_modules/
+npm i
+cd ..
+cd node-mapnik/
+rm -r node_modules/
+npm i
+cd ..
+cd render/
+node render.js ../../alvarcarto-cartocss-bw/osm.xml map.png
+ls
+cd alvarcarto-render-service/
+API_KEY=secret PORT=8001 npm start
+nvm use 4
+API_KEY=secret PORT=8001 npm start
+history | grep github
+git clone https://alvarcarto:b87a485f25d9ea03b77f46deb9348eb541020c13@github.com/kimmobrunfeldt/alvarcarto-render-service.git
+cd alvarcarto-render-service/
+npm i
+ls
+node -v
+nvm use 4
+rm -r node_modules/
+npm i
+sudo apt-get install libcairo2-dev libjpeg8-dev libpango1.0-dev libgif-dev build-essential g++
+npm i
+npm start
+npm i --save winston
+npm start
+API_KEY=secret npm start
+gs
+ls
+git pull
+git stash
+git pull
+git checkout package.json
+git pull
+npm start
+API_KEY=secret npm start
+PORT=6000 API_KEY=secret npm start
+nano src/index.js
+npm start
+PORT=6000 API_KEY=secret npm start
+git pull
+npm start
+PORT=6000 API_KEY=secret npm start
+cd ..
+cd alvarcarto-cartocss-bw/
+ls
+cp osm.xml bw.xml
+cd ..
+cd alvarcarto-render-service/
+gs
+git pull
+PORT=6000 API_KEY=secret npm start
+nano src/config.js
+PORT=6000 API_KEY=secret npm start
+curl 'http://tiles.alvarcarto.com:6000/api/raster/render?tlLat=60.162664&tlLng=24.927606&brLat=60.145365&brLng=24.94812&size=30x40cm&style=bw&orientation=portrait&labelsEnabled=true&labelHeader=HELSINKI&labelSmallHeader=FINLAND&labelText=60.160°N / 24.942°E'
+curl 'http://localhost:6000/api/raster/render?tlLat=60.162664&tlLng=24.927606&brLat=60.145365&brLng=24.94812&size=30x40cm&style=bw&orientation=portrait&labelsEnabled=true&labelHeader=HELSINKI&labelSmallHeader=FINLAND&labelText=60.160°N / 24.942°E'
+curl 'http://localhost:6000/api/raster/render?tlLat=60.162664&tlLng=24.927606&brLat=60.145365&brLng=24.94812&size=30x40cm&style=bw&orientation=portrait&labelsEnabled=true&labelHeader=HELSINKI&labelSmallHeader=FINLAND&labelText=60.160'
+cat /home/alvar/alvarcarto-render-service/styles/mapnik/bw.xml
+curl 'http://localhost:6000/api/raster/render?tlLat=60.162664&tlLng=24.927606&brLat=60.145365&brLng=24.94812&size=30x40cm&style=bw&orientation=portrait&labelsEnabled=true&labelHeader=HELSINKI&labelSmallHeader=FINLAND&labelText=60.160'
+cd alvarcarto-cartocss-bw/
+ls
+screen -r install
+cd ..
+cd alvarcarto-render-service/
+ls
+rm map.png poster.svg
+ls
+rm map.png poster.svg
+cd && wget https://raw.githubusercontent.com/hotice/webupd8/master/install-google-fonts
+chmod +x install-google-fonts
+cat install-google-fonts
+./install-google-fonts
+screen -S poster-api
+ls
+screen -r
+screen -r test
+screen -r poster-api
+screen -r ins
+screen -r poster-api
+screen -r ins
+screen -r install
+http-server -p 20000
+ls -lah
+http-server . -p 20001
+cd ..
+cd render/render/
+http-server . -p 20001
+ls
+curl https://getcaddy.com | bash
+caddy
+ulimit -n 8192
+caddy
+nano Caddyfile
+nano Caddyfile
+caddy
+sudo caddy
+nano Caddyfile
+sudo caddy
+nano Caddyfile
+sudo caddy
+nano Caddyfile
+sudo caddy
+screen -r
+screen -r vector
+screen -r api
+screen -r serve-map
+screen -r test
+screen -r
+screen -r poster-api
+ls
+gs
+screen -r
+screen -r install
+screen -S caddy
+curl localhost:8080
+curl localhost:8080/alvar
+nano Caddyfile
+screen -r caddy
+ls
+screen -r
+screen -r install
+cd alvarcarto-render-service/
+ls
+API_TOKEN=secret PORT=8001 npm stsart
+API_TOKEN=secret PORT=8001 npm start
+API_KEY=secret PORT=8001 npm start
+nvm use 4
+API_KEY=secret PORT=8001 npm start
+ps aux | grep nde
+ps aux | grep node
+ps aux | grep 8001
+ls
+API_KEY=secret PORT=8001 npm start
+API_KEY=secret PORT=8002 npm start
+git pull
+gs
+git status
+cat src/config.js
+git checkout src/config
+git checkout src/config.js
+git pull
+API_KEY=secret PORT=8001 npm start
+gs
+git pull
+API_KEY=secret PORT=8001 npm start
+npm i
+API_KEY=secret PORT=8001 npm start
+ls
+screen -r
+screen -r install
+ls
+screen -r
+screen -r poster-api
+screen -r render-api
+screen -S render-api
+screen -S install
+screen -r install
+cd alvarcarto-render-service/
+git pul
+git pull
+screen -r
+screen -r render-api
+screen -r caddy
+screen -r render-api
+screen -r caddy
+cd ..
+ls
+cd ..
+ls
+cd
+ls
+screen -r install
+ls -lah /home/alvar/alvarcarto-cartocss-bw/
+ls -tlah /home/alvar/alvarcarto-cartocss-bw/
+screen -r install
+ls
+screen -r install
+screen -r
+screen -r api
+screen -r ins
+screen -r render-api
+screen -r cadd
+screen -r render-api
+screen -r install
+ls
+nano Caddyfile
+cat cert.pem
+nano Caddyfile
+screen -r caddy
+cat Caddyfile
+cat /var/log/access.log
+cat Caddyfile
+ls
+cd alvarcarto-render-service/
+ls
+ls posters/
+ls lib/
+cd ..
+nano Caddyfile
+screen -r caddy
+cd alvarcarto-render-service/
+gs
+git status
+git pull
+nano src/http/raster-render-http.js
+git status
+git checkout src/http/raster-render-http.js
+git pull
+gs
+ls
+nano Caddyfile
+screen -r caddy
+cat Caddyfile
+cat /var/log/access.log
+screen -r install
+screen -r
+screen -r api
+screen -r vector
+screen -r render-api
+ls
+history | grep nano
+sudo nano /etc/postgresql/9.5/main/postgresql.conf
+df -h
+pg_activity
+sudo su postgres
+cat Caddyfile
+screen -r
+screen -r render-api
+screen -r
+screen -r render-api
+ls
+screen -r render-api
+cd tilelive-server/
+ls
+cd ..
+ls
+screen -
+screen -r
+screen -r install
+screen -r caddy
+ls
+cd alvarcarto-cartocss-bw/
+ls
+cd ..
+ls
+screen -r
+screen -r install
+ls tilestrata-server
+ls
+ls alvarcarto-cartocss-bw/
+cd tilestrata-server/
+nano server.js
+ls
+screen -r
+screen -r render-api
+screen -r
+screen -r caddy
+df -h
+screen -r caddy
+ls
+sudo tail /var/log/access.log
+sudo tail /var/log/access.log -n 1000
+sudo tail /var/log/access.log -n 10000
+cat Caddyfile
+screen -r caddy
+screen -r render
+screen -r caddy
+tail -f /var/log/access.log
+screen -r caddy
+tail -f /var/log/access.log
+caddy -v
+caddy -version
+node
+ls
+cd alvarcarto-cartocss-bw/
+ls
+cd ..
+cd tilestrata-server/
+ls
+cat server.js
+cd ..
+ls
+cat Caddyfile
+ls
+tileserver-gl-light planet.mbtiles
+tileserver-gl-light planet.mbtiles -p 8000
+ls
+tileserver-gl-light planet.mbtiles -p 8000

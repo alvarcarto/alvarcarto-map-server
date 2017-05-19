@@ -83,13 +83,51 @@ cd alvarcarto-map-server
 sudo visudo
 ```
 
-If this is a QA install, change `ALVAR_ENV=qa` in install.sh.
+If this is a QA install, change:
+
+* `ALVAR_ENV=qa`
+* `ALVAR_MAP_SERVER_DATA_DIR=/mnt/volume1/alvar`
+
+in install.sh.
+
+Add public cert and private key for Caddy:
+
+```
+sudo mkdir -p /etc/caddy
+
+# Add cert from 1password
+sudo nano /etc/caddy/cert.pem
+
+# Add private key from 1password
+sudo nano /etc/caddy/cert.pem
+
+sudo chown www-data:www-data /etc/caddy/cert.pem /etc/caddy/key.pem
+sudo chmod 644 /etc/caddy/cert.pem
+sudo chmod 600 /etc/caddy/key.pem
+```
 
 Then run:
 
 ```
 screen -S install
 ./install.sh
+```
+
+Start render service:
+
+```
+screen -S render-api
+cd $HOME/alvarcarto-render-service
+API_KEY=secret PORT=8001 npm start
+```
+
+Start tile service:
+
+```
+screen -S tile-api
+cd $HOME/alvarcarto-tile-service
+nvm use 6
+node server.js $ALVAR_MAP_SERVER_DATA_DIR/tiles
 ```
 
 **Note:** sudo password is asked a couple of times. When the imposm3 import starts,
@@ -162,3 +200,29 @@ UPDATE pg_database SET datistemplate = TRUE WHERE datname = 'template_postgis';
 ```
 
 Or read more how to create template_postgis: https://wiki.archlinux.org/index.php/PostGIS
+
+
+## Investigate Caddy problems
+
+**HTTP Access logs:**
+
+`cat /var/log/access.log`
+
+**Caddy errors:**
+
+`cat /var/log/syslog` or `journalctl -u caddy`
+
+**Edit Caddyfile:**
+
+```
+sudo nano /etc/caddy/Caddyfile
+sudo systemctl restart caddy
+```
+
+**Edit /etc/systemd/system/caddy.service**
+
+```bash
+sudo nano /etc/systemd/system/caddy.service
+sudo systemctl daemon-reload
+sudo systemctl restart caddy
+```

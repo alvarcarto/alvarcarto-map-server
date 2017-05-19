@@ -11,4 +11,5 @@ export NVM_DIR="/home/alvar/.nvm"
 source ~/.bashrc
 
 # Latest node version defined in tilelive .travis.yml
-nvm install 5
+nvm install 5.12.0
+nvm use 5.12.0

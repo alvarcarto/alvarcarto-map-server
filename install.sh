@@ -71,6 +71,12 @@ cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 source tasks/import-data-and-install-style.sh
 
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
+source tasks/openstreetmap/install-openstreetmap-style.sh
+
+cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
+source tasks/install-alvar-repos.sh
+
+cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 if [ "$ALVAR_ENV" = "qa" ]; then
     echo -e "Copying qa postgres configuration for runtime .. "
     sudo /etc/init.d/postgresql stop
