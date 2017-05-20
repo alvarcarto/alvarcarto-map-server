@@ -68,9 +68,6 @@ cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 source tasks/download-pbf.sh
 
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
-source tasks/import-data-and-install-style.sh
-
-cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 source tasks/openstreetmap/install-openstreetmap-style.sh
 
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
