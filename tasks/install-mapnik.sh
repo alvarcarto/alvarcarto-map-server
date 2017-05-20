@@ -4,8 +4,9 @@ set -e
 set -x
 
 cd $HOME
-git clone https://github.com/mapnik/mapnik mapnik-3.x --depth 10
+git clone https://github.com/mapnik/mapnik mapnik-3.x
 cd mapnik-3.x
+git checkout v3.0.13
 git submodule update --init
 sudo apt-get install -y python zlib1g-dev clang make pkg-config
 source bootstrap.sh

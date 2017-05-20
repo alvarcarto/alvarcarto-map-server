@@ -71,6 +71,9 @@ cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 source tasks/openstreetmap/install-openstreetmap-style.sh
 
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
+source tasks/install-caddy.sh
+
+cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 source tasks/install-alvar-repos.sh
 
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR

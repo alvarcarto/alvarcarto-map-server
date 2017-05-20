@@ -1,0 +1,21 @@
+{
+  "apps" : [{
+    "name" : "tile",
+    "script" : "/home/alvar/alvarcarto-tile-service/server.js",
+    "env": {
+      "NODE_ENV": "production",
+      "CACHE_DIR": "/mnt/volume1/alvar/tiles",
+      "PORT": "8002"
+    },
+    "interpreter" : "node@6.9.4"
+ }, {
+    "name" : "render",
+    "script" : "/home/alvar/alvarcarto-render-service/dist/index.js",
+    "env": {
+      "NODE_ENV": "production",
+      "PORT": "8001",
+      "API_KEY": "t69VHWi8eY6N4dYcyL"
+    },
+    "interpreter" : "node@5.12.0"
+ }]
+}

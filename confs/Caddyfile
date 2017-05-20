@@ -13,14 +13,12 @@ http://0.0.0.0, https://0.0.0.0 {
   proxy  /render 127.0.0.1:8001 {
     transparent
     without /render
-    fail_timeout 120s
   }
   header /render Access-Control-Allow-Origin *
 
-  proxy  /tiles 127.0.0.1:8080 {
+  proxy  /tiles 127.0.0.1:8002 {
     transparent
     without /tiles
-    fail_timeout 120s
   }
   header /tiles Access-Control-Allow-Origin *
 }
