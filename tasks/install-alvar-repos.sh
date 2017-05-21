@@ -30,6 +30,7 @@ git clone https://alvarcarto:b87a485f25d9ea03b77f46deb9348eb541020c13@github.com
 cd alvarcarto-tile-service
 
 nvm use 6.9.4
+nvm alias default 6.9.4
 npm install
 
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
