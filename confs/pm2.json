@@ -14,6 +14,7 @@
     "env": {
       "NODE_ENV": "production",
       "PORT": "8001",
+      "STYLE_DIR": "/home/alvar/mapnik-styles",
       "API_KEY": "t69VHWi8eY6N4dYcyL"
     },
     "interpreter" : "node@5.12.0"
