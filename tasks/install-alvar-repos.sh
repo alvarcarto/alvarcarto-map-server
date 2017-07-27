@@ -31,6 +31,7 @@ cd alvarcarto-tile-service
 
 nvm use 6.9.4
 nvm alias default 6.9.4
+echo "nvm use 6.9.4" >> ~/.bashrc
 npm install
 
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR

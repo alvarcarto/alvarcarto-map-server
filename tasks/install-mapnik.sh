@@ -8,7 +8,7 @@ git clone https://github.com/mapnik/mapnik mapnik-3.x
 cd mapnik-3.x
 git checkout v3.0.13
 git submodule update --init
-sudo apt-get install -y python zlib1g-dev clang make pkg-config
+sudo apt-get install -y python zlib1g-dev clang make pkg-config protobuf-compiler
 source bootstrap.sh
 ./configure CUSTOM_CXXFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0"
 JOBS=8 make

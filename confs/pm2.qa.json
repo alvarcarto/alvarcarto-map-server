@@ -4,6 +4,8 @@
     "script" : "/home/alvar/alvarcarto-tile-service/server.js",
     "env": {
       "NODE_ENV": "production",
+      "DISABLE_CACHE": "true",
+      "STYLE_DIR": "/home/alvar/mapnik-styles",
       "CACHE_DIR": "/mnt/volume1/alvar/tiles",
       "PORT": "8002"
     },
@@ -15,8 +17,10 @@
       "NODE_ENV": "production",
       "PORT": "8001",
       "STYLE_DIR": "/home/alvar/mapnik-styles",
-      "API_KEY": "secret"
+      "API_KEY": "secret",
+      "FONT_DIR": "/usr/share/fonts/truetype/google-fonts"
     },
-    "interpreter" : "node@5.12.0"
+    "interpreter" : "node@6.9.4",
+    "node_args": "--max_old_space_size=4096"
  }]
 }
