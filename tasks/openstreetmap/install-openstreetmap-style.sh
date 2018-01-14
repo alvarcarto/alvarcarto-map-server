@@ -34,7 +34,7 @@ else
     echo -e "Running prod osm2pgsql command .."
     osm2pgsql -U osm -d osm -H localhost -P 5432 --create --slim \
       --flat-nodes $ALVAR_MAP_SERVER_DATA_DIR/osm2pgsql_flat_nodes.bin \
-      --cache 24000 --number-processes 4 --hstore \
+      --cache 16000 --number-processes 4 --hstore \
       --disable-parallel-indexing \
       --style openstreetmap-carto.style --multi-geometry \
       $ALVAR_MAP_SERVER_DATA_DIR/import-data.osm.pbf
