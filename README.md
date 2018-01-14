@@ -26,7 +26,8 @@ This package will:
     * `$ALVAR_MAP_SERVER_DATA_DIR/ne_110m_admin_0_countries/ne_110m_admin_0_countries.shp`
 
     Where `$ALVAR_MAP_SERVER_DATA_DIR` is the directory specified in [install.sh](install.sh)
-    variables. The default is `/mnt/volume1/alvar`.
+    variables. The default is `/home/alvar/data`.
+    Note that changing this may require to change this path in render/tile service code.
 * Simplify downloaded .shp files using `shapeindex`.
 * Import latest OSM data to Postgis server using [imposm3](https://github.com/omniscale/imposm3)
 
@@ -71,7 +72,7 @@ space. The default data directory is `/mnt/volume1/alvar`.**
 In the remote server, run:
 
 ```
-sudo apt-get install -y screen
+sudo apt-get install -y screen nano
 tar xvvfz alvarcarto-map-server.tar.gz
 cd alvarcarto-map-server
 
@@ -80,7 +81,14 @@ cd alvarcarto-map-server
 # to sudo configuration to extend the sudo timeout
 #
 # REMEMBER: remove the infinite timeout after install!
-sudo visudo
+EDITOR=nano sudo visudo
+```
+
+Also disallow root SSH login:
+
+```
+sudo nano /etc/ssh/sshd_config
+# And set PermitRootLogin no
 ```
 
 If this is a QA install, change:
@@ -113,29 +121,13 @@ screen -S install
 ./install.sh
 ```
 
-Start render service:
+**TODO: add instructions how to get node processes up**
 
-```
-screen -S render-api
-cd $HOME/alvarcarto-render-service
-API_KEY=secret PORT=8001 npm start
-```
-
-Start tile service:
-
-```
-screen -S tile-api
-cd $HOME/alvarcarto-tile-service
-nvm use 6
-node server.js $ALVAR_MAP_SERVER_DATA_DIR/tiles
-```
-
-**Note:** sudo password is asked a couple of times. When the imposm3 import starts,
+**Note:** sudo password is asked a couple of times. When the osm2psql import starts,
 you'll know nothing is prompted at least for the next 15 hours.
 
 Now press `Ctrl` + `a` + `d` and wait. With the DigitalOcean example machine,
-it takes around 70 hours. `imposm3` takes most of the time: 63h34m.
-
+it takes around 70 hours. `osm2psql` takes most of the time: 63h34m.
 
 If this is a QA install, remember to scale down DO droplet after install.
 
@@ -157,6 +149,8 @@ This allows changing the droplet size back to 1GB RAM when it's not used.
 After following the software install steps, remember to scale down the droplet for runtime.
 
 ## Fonts
+
+**TODO: is this old info?**
 
 Required:
 
