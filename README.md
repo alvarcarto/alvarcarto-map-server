@@ -220,3 +220,14 @@ sudo nano /etc/systemd/system/caddy.service
 sudo systemctl daemon-reload
 sudo systemctl restart caddy
 ```
+
+
+## Local install on Macbook
+
+```
+osm2pgsql -U osm -d osm -H localhost -P 5432 --create --slim \
+  --flat-nodes ~/code/alvarcarto/osm2pgsql_flat_nodes.bin \
+  --cache 14000 --number-processes 8 --hstore \
+  --style openstreetmap-carto.style --multi-geometry \
+  ../finland-latest.osm.pbf
+```
