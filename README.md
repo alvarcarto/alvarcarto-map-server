@@ -3,7 +3,7 @@
 Requirements:
 
 * Fresh Ubuntu 16.04 installation
-* At least 16GB RAM for the installation phase
+* At least 16GB RAM for the installation phase. 32GB minimum is recommended for production.
 * 450GB disk space (tested: 350GB disk space was not enough)
 
 The full planet import should be done in a dedicated OVH server.
@@ -16,7 +16,7 @@ This package will:
 * Install Postgres 9.5 with Postgis extension
 * Install Mapnik & OSM data related tools
 * Download [latest planet OSM data](http://planet.openstreetmap.org/)
-* Download necessary shapefiles required by [lyrk-mapstyle](https://github.com/lyrk/lyrk-mapstyle/) and our themes
+* Download necessary shapefiles required by [openstreetmap-carto](https://github.com/gravitystorm/openstreetmap-carto) and our themes
 
     All Mapnik stylesheets should be modified to reference to following files:
 
@@ -28,8 +28,9 @@ This package will:
     Where `$ALVAR_MAP_SERVER_DATA_DIR` is the directory specified in [install.sh](install.sh)
     variables. The default is `/home/alvar/data`.
     Note that changing this may require to change this path in render/tile service code.
+* Install Google Fonts
 * Simplify downloaded .shp files using `shapeindex`.
-* Import latest OSM data to Postgis server using [imposm3](https://github.com/omniscale/imposm3)
+* Import latest OSM data to Postgis server using [osm2psql](github.com/openstreetmap/osm2pgsql). [imposm3](https://github.com/omniscale/imposm3) was an alternative but openstreetmap style worked better.
 
 ## Usage
 
