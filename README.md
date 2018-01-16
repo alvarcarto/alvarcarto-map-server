@@ -32,7 +32,7 @@ This package will:
 * Simplify downloaded .shp files using `shapeindex`.
 * Import latest OSM data to Postgis server using [osm2psql](github.com/openstreetmap/osm2pgsql). [imposm3](https://github.com/omniscale/imposm3) was an alternative but openstreetmap style worked better.
 
-## Usage
+## Installing
 
 As root in the remote server, create `alvar` user:
 
@@ -122,7 +122,8 @@ screen -S install
 ./install.sh
 ```
 
-**TODO: add instructions how to get node processes up**
+Now the server should have all the components installed and node processes
+running. **Go through [Testing installation](#testing-installation).**
 
 **Note:** sudo password is asked a couple of times. When the osm2psql import starts,
 you'll know nothing is prompted at least for the next 15 hours.
@@ -131,6 +132,15 @@ Now press `Ctrl` + `a` + `d` and wait. With the DigitalOcean example machine,
 it takes around 70 hours. `osm2psql` takes most of the time: 63h34m.
 
 If this is a QA install, remember to scale down DO droplet after install.
+
+## Testing installation
+
+What you should test after the install:
+
+* Run `sudo reboot` and see if node processes are automatically spawned on boot
+* Verify that CloudFlare origin certificates have been correctly installed
+* Run [snapshot tool](https://github.com/kimmobrunfeldt/alvarcarto-render-snapshot) to verify that posters are still correctly generated
+
 
 ## DigitalOcean Install (QA)
 
@@ -149,24 +159,8 @@ This allows changing the droplet size back to 1GB RAM when it's not used.
 
 After following the software install steps, remember to scale down the droplet for runtime.
 
-## Fonts
-
-**TODO: is this old info?**
-
-Required:
-
-```
-/mnt/volume1/alvar/fonts/dejavu-fonts-ttf-2.37/DejaVuSans-Bold.ttf
-/mnt/volume1/alvar/fonts/dejavu-fonts-ttf-2.37/DejaVuSans.ttf
-/mnt/volume1/alvar/fonts/unifont/unifont-9.0.02.ttf
-/mnt/volume1/alvar/fonts/opensans/OpenSans-Bold.ttf
-/mnt/volume1/alvar/fonts/opensans/OpenSans-SemiboldItalic.ttf
-/mnt/volume1/alvar/fonts/opensans/OpenSans-Semibold.ttf
-```
-
 
 ## Known errors
-
 
 ### Mapnik `make test` fails
 
@@ -195,6 +189,23 @@ UPDATE pg_database SET datistemplate = TRUE WHERE datname = 'template_postgis';
 ```
 
 Or read more how to create template_postgis: https://wiki.archlinux.org/index.php/PostGIS
+
+
+### Network is very slow
+
+https://askubuntu.com/questions/574569/apt-get-stuck-at-0-connecting-to-us-archive-ubuntu-com
+
+```
+sudo nano /etc/gai.conf
+```
+
+and change line ~54 to uncomment the following:
+
+```
+precedence ::ffff:0:0/96  100
+```
+
+**Note: NOT THIS LINE: `precedence ::ffff:0:0/96  10`**
 
 
 ## Investigate Caddy problems
