@@ -4,10 +4,10 @@ set -e
 set -x
 [ -z "$ALVAR_MAP_SERVER_DATA_DIR" ] && echo "ALVAR_MAP_SERVER_DATA_DIR environment variable is not set." && exit 1;
 
-wget https://github.com/mholt/caddy/releases/download/v0.10.2/caddy_v0.10.2_linux_amd64.tar.gz
-mkdir caddy_v0.10.2_linux_amd64
-cd caddy_v0.10.2_linux_amd64
-tar zxvvf ../caddy_v0.10.2_linux_amd64.tar.gz
+wget https://github.com/mholt/caddy/releases/download/v0.10.10/caddy_v0.10.10_linux_amd64.tar.gz
+mkdir caddy_v0.10.10_linux_amd64
+cd caddy_v0.10.10_linux_amd64
+tar zxvvf ../caddy_v0.10.10_linux_amd64.tar.gz
 
 # Following these instructions https://github.com/mholt/caddy/tree/master/dist/init/linux-systemd
 
