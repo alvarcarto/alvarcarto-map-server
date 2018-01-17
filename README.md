@@ -74,6 +74,9 @@ In the remote server, run:
 
 ```
 sudo apt-get install -y screen nano
+
+# Increase scrollback to 50k lines
+echo "defscrollback 50000" >> ~/.screenrc
 tar xvvfz alvarcarto-map-server.tar.gz
 cd alvarcarto-map-server
 
