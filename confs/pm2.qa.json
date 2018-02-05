@@ -18,7 +18,8 @@
       "PORT": "8001",
       "STYLE_DIR": "/home/alvar/mapnik-styles",
       "API_KEY": "secret",
-      "FONT_DIR": "/usr/share/fonts/truetype/google-fonts"
+      "FONT_DIR": "/usr/share/fonts/truetype/google-fonts",
+      "TILE_URL": "http://localhost:8002/{style}/{z}/{x}/{y}/tile.png"
     },
     "interpreter" : "node@6.9.4",
     "node_args": "--max_old_space_size=4096"
