@@ -150,12 +150,15 @@ What you should test after the install:
 npm i -g @alvarcarto/tilewarm
 
 curl -O https://raw.githubusercontent.com/alvarcarto/tilewarm/master/geojson/world.geojson
-tilewarm 'https://tile-api.alvarcarto.com/tiles/bw/{z}/{x}/{y}/tile.png' --input world.geojson -c 10 --zoom 1-8 --verbose
-tilewarm 'https://tile-api.alvarcarto.com/tiles/gray/{z}/{x}/{y}/tile.png' --input world.geojson -c 10 --zoom 1-8 --verbose
-tilewarm 'https://tile-api.alvarcarto.com/tiles/black/{z}/{x}/{y}/tile.png' --input world.geojson -c 10 --zoom 1-8 --verbose
-tilewarm 'https://tile-api.alvarcarto.com/tiles/copper/{z}/{x}/{y}/tile.png' --input world.geojson -c 10 --zoom 1-8 --verbose
-tilewarm 'https://tile-api.alvarcarto.com/tiles/petrol/{z}/{x}/{y}/tile.png' --input world.geojson -c 10 --zoom 1-8 --verbose
+tilewarm 'http://54.36.173.210:8002/bw/{z}/{x}/{y}/tile.png' --input world.geojson -c 10 --zoom 1-8 --verbose
+tilewarm 'http://54.36.173.210:8002/gray/{z}/{x}/{y}/tile.png' --input world.geojson -c 10 --zoom 1-8 --verbose
+tilewarm 'http://54.36.173.210:8002/black/{z}/{x}/{y}/tile.png' --input world.geojson -c 10 --zoom 1-8 --verbose
+tilewarm 'http://54.36.173.210:8002/copper/{z}/{x}/{y}/tile.png' --input world.geojson -c 10 --zoom 1-8 --verbose
+tilewarm 'http://54.36.173.210:8002/petrol/{z}/{x}/{y}/tile.png' --input world.geojson -c 10 --zoom 1-8 --verbose
 ```
+
+After that, go to tiles cache folder and run `find . -name '*' -size 0 -print0` to find
+possible tiles which are 0 bytes (incorrect render).
 
 
 ## DigitalOcean Install (QA)
