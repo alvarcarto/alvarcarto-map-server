@@ -43,41 +43,22 @@ adduser alvar sudo
 
 Installing map server is automated with [install.sh](install.sh).
 
-In your local computer, run:
-
-```
-export SERVER_USER=alvar
-export SERVER_IP=alvar-map
-
-mkdir tmp
-cd tmp
-git clone git@github.com:kimmobrunfeldt/alvarcarto-map-server.git alvarcarto-map-server
-
-rm -rf alvarcarto-map-server/.git
-tar cvvfz alvarcarto-map-server.tar.gz alvarcarto-map-server
-
-scp alvarcarto-map-server.tar.gz $SERVER_USER@$SERVER_IP:~
-
-cd ..
-rm -r tmp
-
-ssh $SERVER_USER@$SERVER_IP
-```
-where $SERVER_USER should be a sudo user in $SERVER_IP server.
-
 
 **Note! Configure install.sh variables to suit the installation environment.
 The variables define data directory which should have at least 450GB free disk
 space. The default data directory is `/mnt/volume1/alvar`.**
 
-In the remote server, run:
+Start a new ssh session with `ssh alvar@<ip>`. In the remote server, run:
 
 ```
-sudo apt-get install -y screen nano
+sudo apt-get install -y screen nano git
 
 # Increase scrollback to 50k lines
 echo "defscrollback 50000" >> ~/.screenrc
-tar xvvfz alvarcarto-map-server.tar.gz
+echo "deflog on" >> ~/.screenrc
+echo "logfile /home/alvar/screenlog.%n" >> ~/.screenrc
+
+git clone https://alvarcarto-integration:fab7f21687f2cea5dfb2971ea69821b5e5cb87a2@github.com/kimmobrunfeldt/alvarcarto-map-server.git
 cd alvarcarto-map-server
 
 # Add:
@@ -107,7 +88,7 @@ Add public cert and private key for Caddy:
 ```
 sudo mkdir -p /etc/caddy
 
-# Add cert from 1password
+# Add cert from 1password (*.alvarcarto.com and apex cert by CloudFlare)
 sudo nano /etc/caddy/cert.pem
 
 # Add private key from 1password
