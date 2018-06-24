@@ -74,6 +74,9 @@ Also disallow root SSH login:
 ```
 sudo nano /etc/ssh/sshd_config
 # And set PermitRootLogin no
+
+# Restart
+service ssh restart
 ```
 
 If this is a QA install, change:
