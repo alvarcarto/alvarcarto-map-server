@@ -28,6 +28,16 @@ mkdir -p $HOME/mapnik-styles
 cp -r dist/*.xml $HOME/mapnik-styles
 cp -r $HOME/osm/openstreetmap-carto/data $HOME/mapnik-styles
 
+
+cd $HOME
+git clone https://alvarcarto-integration:fab7f21687f2cea5dfb2971ea69821b5e5cb87a2@github.com/kimmobrunfeldt/alvarcarto-placement-service.git
+cd alvarcarto-placement-service
+sudo apt-get install -y imagemagick
+nvm install 10.8.0
+nvm use v10.8.0
+npm install
+
+
 cd $HOME
 mkdir -p $ALVAR_MAP_SERVER_DATA_DIR/tiles/
 git clone https://alvarcarto-integration:fab7f21687f2cea5dfb2971ea69821b5e5cb87a2@github.com/kimmobrunfeldt/alvarcarto-tile-service.git

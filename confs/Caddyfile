@@ -16,4 +16,10 @@ http://0.0.0.0, https://0.0.0.0 {
     without /tiles
   }
   header /tiles Access-Control-Allow-Origin *
+
+  proxy  /placement 127.0.0.1:8003 {
+    transparent
+    without /placement
+  }
+  header /placement Access-Control-Allow-Origin *
 }

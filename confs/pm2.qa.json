@@ -23,5 +23,18 @@
     },
     "interpreter" : "node@6.9.4",
     "node_args": "--max_old_space_size=4096"
+ }, {
+    "name" : "placement",
+    "script" : "/home/alvar/alvarcarto-placement-service/src/index.js",
+    "env": {
+      "NODE_ENV": "production",
+      "PORT": "8003",
+      "API_KEY": "secret",
+      "ALVARCARTO_RENDER_API_BASE_URL": "http://127.0.0.1:8001",
+      "ALVARCARTO_RENDER_API_KEY": "secret",
+      "LOG_LEVEL": "debug"
+    },
+    "interpreter" : "node@10.8.0",
+    "node_args": "--max_old_space_size=4096"
  }]
 }
