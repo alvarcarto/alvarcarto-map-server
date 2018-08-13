@@ -163,6 +163,54 @@ This allows changing the droplet size back to 1GB RAM when it's not used.
 After following the software install steps, remember to scale down the droplet for runtime.
 
 
+
+## Common tasks
+
+### Reload pm2 config
+
+```bash
+nvm use 6
+pm2 stop all
+pm2 delete all
+cd $HOME/alvarcarto-map-server
+pm2 start confs/pm2.json
+
+# Check that everything went allright
+pm2 logs --lines 1000
+
+# Then save the startup:
+sudo env PATH=$PATH:/home/alvar/.nvm/versions/node/v6.9.4/bin /home/alvar/.nvm/versions/node/v6.9.4/lib/node_modules/pm2/bin/pm2 startup systemd -u alvar --hp /home/alvar
+pm2 save
+
+```
+
+
+### Investigate Caddy problems
+
+**HTTP Access logs:**
+
+`cat /var/log/access.log`
+
+**Caddy errors:**
+
+`cat /var/log/syslog` or `journalctl -u caddy`
+
+**Edit Caddyfile:**
+
+```
+sudo nano /etc/caddy/Caddyfile
+sudo systemctl restart caddy
+```
+
+**Edit /etc/systemd/system/caddy.service**
+
+```bash
+sudo nano /etc/systemd/system/caddy.service
+sudo systemctl daemon-reload
+sudo systemctl restart caddy
+```
+
+
 ## Known errors
 
 ### Mapnik `make test` fails
@@ -210,31 +258,6 @@ precedence ::ffff:0:0/96  100
 
 **Note: NOT THIS LINE: `precedence ::ffff:0:0/96  10`**
 
-
-## Investigate Caddy problems
-
-**HTTP Access logs:**
-
-`cat /var/log/access.log`
-
-**Caddy errors:**
-
-`cat /var/log/syslog` or `journalctl -u caddy`
-
-**Edit Caddyfile:**
-
-```
-sudo nano /etc/caddy/Caddyfile
-sudo systemctl restart caddy
-```
-
-**Edit /etc/systemd/system/caddy.service**
-
-```bash
-sudo nano /etc/systemd/system/caddy.service
-sudo systemctl daemon-reload
-sudo systemctl restart caddy
-```
 
 
 ## Local install on Macbook
