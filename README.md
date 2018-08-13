@@ -193,7 +193,7 @@ pm2 save
 
 **Caddy errors:**
 
-`cat /var/log/syslog` or `journalctl -u caddy`
+`sudo cat /var/log/syslog` or `sudo journalctl -u caddy`
 
 **Edit Caddyfile:**
 

@@ -3,7 +3,7 @@ http://0.0.0.0, https://0.0.0.0 {
   tls /etc/caddy/cert.pem /etc/caddy/key.pem
 
   gzip
-  log /home/alvar/caddy-logs/access.log
+  log /var/log/access.log
 
   proxy  /render 127.0.0.1:8001 {
     transparent
