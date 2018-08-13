@@ -29,6 +29,7 @@
       "NODE_ENV": "production",
       "PORT": "8003",
       "API_KEY": "t69VHWi8eY6N4dYcyL,PERSONxMz4jp8tgACSKL7r",
+      "ASSETS_BASE_URL": "https://s3-eu-west-1.amazonaws.com/alvarcarto-placement-assets/images",
       "ALVARCARTO_RENDER_API_BASE_URL": "http://127.0.0.1:8001",
       "ALVARCARTO_RENDER_API_KEY": "PLACEMENTAPIduGfZC4tx2pUQXJ5",
       "LOG_LEVEL": "debug"
