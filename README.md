@@ -53,8 +53,8 @@ Start a new ssh session with `ssh alvar@<ip>`. In the remote server, run:
 ```
 sudo apt-get install -y screen nano git
 
-# Increase scrollback to 50k lines
-echo "defscrollback 50000" >> ~/.screenrc
+# Increase scrollback to 500k lines
+echo "defscrollback 500000" >> ~/.screenrc
 echo "deflog on" >> ~/.screenrc
 echo "logfile /home/alvar/screenlog.%n" >> ~/.screenrc
 
