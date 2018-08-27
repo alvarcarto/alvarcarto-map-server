@@ -14,6 +14,14 @@ sudo apt-get install -y osmctools
 # Temporarily allow overcommit setting to allow faster osm2pgsql imports
 sudo sysctl -w vm.overcommit_memory=1
 
+# Set CPU scaling governor to perf mode:
+# https://askubuntu.com/questions/20271/how-do-i-set-the-cpu-frequency-scaling-governor-for-all-cores-at-once
+function setgov () {
+  echo "$1" | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+}
+
+setgov performance
+
 mkdir -p $HOME/osm
 cd $HOME/osm
 git clone https://github.com/gravitystorm/openstreetmap-carto.git openstreetmap-carto
