@@ -74,9 +74,12 @@ Also disallow root SSH login:
 ```
 sudo nano /etc/ssh/sshd_config
 # And set PermitRootLogin no
+#
+# Also disable sftp server by commenting this line:
+# # Subsystem     sftp    /usr/lib/openssh/sftp-server
 
 # Restart
-service ssh restart
+sudo service ssh restart
 ```
 
 If this is a QA install, change:
@@ -107,6 +110,16 @@ Then run:
 ```
 screen -S install
 ./install.sh
+```
+
+Then finally comment the sudo setting we set before:
+
+```
+# Comment:
+#    Defaults    timestamp_timeout=-1
+# to sudo configuration to make sudo timeout back
+
+EDITOR=nano sudo visudo
 ```
 
 Now the server should have all the components installed and node processes
