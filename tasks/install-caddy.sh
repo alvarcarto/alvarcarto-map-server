@@ -33,6 +33,10 @@ sudo cp $ALVAR_MAP_SERVER_REPOSITORY_DIR/confs/Caddyfile /etc/caddy/
 sudo chown www-data:www-data /etc/caddy/Caddyfile
 sudo chmod 444 /etc/caddy/Caddyfile
 
+# Uncomment these settings to gain access to host at port 80
+sed -i 's/;CapabilityBoundingSet=CAP_NET_BIND_SERVICE/CapabilityBoundingSet=CAP_NET_BIND_SERVICE/g' init/linux-systemd/caddy.service
+sed -i 's/;AmbientCapabilities=CAP_NET_BIND_SERVICE/AmbientCapabilities=CAP_NET_BIND_SERVICE/g' init/linux-systemd/caddy.service
+sed -i 's/;NoNewPrivileges=true/NoNewPrivileges=true/g' init/linux-systemd/caddy.service
 sudo cp init/linux-systemd/caddy.service /etc/systemd/system/
 sudo chown root:root /etc/systemd/system/caddy.service
 sudo chmod 644 /etc/systemd/system/caddy.service

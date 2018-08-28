@@ -2,7 +2,7 @@
 
 # Requirements before running:
 #
-# * Fresh Ubuntu 16.04
+# * Fresh Ubuntu 18.04
 # * Run this script as a sudo user, NOT root
 # * $ALVAR_MAP_SERVER_DATA_DIR must have at least 450GB free disk space
 # *

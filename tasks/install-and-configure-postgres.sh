@@ -5,14 +5,14 @@ set -x
 [ -z "$ALVAR_MAP_SERVER_DATA_DIR" ] && echo "ALVAR_MAP_SERVER_DATA_DIR environment variable is not set." && exit 1;
 
 NEW_POSTGRES_DATA_DIRECTORY=$ALVAR_MAP_SERVER_DATA_DIR/pg-data
-POSTGRES_DEFAULT_DATA_DIRECTORY=/var/lib/postgresql/9.5/main
+POSTGRES_DEFAULT_DATA_DIRECTORY=/var/lib/postgresql/10/main
 
 if [ -d "$NEW_POSTGRES_DATA_DIRECTORY" ]; then
   echo "$NEW_POSTGRES_DATA_DIRECTORY already exists! Aborting.."
   exit 1
 fi
 
-sudo apt-get install -y postgresql-9.5 postgresql-9.5-postgis-2.2
+sudo apt-get install -y postgresql-10 postgresql-10-postgis-2.4
 sudo update-rc.d postgresql enable
 
 # Move data directory to bigger volume
@@ -29,7 +29,7 @@ sudo rm -rf $POSTGRES_DEFAULT_DATA_DIRECTORY
 sudo ln -s $NEW_POSTGRES_DATA_DIRECTORY $POSTGRES_DEFAULT_DATA_DIRECTORY
 
 echo -e "Copying production postgres configuration .. "
-sudo cp confs/postgresql.conf /etc/postgresql/9.5/main/postgresql.conf
+sudo cp confs/postgresql.conf /etc/postgresql/10/main/postgresql.conf
 
 sudo /etc/init.d/postgresql start
 

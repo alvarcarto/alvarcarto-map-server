@@ -2,7 +2,7 @@
 
 Requirements:
 
-* Fresh Ubuntu 16.04 installation
+* Fresh Ubuntu 18.04 installation
 * At least 16GB RAM for the installation phase. 32GB minimum is recommended for production.
 * 450GB disk space (tested: 350GB disk space was not enough)
 
@@ -13,7 +13,7 @@ See [DigitalOcean install](#digitalocean-install) for QA install example.
 This package will:
 
 * Install Mapnik and tile serving plugins
-* Install Postgres 9.5 with Postgis extension
+* Install Postgres 10 with Postgis extension
 * Install Mapnik & OSM data related tools
 * Download [latest planet OSM data](http://planet.openstreetmap.org/)
 * Download necessary shapefiles required by [openstreetmap-carto](https://github.com/gravitystorm/openstreetmap-carto) and our themes
