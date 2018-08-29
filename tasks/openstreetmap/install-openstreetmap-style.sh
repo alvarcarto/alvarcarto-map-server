@@ -49,7 +49,13 @@ else
 fi
 
 psql -f indexes.sql postgres://osm:osm@localhost:5432/osm
-./scripts/get-shapefiles.py
+
+# Get shapefiles. Retry if the downloading fails for some reason
+for i in {1..5}; do ./scripts/get-shapefiles.py && break || sleep 15; done
+
+# Remove quite large files which are not needed after import
+rm $ALVAR_MAP_SERVER_DATA_DIR/osm2pgsql_flat_nodes.bin
+rm $ALVAR_MAP_SERVER_DATA_DIR/import-data.osm.pbf
 
 source $ALVAR_MAP_SERVER_REPOSITORY_DIR/tasks/openstreetmap/download-fonts.sh
 
