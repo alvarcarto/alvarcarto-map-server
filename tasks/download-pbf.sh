@@ -18,4 +18,4 @@ fi
 # PBF_URL=http://download.geofabrik.de/europe/finland-latest.osm.pbf
 # PBF_URL=http://download.geofabrik.de/europe-latest.osm.pbf
 # PBF_URL=http://download.geofabrik.de/europe/spain-latest.osm.pbf
-wget "$PBF_URL" -O import-data.osm.pbf
+for i in {1..5}; do wget "$PBF_URL" -O import-data.osm.pbf && break || sleep 15; done
