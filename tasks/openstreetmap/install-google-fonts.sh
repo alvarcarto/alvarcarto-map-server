@@ -12,7 +12,7 @@ _wgeturl="https://github.com/google/fonts/archive/$_branch.tar.gz"
 _gf="google-fonts"
 
 # install wget
-sudo apt-get -y install wget
+sudo apt-get -y install wget fontconfig
 
 # make sure a file with the same name doesn't already exist
 rm -f $_gf.tar.gz
