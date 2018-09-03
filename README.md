@@ -152,6 +152,13 @@ tilewarm 'http://54.36.173.210:8002/gray/{z}/{x}/{y}/tile.png' --input world.geo
 tilewarm 'http://54.36.173.210:8002/black/{z}/{x}/{y}/tile.png' --input world.geojson -c 10 --zoom 1-8 --verbose
 tilewarm 'http://54.36.173.210:8002/copper/{z}/{x}/{y}/tile.png' --input world.geojson -c 10 --zoom 1-8 --verbose
 tilewarm 'http://54.36.173.210:8002/petrol/{z}/{x}/{y}/tile.png' --input world.geojson -c 10 --zoom 1-8 --verbose
+
+curl -O https://raw.githubusercontent.com/alvarcarto/tilewarm/master/geojson/all-cities.geojson
+tilewarm 'http://54.36.173.210:8002/bw/{z}/{x}/{y}/tile.png' --input all-cities.geojson -c 10 --zoom 8-13 --verbose
+tilewarm 'http://54.36.173.210:8002/gray/{z}/{x}/{y}/tile.png' --input all-cities.geojson -c 10 --zoom 8-13 --verbose
+tilewarm 'http://54.36.173.210:8002/black/{z}/{x}/{y}/tile.png' --input all-cities.geojson -c 10 --zoom 8-13 --verbose
+tilewarm 'http://54.36.173.210:8002/copper/{z}/{x}/{y}/tile.png' --input all-cities.geojson -c 10 --zoom 8-13 --verbose
+tilewarm 'http://54.36.173.210:8002/petrol/{z}/{x}/{y}/tile.png' --input all-cities.geojson -c 10 --zoom 8-13 --verbose
 ```
 
 After that, go to tiles cache folder and run `find . -name '*' -size 0 -print0` to find
