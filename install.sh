@@ -26,6 +26,9 @@ set -e
 export ALVAR_MAP_SERVER_DATA_DIR=/home/alvar/data
 export ALVAR_ENV=prod
 
+echo "ALVAR_MAP_SERVER_DATA_DIR=$ALVAR_MAP_SERVER_DATA_DIR"
+echo "ALVAR_ENV=$ALVAR_ENV"
+
 if [ $(id -u) = 0 ]; then
     echo "This script must not be run as a root!"
     exit 1
@@ -72,12 +75,3 @@ source tasks/install-caddy.sh
 
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 source tasks/install-alvar-repos.sh
-
-cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
-if [ "$ALVAR_ENV" = "qa" ]; then
-    echo -e "Copying qa postgres configuration for runtime .. "
-    sudo /etc/init.d/postgresql stop
-    sudo cp confs/postgresql.qa.conf /etc/postgresql/9.5/main/postgresql.conf
-    sudo /etc/init.d/postgresql start
-fi
-

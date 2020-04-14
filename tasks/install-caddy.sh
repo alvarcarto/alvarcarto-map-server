@@ -4,6 +4,8 @@ set -e
 set -x
 [ -z "$ALVAR_MAP_SERVER_DATA_DIR" ] && echo "ALVAR_MAP_SERVER_DATA_DIR environment variable is not set." && exit 1;
 
+sudo apt-get install -y libcap2-bin
+
 wget https://github.com/mholt/caddy/releases/download/v0.10.10/caddy_v0.10.10_linux_amd64.tar.gz
 mkdir caddy_v0.10.10_linux_amd64
 cd caddy_v0.10.10_linux_amd64

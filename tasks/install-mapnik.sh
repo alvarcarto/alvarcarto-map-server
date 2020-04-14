@@ -3,12 +3,13 @@
 set -e
 set -x
 
+sudo apt-get install -y python python-dev curl zlib1g-dev clang make pkg-config protobuf-compiler git
+
 cd $HOME
 git clone https://github.com/mapnik/mapnik mapnik-3.x
 cd mapnik-3.x
-git checkout v3.0.18
+git checkout v3.0.23
 git submodule update --init
-sudo apt-get install -y python python-dev curl zlib1g-dev clang make pkg-config protobuf-compiler
 
 # Mason should install these deps in bootstrap.sh:
 #sudo apt-get install -y \
