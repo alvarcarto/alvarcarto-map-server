@@ -18,14 +18,14 @@ workflows:
     when: << pipeline.parameters.start >>
     jobs:
       - start_install
-      - wait_for_install
+      - wait_for_install:
+          requires:
+            - start_install
 
   wait_for_install:
     when: << pipeline.parameters.wait >>
     jobs:
-      - start_install
       - wait_for_install
-
 
   finish_install_and_deploy:
     when: << pipeline.parameters.deploy >>
