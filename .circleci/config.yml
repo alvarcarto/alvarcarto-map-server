@@ -73,7 +73,7 @@ jobs:
               }'
               body=$(printf "$body_template" "$NEW_WAIT_INDEX")
               echo "Sending body: $body"
-              http_code=$(curl -o out -w '%{http_code}' --fail -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d "$body" https://circleci.com/api/v2/project/git/alvarcarto/alvarcarto-map-server/pipeline)
+              http_code=$(curl -o out -w '%{http_code}' -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d "$body" https://circleci.com/api/v2/project/git/alvarcarto/alvarcarto-map-server/pipeline)
               cat out
               if [[ $http_code -ne 200 ]]; then
                 exit 1
@@ -88,7 +88,7 @@ jobs:
               }'
 
               echo "Sending body: $body"
-              http_code=$(curl -o out -w '%{http_code}' --fail -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d "$body" https://circleci.com/api/v2/project/git/alvarcarto/alvarcarto-map-server/pipeline)
+              http_code=$(curl -o out -w '%{http_code}' -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d "$body" https://circleci.com/api/v2/project/git/alvarcarto/alvarcarto-map-server/pipeline)
               cat out
               if [[ $http_code -ne 200 ]]; then
                 exit 1
