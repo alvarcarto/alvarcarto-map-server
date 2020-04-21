@@ -71,7 +71,8 @@ jobs:
                   "wait-index": "$NEW_WAIT_INDEX"
                 }
               }"
-              curl --fail -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d "$BODY" https://circleci.com/api/v2/project/git/alvarcarto/alvarcarto-map-server/pipeline
+              echo "Sending body: $BODY"
+              curl -vv --fail -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d "$BODY" https://circleci.com/api/v2/project/git/alvarcarto/alvarcarto-map-server/pipeline
             else
               echo "Installation done, launching further steps"
               BODY="{
@@ -80,7 +81,8 @@ jobs:
                   "deploy": true
                 }
               }"
-              curl --fail -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d "$BODY" https://circleci.com/api/v2/project/git/alvarcarto/alvarcarto-map-server/pipeline
+              echo "Sending body: $BODY"
+              curl -vv --fail -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d "$BODY" https://circleci.com/api/v2/project/git/alvarcarto/alvarcarto-map-server/pipeline
             fi
 
   finish_install:
