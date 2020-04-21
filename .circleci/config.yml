@@ -61,6 +61,8 @@ jobs:
           command: |
             if [ $WAIT_INDEX -lt 2 ]
             then
+              echo "Installation still in progress, waiting .."
+              sleep 5
               NEW_WAIT_INDEX=$((WAIT_INDEX+1))
               BODY="{
                 "parameters": {
@@ -69,15 +71,16 @@ jobs:
                   "wait-index": "$NEW_WAIT_INDEX"
                 }
               }"
-              curl -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d "$BODY" https://circleci.com/api/v2/project/git/alvarcarto/alvarcarto-map-server/pipeline
+              curl --fail -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d "$BODY" https://circleci.com/api/v2/project/git/alvarcarto/alvarcarto-map-server/pipeline
             else
+              echo "Installation done, launching further steps"
               BODY="{
                 "parameters": {
                   "start": false,
                   "deploy": true
                 }
               }"
-              curl -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" https://circleci.com/api/v2/project/git/alvarcarto/alvarcarto-map-server/pipeline
+              curl --fail -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d "$BODY" https://circleci.com/api/v2/project/git/alvarcarto/alvarcarto-map-server/pipeline
             fi
 
   finish_install:
