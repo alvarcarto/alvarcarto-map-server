@@ -11,7 +11,7 @@ http_code=$(curl -o out -w '%{http_code}' -v -u ${CIRCLECI_TOKEN}: -X POST --hea
 echo -e "\nResponse:"
 cat out
 
-if [[ $http_code -ne 200 ]]; then
+if [[ $http_code -ne 201 ]]; then
   echo -e "\n\nCurl response status code was $http_code"
   exit 1
 fi
