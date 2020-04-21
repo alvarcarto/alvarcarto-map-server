@@ -64,29 +64,25 @@ jobs:
               echo "Installation still in progress, waiting .."
               sleep 5
               NEW_WAIT_INDEX=$((WAIT_INDEX+1))
-              body=$(cat \<<EOF
-              {
+              body_template='{
                 "parameters": {
                   "start": false,
                   "wait": true,
-                  "wait-index": "$NEW_WAIT_INDEX"
+                  "wait-index": "%s"
                 }
-              }
-              EOF
-              )
+              }'
+              body=$(printf "$body_template" "$NEW_WAIT_INDEX")
               echo "Sending body: $body"
               curl -vv --fail -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d "$body" https://circleci.com/api/v2/project/git/alvarcarto/alvarcarto-map-server/pipeline
             else
               echo "Installation done, launching further steps"
-              body=$(cat \<<EOF
-              {
+              body='{
                 "parameters": {
                   "start": false,
                   "deploy": true
                 }
-              }
-              EOF
-              )
+              }'
+
               echo "Sending body: $body"
               curl -vv --fail -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d "$body" https://circleci.com/api/v2/project/git/alvarcarto/alvarcarto-map-server/pipeline
             fi
