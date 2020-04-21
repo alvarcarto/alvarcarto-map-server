@@ -1,8 +1,11 @@
 version: 2.1
 parameters:
-  wait-index:
-    type: string
-    default: "0"
+  wait:
+    type: boolean
+    default: false
+  deploy:
+    type: boolean
+    default: false
 
 workflows:
   commit:
@@ -11,6 +14,7 @@ workflows:
       - wait_for_install
 
   finish_install_and_deploy:
+    when: << pipeline.parameters.deploy >>
     jobs:
       - finish_install
       - deploy:
@@ -46,7 +50,7 @@ jobs:
               NEW_WAIT_INDEX=$((WAIT_INDEX+1))
               BODY="{
                 "parameters": {
-                  "wait-index": "$NEW_WAIT_INDEX"
+                  "deploy": "$NEW_WAIT_INDEX"
                 }
               }"
               curl -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d "$BODY" https://circleci.com/api/v2/project/git/alvarcarto/alvarcarto-map-server/pipeline
