@@ -73,8 +73,11 @@ jobs:
               }'
               body=$(printf "$body_template" "$NEW_WAIT_INDEX")
               echo "Sending body: $body"
-              curl -o out --fail -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d "$body" https://circleci.com/api/v2/project/git/alvarcarto/alvarcarto-map-server/pipeline
+              http_code=$(curl -o out -w '%{http_code}' --fail -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d "$body" https://circleci.com/api/v2/project/git/alvarcarto/alvarcarto-map-server/pipeline)
               cat out
+              if [[ $http_code -ne 200 ]]; then
+                exit 1
+              fi
             else
               echo "Installation done, launching further steps"
               body='{
@@ -85,8 +88,11 @@ jobs:
               }'
 
               echo "Sending body: $body"
-              curl -o out --fail -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d "$body" https://circleci.com/api/v2/project/git/alvarcarto/alvarcarto-map-server/pipeline
+              http_code=$(curl -o out -w '%{http_code}' --fail -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d "$body" https://circleci.com/api/v2/project/git/alvarcarto/alvarcarto-map-server/pipeline)
               cat out
+              if [[ $http_code -ne 200 ]]; then
+                exit 1
+              fi
             fi
 
   finish_install:
