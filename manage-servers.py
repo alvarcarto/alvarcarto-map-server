@@ -224,6 +224,7 @@ def initialise_as_root(server):
 
     logger.info('Installing packages ..')
     c.run('apt-get autoclean && apt-get autoremove && apt-get update')
+    c.run('apt-get upgrade')
     c.run('apt-get -y install locales && locale-gen en_US.UTF-8')
     c.run('apt-get install -y sudo openssl git nano screen postgresql-client')
 
@@ -276,7 +277,7 @@ def is_install_ready(server):
     start_file = path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_started')
     logger.info('Testing if {} exists ..'.format(start_file))
     start_file_exists = c.run('test -f {}'.format(start_file), warn=True).exited == 0
-    logger.info('Start file exists: {} '.format(start_file_exists))
+    logger.info('Exists: {} '.format(start_file_exists))
     if not start_file_exists:
       raise Exception('Install has not been started, {} doesn\'t exist'.format(start_file))
 
@@ -318,6 +319,9 @@ def run_after_installation_tasks(server):
 
     # Disable unsecure sudo settings added for installation
     c.run('sudo sed -E -i \'s/^(alvar ALL=(ALL) NOPASSWD: ALL.*)$/#\\1/g\' /etc/sudoers')
+
+    # Remove state files
+    c.run('rm {}'.format(path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_started')))
 
 
 def task_start_install(records):
