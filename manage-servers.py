@@ -20,7 +20,6 @@ config = {
   'HETZNER_PASSWORD': getenv('HETZNER_PASSWORD'),
   'ROOT_USER_PASSWORD': getenv('ROOT_USER_PASSWORD'),
   'MAP_USER_PASSWORD': getenv('MAP_USER_PASSWORD'),
-  'MAP_USER_SSH_PASSPHRASE': getenv('MAP_USER_SSH_PASSPHRASE'),
   'MAP_SERVER_INSTALL_DIR': getenv('MAP_SERVER_INSTALL_DIR', default='/home/alvar'),
   'MAP_SERVER_DATA_DIR': getenv('MAP_SERVER_DATA_DIR', default='/home/alvar/data'),
   'ALVAR_ENV': getenv('ALVAR_ENV', default='qa'),
