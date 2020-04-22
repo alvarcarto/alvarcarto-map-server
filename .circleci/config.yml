@@ -1,8 +1,8 @@
 version: 2.1
 parameters:
-  start:
+  manual_start:
     type: boolean
-    default: true
+    default: false
   wait:
     type: boolean
     default: false
@@ -11,8 +11,15 @@ parameters:
     default: false
 
 workflows:
-  start_install:
-    when: << pipeline.parameters.start >>
+  start_install_manual:
+    when: << pipeline.parameters.manual_start >>
+    jobs:
+      - start_install
+      - wait_for_install:
+          requires:
+            - start_install
+
+  start_install_automatic:
     jobs:
       - start_install
       - wait_for_install:
