@@ -103,10 +103,10 @@ jobs:
               bash .circleci/launch-futher-steps.sh
             else
               echo "Sleeping for an hour .."
-              for i in {1..6}
+              for i in {1..60}
               do
-                echo "Sleeping 10 minutes .."
-                sleep 600
+                echo "Sleeping 1 minute .."
+                sleep 60
               done
 
               echo "Launching the wait task again to see if server install is ready"
