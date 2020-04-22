@@ -266,7 +266,8 @@ def start_install_as_map_user(server):
     repo_dir = path.join(config['MAP_SERVER_INSTALL_DIR'], 'alvarcarto-map-server')
     c.run('git clone {clone_url} {repo_dir}'.format(clone_url=clone_url, repo_dir=repo_dir))
     with c.cd(repo_dir):
-      c.run('screen -S install -dm bash -c \'ALVAR_MAP_SERVER_DATA_DIR={} ALVAR_ENV={} bash install.sh\''.format(config['MAP_SERVER_DATA_DIR'], config['ALVAR_ENV']))
+      install_exit_file = path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_exit_code')
+      c.run('screen -S install -dm bash -c \'ALVAR_MAP_SERVER_DATA_DIR={} ALVAR_ENV={} bash install.sh; echo "$?" > {}\''.format(config['MAP_SERVER_DATA_DIR'], config['ALVAR_ENV'], install_exit_file))
 
       c.run('touch {}'.format(path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_started')))
       logger.info('Installation started as map user at {ip} ..'.format(**server))
@@ -277,12 +278,19 @@ def is_install_ready(server):
     start_file = path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_started')
     logger.info('Testing if {} exists ..'.format(start_file))
     start_file_exists = c.run('test -f {}'.format(start_file), warn=True).exited == 0
-    logger.info('Exists: {} '.format(start_file_exists))
     if not start_file_exists:
       raise Exception('Install has not been started, {} doesn\'t exist'.format(start_file))
 
-    result = c.run('screen -list | grep -q "install"', warn=True)
-    return result.exited == 0
+    install_exit_file = path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_exit_code')
+    exit_file_exists = c.run('test -f {}'.format(install_exit_file), warn=True).exited == 0
+    if not exit_file_exists:
+      return False
+
+    result = c.run('cat {}'.format(install_exit_file)).stdout.strip()
+    if result != '0':
+      raise Exception('install.sh exited with non-zero exit code!')
+
+    return True
 
 
 def run_after_installation_tasks(server):
