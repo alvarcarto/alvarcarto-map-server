@@ -21,13 +21,18 @@ config = {
   'ROOT_USER_PASSWORD': getenv('ROOT_USER_PASSWORD'),
   'MAP_USER_PASSWORD': getenv('MAP_USER_PASSWORD'),
   'MAP_USER_SSH_PASSPHRASE': getenv('MAP_USER_SSH_PASSPHRASE'),
-  'MAP_SERVER_INSTALL_DIR': getenv('MAP_SERVER_INSTALL_DIR'),
-  'MAP_SERVER_DATA_DIR': getenv('MAP_SERVER_DATA_DIR'),
+  'MAP_SERVER_INSTALL_DIR': getenv('MAP_SERVER_INSTALL_DIR', default='/home/alvar'),
+  'MAP_SERVER_DATA_DIR': getenv('MAP_SERVER_DATA_DIR', default='/home/alvar/data'),
+  'ALVAR_ENV': getenv('ALVAR_ENV', default='qa'),
   'AWS_ACCESS_KEY_ID': getenv('AWS_ACCESS_KEY_ID'),
   'AWS_SECRET_ACCESS_KEY': getenv('AWS_SECRET_ACCESS_KEY'),
   'GITHUB_INTEGRATION_USER_TOKEN': getenv('GITHUB_INTEGRATION_USER_TOKEN'),
   'CLOUDFLARE_TOKEN': getenv('CLOUDFLARE_TOKEN'),
 }
+
+for key, val in config.items():
+  if val is None:
+    raise Exception('{} env var not set!'.format(key))
 
 s3 = boto3.client('s3',
   aws_access_key_id=config['AWS_ACCESS_KEY_ID'],
@@ -218,7 +223,7 @@ def start_install_as_alvar(server):
     repo_dir = path.join(config['MAP_SERVER_INSTALL_DIR'], 'alvarcarto-map-server')
     c.run('git clone {clone_url} {repo_dir}'.format(clone_url=clone_url, repo_dir=repo_dir))
     with c.cd(repo_dir):
-      c.run('screen -S install -dm bash install.sh')
+      c.run('screen -S install -dm ALVAR_MAP_SERVER_DATA_DIR={} ALVAR_ENV={} bash install.sh'.format(config['MAP_SERVER_DATA_DIR'], config['ALVAR_ENV']))
 
 
 def is_install_ready(server):
