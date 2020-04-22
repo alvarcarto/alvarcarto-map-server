@@ -6,7 +6,7 @@ parameters:
   wait:
     type: boolean
     default: false
-  deploy:
+  finish_install:
     type: boolean
     default: false
 
@@ -41,7 +41,7 @@ workflows:
       - wait_for_install
 
   finish_install_and_deploy:
-    when: << pipeline.parameters.deploy >>
+    when: << pipeline.parameters.finish_install >>
     jobs:
       - finish_install
       - test_release_candidate:

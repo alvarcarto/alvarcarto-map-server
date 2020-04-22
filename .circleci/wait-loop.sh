@@ -9,7 +9,7 @@ while true; do
 
   if [[ $index -gt 59 ]]; then
     echo "60 minutes has passed"
-    echo "Launching the wait task again to see if server install is ready"
+    echo "Launching the wait task again"
     bash .circleci/launch-wait.sh
     break
   elif [[ exit_code -eq 0 ]]; then
@@ -27,4 +27,3 @@ while true; do
   sleep 60
   index=$((index+1))
 done
-

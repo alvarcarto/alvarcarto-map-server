@@ -320,8 +320,8 @@ def run_after_installation_tasks(server):
     c.run('sudo sed -i \'s/PermitRootLogin yes/PermitRootLogin no/g\' /etc/ssh/sshd_config')
     # Note: in OSX, you need -i "" instead of just -i for this to work
     c.run('sudo sed -E -i \'s/^(Subsystem.*sftp.*)$/#\\1/g\' /etc/ssh/sshd_config')
-    c.run('sudo echo -e "\n# Force safer protocol\nProtocol 2" >> /etc/ssh/sshd_config')
-    c.run('sudo echo -e "\nPermitEmptyPasswords no" >> /etc/ssh/sshd_config')
+    c.run('sudo bash -c \'echo -e "\n# Force safer protocol\nProtocol 2" >> /etc/ssh/sshd_config\'')
+    c.run('sudo bash -c \'echo -e "\nPermitEmptyPasswords no" >> /etc/ssh/sshd_config\'')
     c.run('sudo sed -i \'s/X11Forwarding yes/X11Forwarding no/g\' /etc/ssh/sshd_config')
     c.run('sudo service ssh restart')
 
