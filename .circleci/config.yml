@@ -95,24 +95,25 @@ jobs:
       - run:
           name: Wait for install to finish
           command: |
-            output=$(python manage-servers.py is_install_ready)
-            output_trim=$(echo "$output" | xargs)
+            index=0
+            while true; do
+              output=$(python manage-servers.py is_install_ready)
+              output_trim=$(echo "$output" | xargs)
 
-            if [[ "$output_trim" = "true" ]];
-            then
-              bash .circleci/launch-further-steps.sh
-            else
-              echo "$(date +%Y%m%d%H%M%S) Sleeping for an hour .."
-              echo "Note: The server installation might take even 40 hours"
-              for i in {1..60}
-              do
-                echo "$(date +%Y%m%d%H%M%S) Sleeping 1 minute .."
-                sleep 60
-              done
+              if [[ "$output_trim" = "true" ]]; then
+                bash .circleci/launch-further-steps.sh
+                break
+              elif [[ $index -gt 59 ]];
+                echo "60 minutes has passed"
+                echo "Launching the wait task again to see if server install is ready"
+                bash .circleci/launch-wait.sh
+                break
+              fi
 
-              echo "Launching the wait task again to see if server install is ready"
-              bash .circleci/launch-wait.sh
-            fi
+              echo "$(date '+%Y-%m-%d %H:%M:%S') Sleeping 1 minute .."
+              sleep 60
+              index=$((index+1))
+            done
 
   finish_install:
     docker:
