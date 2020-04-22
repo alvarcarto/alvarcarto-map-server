@@ -330,6 +330,7 @@ def run_after_installation_tasks(server):
 
     # Remove state files
     c.run('rm {}'.format(path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_started')))
+    c.run('rm {}'.format(path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_exit_code')))
 
 
 def task_start_install(records):
