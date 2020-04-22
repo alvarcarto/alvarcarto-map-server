@@ -137,14 +137,14 @@ def force_initiate_linux_install(server):
   return initiate_linux_install(server)
 
 
-def hardware_reboot(server):
-  robotApi.post('/reset/{ip}'.format(**server), data={ 'type': 'hw' })
-  logger.info('Hardware reset request sent for {ip} '.format(**server))
+def reboot(server):
+  robotApi.post('/reset/{ip}'.format(**server), data={ 'type': 'sw' })
+  logger.info('Reboot request sent for {ip} '.format(**server))
 
 
 def format_and_reinstall_ubuntu(server):
   details = force_initiate_linux_install(server)
-  hardware_reboot(server)
+  reboot(server)
 
   return details
 
@@ -301,6 +301,7 @@ def task_start_install(records):
 
   asMapUser = extend(server, { 'user': 'alvar', 'password': config['MAP_USER_PASSWORD'] })
   start_install_as_map_user(asMapUser)
+  wait_until_responsive(asMapUser, wait_time=30)
 
 
 def task_is_install_ready(records):
@@ -337,7 +338,7 @@ def task_finish_install(records):
   }
 
   run_after_installation_tasks(asMapUser)
-  hardware_reboot(server)
+  reboot(server)
   wait_until_responsive(asMapUser)
 
 
