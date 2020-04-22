@@ -102,10 +102,10 @@ jobs:
             then
               bash .circleci/launch-futher-steps.sh
             else
-              echo "Sleeping for an hour .."
+              echo "$(date +%Y%m%d%H%M%S) Sleeping for an hour .."
               for i in {1..60}
               do
-                echo "Sleeping 1 minute .."
+                echo "$(date +%Y%m%d%H%M%S) Sleeping 1 minute .."
                 sleep 60
               done
 
