@@ -140,6 +140,7 @@ def force_initiate_linux_install(server):
 def reboot(server):
   robotApi.post('/reset/{ip}'.format(**server), data={ 'type': 'sw' })
   logger.info('Reboot request sent for {ip} '.format(**server))
+  time.sleep(10)
 
 
 def format_and_reinstall_ubuntu(server):
@@ -195,12 +196,16 @@ def initialise_as_root(server):
   logger.info('Running root tasks for {ip} ..'.format(**server))
 
   with connection(server) as c:
+    logger.info('Changing root password ..')
     new_root_pass = config['ROOT_USER_PASSWORD']
     c.run('echo -e "{user}:{password}" | chpasswd'.format(user='root', password=new_root_pass))
 
+    logger.info('Installing packages ..')
     c.run('apt-get autoclean && apt-get autoremove && apt-get update')
     c.run('apt-get -y install locales && locale-gen en_US.UTF-8')
     c.run('apt-get install -y sudo openssl git nano screen postgresql-client')
+
+    logger.info('Adding map user ..')
     c.run('useradd --shell /bin/bash --create-home --home /home/alvar alvar')
     c.run('adduser alvar sudo')
 
@@ -216,6 +221,7 @@ def start_install_as_map_user(server):
   logger.info('Start installation as map user at {ip} ..'.format(**server))
 
   with connection(server) as c:
+    logger.info('Adding SSH key ..')
     # Add SSH key
     c.run('mkdir -p ~/.ssh')
     c.run('chmod 700 .ssh')
@@ -227,6 +233,7 @@ def start_install_as_map_user(server):
     c.run('cat {remote_pub_key_file} >> ~/.ssh/authorized_keys'.format(remote_pub_key_file=remote_pub_key_file))
     c.run('rm {remote_pub_key_file}'.format(remote_pub_key_file=remote_pub_key_file))
 
+    logger.info('Starting installation inside screen ..')
     # Increase scrollback to 1M lines
     c.run('echo "defscrollback 1000000" >> ~/.screenrc')
     c.run('echo "deflog on" >> ~/.screenrc')
