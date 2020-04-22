@@ -159,6 +159,8 @@ def format_and_reinstall_ubuntu(server):
   # These waits are done for just in case. Previously the reinstall wasn't registered
   # before we started doing other operations and we ran some setup tasks before the reinstall
   # was actually executed
+  # I couldn't find a way to wait for the installation to finish via their API:
+  # https://robot.your-server.de/doc/webservice/en.html#post-boot-server-ip-linux
   logger.info('Waiting 60s for linux install to register ..')
   time.sleep(60)
   hardware_reboot(server)
@@ -263,7 +265,7 @@ def start_install_as_map_user(server):
     repo_dir = path.join(config['MAP_SERVER_INSTALL_DIR'], 'alvarcarto-map-server')
     c.run('git clone {clone_url} {repo_dir}'.format(clone_url=clone_url, repo_dir=repo_dir))
     with c.cd(repo_dir):
-      c.run('screen -S install -dm ALVAR_MAP_SERVER_DATA_DIR={} ALVAR_ENV={} bash install.sh'.format(config['MAP_SERVER_DATA_DIR'], config['ALVAR_ENV']))
+      c.run('screen -S install -dm bash -c \'ALVAR_MAP_SERVER_DATA_DIR={} ALVAR_ENV={} bash install.sh\''.format(config['MAP_SERVER_DATA_DIR'], config['ALVAR_ENV']))
 
       c.run('touch {}'.format(path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_started')))
       logger.info('Installation started as map user at {ip} ..'.format(**server))
