@@ -82,7 +82,7 @@ cloudflareApi = CloudflareApi('https://api.cloudflare.com')
 
 
 def connection(server, **kwargs):
-  connect_kwargs = { 'look_for_keys': False }
+  connect_kwargs = { 'look_for_keys': False, connect_timeout: 120 }
   if 'ssh_key_filename' in server:
     connect_kwargs['passphrase'] = server['user_ssh_passphrase']
     connect_kwargs['key_filename'] = server['ssh_key_filename']
@@ -97,7 +97,7 @@ def connection(server, **kwargs):
 
 def is_server_alive(server):
   try:
-    with connection(server, connect_timeout=3) as c:
+    with connection(server, connect_timeout=60) as c:
       c.run('uname -s', hide=True)
     return True
   except socket.timeout:
@@ -307,7 +307,11 @@ def task_is_install_ready(records):
     'password': config['MAP_USER_PASSWORD']
   }
 
-  ready = is_install_ready(asMapUser)
+  try:
+    ready = is_install_ready(asMapUser)
+  except TimeoutError:
+    read = False
+
   if ready:
     print('true')
   else:
