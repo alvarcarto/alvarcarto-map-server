@@ -156,8 +156,10 @@ def format_and_reinstall_ubuntu(server):
   details = force_initiate_linux_install(server)
   logger.info('Waiting 60s for linux install to register ..')
   time.sleep(60)
-  reboot(server)
-  logger.info('Waiting 5minutes for linux installation to finish ..')
+
+  asRoot = extend(server, { 'user': 'root', 'password': details['linux']['password'] })
+  reboot(asRoot)
+  logger.info('Waiting 5 minutes for linux installation to finish ..')
   time.sleep(60 * 5)
 
   return details
@@ -267,7 +269,7 @@ def is_install_ready(server):
     start_file = path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_started')
     logger.info('Testing if {} exists ..'.format(start_file))
     start_file_exists = c.run('test -f {}'.format(start_file), warn=True).exited == 0
-    logger.info('Found: {} '.format(start_file_exists))
+    logger.info('Start file exists: {} '.format(start_file_exists))
     if not start_file_exists:
       raise Exception('Install has not been started, {} doesn\'t exist'.format(start_file))
 
