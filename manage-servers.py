@@ -105,6 +105,8 @@ def is_server_alive(server):
     return False
   except TimeoutError:
     return False
+  except paramiko.ssh_exception.NoValidConnectionsError:
+    return False
 
   return False
 
