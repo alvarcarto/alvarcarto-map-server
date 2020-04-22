@@ -91,8 +91,9 @@ def connection(server, **kwargs):
   else:
     raise Exception('No password or ssh key provided!')
 
+  new_kwargs = extend({ 'connect_timeout': 120 }, kwargs)
   config = Config(overrides={ 'sudo': { 'password': server['password'] } })
-  return Connection(server['ip'], user=server['user'], config=config, connect_kwargs=connect_kwargs, connect_timeout=120, **kwargs)
+  return Connection(server['ip'], user=server['user'], config=config, connect_kwargs=connect_kwargs, **new_kwargs)
 
 
 def is_server_alive(server):
