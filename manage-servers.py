@@ -123,15 +123,15 @@ def initiate_linux_install(server):
 
 def force_initiate_linux_install(server):
   try:
-    initiate_linux_install(server)
+    return initiate_linux_install(server)
   except requests.exceptions.HTTPError as e:
     # 409 means we have already initiated a linux reboot
-    if e.response.status_code == 409:
-      logger.info('Linux installation already initiated for {ip}, redoing it ..'.format(**server))
-      robotApi.delete('/boot/{ip}/linux'.format(**server))
-      initiate_linux_install(server)
-    else:
+    if e.response.status_code != 409:
       raise
+
+  logger.info('Linux installation already initiated for {ip}, redoing it ..'.format(**server))
+  robotApi.delete('/boot/{ip}/linux'.format(**server))
+  return initiate_linux_install(server)
 
 
 def hardware_reboot(server):
@@ -281,7 +281,7 @@ def task_start_install(records):
   }
 
   details = format_and_reinstall_ubuntu(server)
-  logger.info('Got following details for reinstall: ', details)
+  logger.info('Got following details for reinstall: {}'.format(details))
   asRoot = extend(server, { 'user': 'root', 'password': details['linux']['password'] })
   wait_until_responsive(asRoot, wait_time=30)
   initialise_as_root(asRoot)
