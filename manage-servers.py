@@ -173,7 +173,7 @@ def get_dns_records():
   zone_id = res['result'][0]['id']
 
   records = {}
-  names = ['tile-api', 'tile-api-reserve', 'cached-tile-api', 'cached-tile-api-reserve', 'test1', 'test2']
+  names = ['tile-api', 'tile-api-reserve', 'cached-tile-api', 'cached-tile-api-reserve']
   for name in names:
     res = cloudflareApi.get('/client/v4/zones/{}/dns_records'.format(zone_id), params={ 'name': '{}.alvarcarto.com'.format(name) })
     records[name] = {
@@ -281,6 +281,7 @@ def task_start_install(records):
   }
 
   details = format_and_reinstall_ubuntu(server)
+  logger.info('Got following details for reinstall: ', details)
   asRoot = extend(server, { 'user': 'root', 'password': details['linux']['password'] })
   wait_until_responsive(asRoot, wait_time=30)
   initialise_as_root(asRoot)
@@ -345,7 +346,7 @@ def task_purge_cloudflare_cache(records):
 
 
 def task_promote_reserve_to_production(records):
-  switch_pairs = [('test1', 'test2')]
+  switch_pairs = [('tile-api-reserve', 'tile-api')]
 
   logger.info('Promoting to production!')
   logger.info('\n'.join(map(lambda p: '{} -> {}'.format(p[0], p[1]), switch_pairs)))
