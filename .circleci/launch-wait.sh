@@ -1,6 +1,5 @@
 body='{
   "parameters": {
-    "start": false,
     "wait": true
   }
 }'
