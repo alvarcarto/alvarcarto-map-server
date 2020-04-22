@@ -98,7 +98,8 @@ jobs:
             output=$(python manage-servers.py is_install_ready)
             output_trim=$(echo "$output" | xargs)
 
-            if [[ "$output_trim" = "true" ]] then
+            if [[ "$output_trim" = "true" ]];
+            then
               bash .circleci/launch-futher-steps.sh
             else
               echo "Sleeping for an hour .."
