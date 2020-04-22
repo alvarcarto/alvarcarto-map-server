@@ -213,6 +213,15 @@ def start_install_as_map_user(server):
   logger.info('Start installation as map user at {ip} ..'.format(**server))
 
   with connection(server) as c:
+    # Add SSH key
+    pub_key_file = 'alvarcarto-server-key.pub'
+    remote_pub_key_file = path.join(config['MAP_SERVER_INSTALL_DIR'], pub_key_file)
+    s3.download_file('alvarcarto-keys', pub_key_file, pub_key_file)
+    c.put(pub_key_file, remote_pub_key_file)
+    os.remove(pub_key_file)
+    c.run('cat {remote_pub_key_file} >> ~/.ssh/authorized_keys'.format(remote_pub_key_file=remote_pub_key_file))
+    c.run('rm {remote_pub_key_file}'.format(remote_pub_key_file=remote_pub_key_file))
+
     # Increase scrollback to 1M lines
     c.run('echo "defscrollback 1000000" >> ~/.screenrc')
     c.run('echo "deflog on" >> ~/.screenrc')
@@ -269,15 +278,6 @@ def run_after_installation_tasks(server):
     c.run('sudo echo -e "\nPermitEmptyPasswords no" >> /etc/ssh/sshd_config')
     c.run('sudo sed -i \'s/X11Forwarding yes/X11Forwarding no/g\' /etc/ssh/sshd_config')
     c.run('sudo service ssh restart')
-
-    # Add SSH key
-    pub_key_file = 'alvarcarto-server-key.pub'
-    remote_pub_key_file = path.join(config['MAP_SERVER_INSTALL_DIR'], pub_key_file)
-    s3.download_file('alvarcarto-keys', pub_key_file, pub_key_file)
-    c.put(pub_key_file, remote_pub_key_file)
-    os.remove(pub_key_file)
-    c.run('cat {remote_pub_key_file} >> ~/.ssh/authorized_keys'.format(remote_pub_key_file=remote_pub_key_file))
-    c.run('rm {remote_pub_key_file}'.format(remote_pub_key_file=remote_pub_key_file))
 
     # Disable unsecure sudo settings added for installation
     c.run('sudo sed -E -i \'s/^(alvar ALL=(ALL) NOPASSWD: ALL.*)$/#\\1/g\' /etc/sudoers')
