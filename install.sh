@@ -18,13 +18,12 @@ set -e
 # Path to a data directory which will be used for storing planet .pbf data,
 # Postgis data etc.
 # This directory needs to be pointed to a volume which has at least 450GB free disk space
-# /mnt/volume1 should exist, but /mnt/volume1/alvar shouldn't. This script
+# /home/alvar should exist, but /home/alvar/data shouldn't. This script
 # creates that directory.
 # Path MUST NOT contain a trailing slash
 
-# If this is an install in DO, remember to change this to /mnt/volume1/alvar
-export ALVAR_MAP_SERVER_DATA_DIR=/home/alvar/data
-export ALVAR_ENV=prod
+export ALVAR_MAP_SERVER_DATA_DIR=${ALVAR_MAP_SERVER_DATA_DIR:-/home/alvar/data}
+export ALVAR_ENV=${ALVAR_ENV:-prod}
 
 echo "ALVAR_MAP_SERVER_DATA_DIR=$ALVAR_MAP_SERVER_DATA_DIR"
 echo "ALVAR_ENV=$ALVAR_ENV"

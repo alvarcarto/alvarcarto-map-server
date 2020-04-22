@@ -8,6 +8,9 @@ sudo apt-get install -y python python-dev curl zlib1g-dev clang make pkg-config 
 cd $HOME
 git clone https://github.com/mapnik/mapnik mapnik-3.x
 cd mapnik-3.x
+
+# If this version is updated, make sure to set the same API version
+# to alvarcarto-cartocss repo's build.sh
 git checkout v3.0.23
 git submodule update --init
 

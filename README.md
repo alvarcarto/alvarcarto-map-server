@@ -59,7 +59,7 @@ Installing map server is automated with [install.sh](install.sh).
 
 **Note! Configure install.sh variables to suit the installation environment.
 The variables define data directory which should have at least 450GB free disk
-space. The default data directory is `/mnt/volume1/alvar`.**
+space. The default data directory is `/home/alvar/data`.**
 
 Start a new ssh session with `ssh alvar@<ip>`. In the remote server, run:
 
@@ -302,3 +302,24 @@ osm2pgsql -U osm -d osm -H localhost -P 5432 --create --slim \
   --style openstreetmap-carto.style --multi-geometry \
   ../finland-latest.osm.pbf
 ```
+
+
+## Installation steps
+
+* Order a reinstall server via Hetzner API
+* Reboot the machine
+* Wait until server is responsive
+* Execute all previously manually done steps (secure ssh etc)
+* Copy alvar-map-server repo into the server and start installation process
+* Wait for the server installation to finish
+* Undo some security releases (like sudo password asking) done for install.sh
+* Reboot server (to verify all services start after reboot)
+* Wait until server is responsive
+* Warm tile caches inside the server
+* Run snapshot tool to verify differences between previous installation
+* If the steps and tests so far has succeeded, continue with production switch
+* Point the freshly installed server to tile-api.alvarcarto.com
+* Invalidate cache from cached-tile-api server
+* Invalidate all caches in CloudFlare
+
+

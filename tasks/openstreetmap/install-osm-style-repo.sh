@@ -14,7 +14,7 @@ mkdir -p $HOME/osm
 cd $HOME/osm
 git clone https://github.com/gravitystorm/openstreetmap-carto.git openstreetmap-carto
 cd openstreetmap-carto
-git checkout b761b0bfbce97332705698fbacea93dc007266f5
+git checkout 6c89079aa15a3999142fd7e3fc9b89a12ca5249a
 
 # Get shapefiles. Retry if the downloading fails for some reason
 for i in {1..5}; do ./scripts/get-shapefiles.py && break || sleep 15; done

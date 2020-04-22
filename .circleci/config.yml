@@ -1,8 +1,5 @@
 version: 2.1
 parameters:
-  wait-index:
-    type: string
-    default: "0"
   start:
     type: boolean
     default: true
@@ -22,6 +19,15 @@ workflows:
           requires:
             - start_install
 
+    triggers:
+        # Every Monday at 12:00 or 13:00 Helsinki time (depending on DST)
+      - schedule:
+          cron: "0 10 * * 1"
+          filters:
+            branches:
+              only:
+                - master
+
   wait_for_install:
     when: << pipeline.parameters.wait >>
     jobs:
@@ -31,10 +37,20 @@ workflows:
     when: << pipeline.parameters.deploy >>
     jobs:
       - finish_install
-      - deploy:
-          type: approval
+      - test_release_candidate:
           requires:
             - finish_install
+      - warm_caches:
+          requires:
+            - test_release_candidate
+      - deploy_to_production:
+          type: approval
+          requires:
+            - warm_caches
+      - update_snapshots:
+          requires:
+            - deploy_to_production
+
 
 jobs:
   start_install:
@@ -44,33 +60,19 @@ jobs:
     steps:
       - checkout
 
-      - run: |
-          echo "Install"
+      - run:
+          name: Install dependencies
+          command: |
+            pip install -r requirements.txt
+
+      - run:
+          name: Start server installation
+          command: |
+            python manage-servers.py start_install
 
   wait_for_install:
     docker:
       - image: circleci/python:3.8
-    environment:
-      WAIT_INDEX: << pipeline.parameters.wait-index >>
-    working_directory: ~/repo
-    steps:
-      - checkout
-
-      - run:
-          name: Wait for install
-          command: |
-            if [ $WAIT_INDEX -lt 2 ]
-            then
-              echo "Installation still in progress, waiting .."
-              bash .circleci/wait.sh
-            else
-              echo "Installation done, launching further steps"
-              bash .circleci/launch-further-steps.sh
-            fi
-
-  finish_install:
-    docker:
-      - image: circleci/node:10
     working_directory: ~/repo
     steps:
       - checkout
@@ -78,16 +80,138 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            echo "Install"
+            pip install -r requirements.txt
 
-  deploy:
+      - run:
+          name: Wait for install to finish
+          command: |
+            output=$(python manage-servers.py is_install_ready)
+            output_trim=$(echo "$output" | xargs)
+
+            if [[ "$output_trim" = "true" ]] then
+              bash .circleci/launch-futher-steps.sh
+            else
+              echo "Sleeping for an hour .."
+              for i in {1..6}
+              do
+                echo "Sleeping 10 minutes .."
+                sleep 600
+              done
+
+              echo "Launching the wait task again to see if server install is ready"
+              bash .circleci/launch-wait.sh
+            fi
+
+  finish_install:
     docker:
       - image: circleci/python:3.8
     working_directory: ~/repo
     steps:
       - checkout
 
-      - deploy:
-          name: Deploy
+      - run:
+          name: Install dependencies
           command: |
-            echo "Deploy"
+            pip install -r requirements.txt
+
+      - run:
+          name: Wait for install to finish
+          command: |
+            python manage-servers.py finish_install
+
+  test_release_candidate:
+    docker:
+      - image: circleci/node:10
+      - image: circleci/python:3.8
+    working_directory: ~/repo
+    steps:
+      - checkout
+
+      - deploy:
+          name: Run tests for release candidate server
+          command: |
+            git clone "https://alvarcarto-integration:$GITHUB_INTEGRATION_USER_TOKEN@github.com/alvarcarto/alvarcarto-map-server.git"
+            cd alvarcarto-map-server
+            npm i
+
+            IP=$(python manage-servers.py get_tile_api_reserve_ip)
+            export RENDER_API_URL="http://$IP:8001"
+            export RENDER_API_KEY=PERSONxMz4jp8tgACSKL7r
+            export AWS_S3_BUCKET_NAME=alvarcarto-render-snapshots
+            export AWS_ACCESS_KEY_ID="$SNAPSHOT_TOOL_AWS_ACCESS_KEY_ID"
+            export AWS_SECRET_ACCESS_KEY="$SNAPSHOT_TOOL_AWS_SECRET_ACCESS_KEY"
+            npm run compare
+
+
+            # TODO: Run placement service test
+            # TODO: Run render service test
+            # TODO: Run tile service test
+
+      - store_artifacts:
+          path: ~/repo/images
+
+  warm_caches:
+    docker:
+      - image: circleci/node:10
+    working_directory: ~/repo
+    steps:
+      - checkout
+
+      - run:
+          name: Warm server caches
+          command: |
+            npm install @alvarcarto/tilewarm
+            curl -O https://raw.githubusercontent.com/alvarcarto/tilewarm/master/geojson/world.geojson
+            curl -O https://raw.githubusercontent.com/alvarcarto/tilewarm/master/geojson/all-cities.geojson
+
+            IP=$(python manage-servers.py get_tile_api_reserve_ip)
+            # Iterate all styles in cartocss repo
+            NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input world.geojson -c 10 --zoom 1-8 --verbose
+            NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input all-cities.geojson -c 10 --zoom 8-13 --verbose
+
+
+  deploy_to_production:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/repo
+    steps:
+      - checkout
+
+      - run:
+          name: Install dependencies
+          command: |
+            pip install -r requirements.txt
+
+      - deploy:
+          name: Promote release candidate server to production via DNS
+          command: |
+            python manage-servers.py promote_reserve_to_production
+
+      - run:
+          name: Clear previously cached tiles and renders
+          command: |
+            python manage-servers.py clear_cached_tile_api
+            python manage-servers.py purge_cloudflare_cache
+
+  update_snapshots:
+    docker:
+      - image: circleci/node:10
+      - image: circleci/python:3.8
+    working_directory: ~/repo
+    steps:
+      - checkout
+
+      - deploy:
+          name: Update poster snapshots to S3
+          command: |
+            git clone "https://alvarcarto-integration:$GITHUB_INTEGRATION_USER_TOKEN@github.com/alvarcarto/alvarcarto-render-snapshot.git"
+            cd alvarcarto-render-snapshot
+            npm i
+
+            IP=$(python manage-servers.py get_tile_api_ip)
+            export RENDER_API_URL="http://$IP:8001"
+            export RENDER_API_KEY=PERSONxMz4jp8tgACSKL7r
+            export AWS_S3_BUCKET_NAME=alvarcarto-render-snapshots
+            export AWS_ACCESS_KEY_ID="$SNAPSHOT_TOOL_AWS_ACCESS_KEY_ID"
+            export AWS_SECRET_ACCESS_KEY="$SNAPSHOT_TOOL_AWS_SECRET_ACCESS_KEY"
+            npm run snapshot

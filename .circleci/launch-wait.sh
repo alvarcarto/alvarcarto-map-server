@@ -1,12 +1,9 @@
-NEW_WAIT_INDEX=$((WAIT_INDEX+1))
-body_template='{
+body='{
   "parameters": {
     "start": false,
-    "wait": true,
-    "wait-index": "0"
+    "wait": true
   }
 }'
-body=$(printf "$body_template" "$NEW_WAIT_INDEX")
 
 echo "Sending body: $body"
 http_code=$(curl -o out -w '%{http_code}' -v -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d "$body" https://circleci.com/api/v2/project/github/alvarcarto/alvarcarto-map-server/pipeline)

@@ -6,7 +6,7 @@
       "NODE_ENV": "production",
       "DISABLE_CACHE": "true",
       "STYLE_DIR": "/home/alvar/mapnik-styles",
-      "CACHE_DIR": "/mnt/volume1/alvar/tiles",
+      "CACHE_DIR": "/home/alvar/data/tiles",
       "PORT": "8002"
     },
     "interpreter" : "node@6.9.4"
@@ -21,7 +21,7 @@
       "FONT_DIR": "/usr/share/fonts/truetype/google-fonts",
       "TILE_URL": "http://localhost:8002/{style}/{z}/{x}/{y}/tile.png"
     },
-    "interpreter" : "node@6.9.4",
+    "interpreter" : "node@8.17.0",
     "node_args": "--max_old_space_size=4096"
  }, {
     "name" : "placement",
