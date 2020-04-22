@@ -82,7 +82,7 @@ cloudflareApi = CloudflareApi('https://api.cloudflare.com')
 
 
 def connection(server, **kwargs):
-  connect_kwargs = { 'look_for_keys': False, 'connect_timeout': 120 }
+  connect_kwargs = { 'look_for_keys': False }
   if 'ssh_key_filename' in server:
     connect_kwargs['passphrase'] = server['user_ssh_passphrase']
     connect_kwargs['key_filename'] = server['ssh_key_filename']
@@ -92,7 +92,7 @@ def connection(server, **kwargs):
     raise Exception('No password or ssh key provided!')
 
   config = Config(overrides={ 'sudo': { 'password': server['password'] } })
-  return Connection(server['ip'], user=server['user'], config=config, connect_kwargs=connect_kwargs, **kwargs)
+  return Connection(server['ip'], user=server['user'], config=config, connect_kwargs=connect_kwargs, connect_timeout=120, **kwargs)
 
 
 def is_server_alive(server):
