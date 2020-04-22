@@ -224,7 +224,7 @@ def initialise_as_root(server):
 
     logger.info('Installing packages ..')
     c.run('apt-get autoclean && apt-get autoremove && apt-get update')
-    c.run('apt-get upgrade')
+    c.run('apt-get -y upgrade')
     c.run('apt-get -y install locales && locale-gen en_US.UTF-8')
     c.run('apt-get install -y sudo openssl git nano screen postgresql-client')
 
