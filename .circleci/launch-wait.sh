@@ -1,3 +1,8 @@
+#!/bin/bash
+
+set -e
+
+
 body='{
   "parameters": {
     "wait": true

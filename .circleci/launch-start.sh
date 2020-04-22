@@ -1,3 +1,7 @@
+#!/bin/bash
+
+set -e
+
 body='{
   "parameters": {
     "manual_start": true

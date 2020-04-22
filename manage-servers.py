@@ -361,9 +361,11 @@ def task_is_install_ready(records):
     read = False
 
   if ready:
-    print('true')
+    logger.info('Install is ready!')
+    sys.exit(0)
   else:
-    print('false')
+    logger.info('Install is not ready yet')
+    sys.exit(50)
 
 
 def task_get_tile_api_reserve_ip(records):
