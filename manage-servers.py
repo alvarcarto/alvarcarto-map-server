@@ -266,7 +266,9 @@ def is_install_ready(server):
   with connection(server) as c:
     start_file = path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_started')
     logger.info('Testing if {} exists ..'.format(start_file))
-    if c.run('test -f {}'.format(start_file), warn=True).failed:
+    start_file_exists = c.run('test -f {}'.format(start_file), warn=True).exited == 0
+    logger.info('Found: {} '.format(start_file_exists))
+    if not start_file_exists:
       raise Exception('Install has not been started, {} doesn\'t exist'.format(start_file))
 
     result = c.run('screen -list | grep -q "install"', warn=True)
