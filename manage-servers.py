@@ -153,7 +153,7 @@ def wait_until_responsive(server, wait_time=3, total_max_wait_time=60 * 10):
     if total_wait_time > total_max_wait_time:
       raise Exception('Timout while waiting server to become responsive!')
 
-    logger.info('Waiting server {ip} is responsive ..'.format(**server))
+    logger.info('Waiting until server {ip} is responsive ..'.format(**server))
     time.sleep(wait_time)
 
   logger.info('Server {ip} is alive'.format(**server))
@@ -214,6 +214,8 @@ def start_install_as_map_user(server):
 
   with connection(server) as c:
     # Add SSH key
+    c.run('mkdir -p ~/.ssh')
+    c.run('chmod 700 .ssh')
     pub_key_file = 'alvarcarto-server-key.pub'
     remote_pub_key_file = path.join(config['MAP_SERVER_INSTALL_DIR'], pub_key_file)
     s3.download_file('alvarcarto-keys', pub_key_file, pub_key_file)
