@@ -209,7 +209,7 @@ def initialise_as_root(server):
     c.run('echo -e "\nalvar ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers')
 
 
-def start_install_as_alvar(server):
+def start_install_as_map_user(server):
   logger.info('Start installation as alvar at {ip} ..'.format(**server))
 
   with connection(server) as c:
@@ -285,6 +285,9 @@ def task_start_install(records):
   asRoot = extend(server, { 'user': 'root', 'password': details['linux']['password'] })
   wait_until_responsive(asRoot, wait_time=30)
   initialise_as_root(asRoot)
+
+  asMapUser = extend(server, { 'user': 'alvar', 'password': config['MAP_USER_PASSWORD'] })
+  start_install_as_map_user(asMapUser)
 
 
 def task_is_install_ready(records):
