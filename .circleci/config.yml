@@ -100,7 +100,7 @@ jobs:
 
             if [[ "$output_trim" = "true" ]];
             then
-              bash .circleci/launch-futher-steps.sh
+              bash .circleci/launch-further-steps.sh
             else
               echo "$(date +%Y%m%d%H%M%S) Sleeping for an hour .."
               echo "Note: The server installation might take even 40 hours"
