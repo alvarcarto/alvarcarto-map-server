@@ -91,7 +91,7 @@ def connection(server, **kwargs):
   else:
     raise Exception('No password or ssh key provided!')
 
-  new_kwargs = extend({ 'connect_timeout': 120 }, kwargs)
+  new_kwargs = extend({ 'connect_timeout': 5 }, kwargs)
   config = Config(overrides={ 'sudo': { 'password': server['password'] } })
   return Connection(server['ip'], user=server['user'], config=config, connect_kwargs=connect_kwargs, **new_kwargs)
 
@@ -139,15 +139,23 @@ def force_initiate_linux_install(server):
   return initiate_linux_install(server)
 
 
-def reboot(server):
+def hardware_reboot(server):
   robotApi.post('/reset/{ip}'.format(**server), data={ 'type': 'hw' })
   logger.info('Reboot request sent for {ip} '.format(**server))
   time.sleep(10)
 
 
+def reboot(server):
+  with connection(server) as c:
+    c.run('reboot')
+  time.sleep(10)
+
+
 def format_and_reinstall_ubuntu(server):
   details = force_initiate_linux_install(server)
+  time.sleep(60)
   reboot(server)
+  time.sleep(60)
 
   return details
 
@@ -348,7 +356,7 @@ def task_finish_install(records):
   }
 
   run_after_installation_tasks(asMapUser)
-  reboot(server)
+  hardware_reboot(server)
   wait_until_responsive(asMapUser)
 
 
