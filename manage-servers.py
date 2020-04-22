@@ -138,7 +138,7 @@ def force_initiate_linux_install(server):
 
 
 def reboot(server):
-  robotApi.post('/reset/{ip}'.format(**server), data={ 'type': 'sw' })
+  robotApi.post('/reset/{ip}'.format(**server), data={ 'type': 'hw' })
   logger.info('Reboot request sent for {ip} '.format(**server))
   time.sleep(10)
 
