@@ -146,6 +146,7 @@ def hardware_reboot(server):
 
 
 def reboot(server):
+  logger.info('Rebooting server ..')
   with connection(server) as c:
     c.run('reboot')
   time.sleep(10)
@@ -153,9 +154,11 @@ def reboot(server):
 
 def format_and_reinstall_ubuntu(server):
   details = force_initiate_linux_install(server)
+  logger.info('Waiting 60s for linux install to register ..')
   time.sleep(60)
   reboot(server)
-  time.sleep(60)
+  logger.info('Waiting 5minutes for linux installation to finish ..')
+  time.sleep(60 * 5)
 
   return details
 
