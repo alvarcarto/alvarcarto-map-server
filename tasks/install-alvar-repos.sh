@@ -21,6 +21,6 @@ else
 fi
 
 sleep 3
-sudo env PATH=$PATH:/home/alvar/.nvm/versions/node/v6.9.4/bin /home/alvar/.nvm/versions/node/v6.9.4/lib/node_modules/pm2/bin/pm2 startup systemd -u alvar --hp /home/alvar
+sudo env PATH=$PATH:/home/alvar/.nvm/versions/node/v10.8.0/bin /home/alvar/.nvm/versions/node/v10.8.0/lib/node_modules/pm2/bin/pm2 startup systemd -u alvar --hp /home/alvar
 sleep 2
 pm2 save
