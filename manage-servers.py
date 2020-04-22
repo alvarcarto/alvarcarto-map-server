@@ -154,10 +154,17 @@ def reboot(server):
 
 def format_and_reinstall_ubuntu(server):
   details = force_initiate_linux_install(server)
+  logger.info('Got following details for reinstall: {}'.format(details))
+
+  # These waits are done for just in case. Previously the reinstall wasn't registered
+  # before we started doing other operations and we ran some setup tasks before the reinstall
+  # was actually executed
   logger.info('Waiting 60s for linux install to register ..')
   time.sleep(60)
   hardware_reboot(server)
   logger.info('Waiting 5 minutes for linux installation to finish ..')
+  time.sleep(60 * 5)
+  logger.info('Waiting 5 more minutes for linux installation to finish ..')
   time.sleep(60 * 5)
 
   return details
@@ -317,7 +324,6 @@ def task_start_install(records):
   }
 
   details = format_and_reinstall_ubuntu(server)
-  logger.info('Got following details for reinstall: {}'.format(details))
   asRoot = extend(server, { 'user': 'root', 'password': details['linux']['password'] })
   wait_until_responsive(asRoot, wait_time=30)
   initialise_as_root(asRoot)
