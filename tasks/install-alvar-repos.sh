@@ -11,6 +11,9 @@ source $ALVAR_MAP_SERVER_REPOSITORY_DIR/tasks/install-alvar-repo-cartocss.sh
 source $ALVAR_MAP_SERVER_REPOSITORY_DIR/tasks/install-alvar-repo-placement.sh
 source $ALVAR_MAP_SERVER_REPOSITORY_DIR/tasks/install-alvar-repo-tile.sh
 
+
+nvm use 10.8.0
+
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 npm install -g pm2
 
