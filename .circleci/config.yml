@@ -103,6 +103,7 @@ jobs:
               bash .circleci/launch-futher-steps.sh
             else
               echo "$(date +%Y%m%d%H%M%S) Sleeping for an hour .."
+              echo "Note: The server installation might take even 40 hours"
               for i in {1..60}
               do
                 echo "$(date +%Y%m%d%H%M%S) Sleeping 1 minute .."
