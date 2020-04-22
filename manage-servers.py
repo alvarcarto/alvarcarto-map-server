@@ -245,6 +245,7 @@ def start_install_as_map_user(server):
 def is_install_ready(server):
   with connection(server) as c:
     start_file = path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_started')
+    logger.info('Testing if {} exists ..'.format(start_file))
     if c.run('test -f {}'.format(start_file), warn=True).failed:
       raise Exception('Install has not been started, {} doesn\'t exist'.format(start_file))
 
