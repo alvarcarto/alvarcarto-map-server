@@ -156,9 +156,7 @@ def format_and_reinstall_ubuntu(server):
   details = force_initiate_linux_install(server)
   logger.info('Waiting 60s for linux install to register ..')
   time.sleep(60)
-
-  asRoot = extend(server, { 'user': 'root', 'password': details['linux']['password'] })
-  reboot(asRoot)
+  hardware_reboot(server)
   logger.info('Waiting 5 minutes for linux installation to finish ..')
   time.sleep(60 * 5)
 
