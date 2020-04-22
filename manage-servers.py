@@ -222,12 +222,18 @@ def start_install_as_map_user(server):
     repo_dir = path.join(config['MAP_SERVER_INSTALL_DIR'], 'alvarcarto-map-server')
     c.run('git clone {clone_url} {repo_dir}'.format(clone_url=clone_url, repo_dir=repo_dir))
     with c.cd(repo_dir):
+      c.run('touch {}'.format(path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_started')))
       c.run('screen -S install -dm ALVAR_MAP_SERVER_DATA_DIR={} ALVAR_ENV={} bash install.sh'.format(config['MAP_SERVER_DATA_DIR'], config['ALVAR_ENV']))
 
 
 def is_install_ready(server):
-  result = c.run('screen -list | grep -q "install"')
-  return result.exited == 0
+  with connection(server) as c:
+    start_file = path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_started')
+    if c.run('test -f {}'.format(start_file), warn=True).failed:
+      raise Exception('Install has not been started, {} doesn\'t exist'.format(start_file))
+
+    result = c.run('screen -list | grep -q "install"')
+    return result.exited == 0
 
 
 def run_after_installation_tasks(server):
