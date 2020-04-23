@@ -17,6 +17,8 @@ nvm use 10.8.0
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 npm install -g pm2
 
+npm i mustache
+
 # This step assumes that the installation dir contains <env>.secrets.json file with secrets
 if [ "$ALVAR_ENV" = "qa" ] || [ "$ALVAR_ENV" = "docker" ]; then
     node tools/replace-secrets.js confs/pm2.qa.json "$ALVAR_MAP_SERVER_INSTALL_DIR/qa.secrets.json" > confs/pm2.qa.json

@@ -6,6 +6,8 @@ npm-debug.log*
 .cache
 .python_history
 
+*.secrets.json
+
 # Runtime data
 pids
 *.pid
