@@ -167,6 +167,7 @@ def format_and_reinstall_ubuntu(server):
   hardware_reboot(server)
   logger.info('Waiting 5 minutes for linux installation to finish ..')
   time.sleep(60 * 5)
+  # Another log message is needed so circle ci doesn't kill the job
   logger.info('Waiting 5 more minutes for linux installation to finish ..')
   time.sleep(60 * 5)
 
@@ -282,7 +283,7 @@ def start_install_as_map_user(server):
       cmd = '; '.join([
         'ALVAR_MAP_SERVER_DATA_DIR={} ALVAR_ENV={} bash install.sh'.format(config['MAP_SERVER_DATA_DIR'], config['ALVAR_ENV']),
         'echo "$?" > {}'.format(install_exit_file),
-        'CIRCLECI_TOKEN="{}" .circleci/launch-wait.sh'.format(config['CIRCLECI_TOKEN'])
+        'CIRCLECI_TOKEN="{}" bash .circleci/launch-wait.sh'.format(config['CIRCLECI_TOKEN'])
       ])
       # Screen command will immediately detach and run in background
       c.run('screen -S install -dm bash -c \'{}\''.format(cmd))
