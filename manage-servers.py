@@ -371,7 +371,7 @@ def task_start_install():
   wait_until_responsive(asMapUser, wait_time=30)
 
 
-def task_is_install_ready(records):
+def task_is_install_ready():
   records = get_dns_records()
 
   asMapUser = {
