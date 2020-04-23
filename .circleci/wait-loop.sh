@@ -4,8 +4,8 @@ set -e
 
 index=0
 while true; do
-  (python manage-servers.py is_install_ready)
-  exit_code=$?
+  exit_code=0
+  python manage-servers.py is_install_ready || exit_code=$?
 
   if [[ $index -gt 59 ]]; then
     echo "60 minutes has passed"
