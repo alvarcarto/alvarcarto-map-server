@@ -162,8 +162,8 @@ def format_and_reinstall_ubuntu(server):
   # was actually executed
   # I couldn't find a way to wait for the installation to finish via their API:
   # https://robot.your-server.de/doc/webservice/en.html#post-boot-server-ip-linux
-  logger.info('Waiting 60s for linux install to register ..')
-  time.sleep(60)
+  logger.info('Waiting 30s for linux install to register ..')
+  time.sleep(30)
   hardware_reboot(server)
   logger.info('Waiting 5 minutes for linux installation to finish ..')
   time.sleep(60 * 5)
