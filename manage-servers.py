@@ -351,6 +351,9 @@ def run_after_installation_tasks(server):
     c.run('rm {}'.format(path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_started')))
     c.run('rm {}'.format(path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_exit_code')))
 
+    # Run final system upgrades before reboot
+    c.run('apt-get -y upgrade')
+
 
 def task_start_install():
   records = get_dns_records()
