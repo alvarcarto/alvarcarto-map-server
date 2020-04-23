@@ -20,7 +20,7 @@
       "NODE_ENV": "production",
       "PORT": "8001",
       "STYLE_DIR": "/home/alvar/mapnik-styles",
-      "API_KEY": "t69VHWi8eY6N4dYcyL,PLACEMENTAPIduGfZC4tx2pUQXJ5,PERSONxMz4jp8tgACSKL7r",
+      "API_KEY": "{{{api_key}}},{{{placement_api_key}}},{{{person_api_key}}},{{travis_api_key}}",
       "FONT_DIR": "/usr/share/fonts/truetype/google-fonts",
       "TILE_URL": "http://localhost:8002/{style}/{z}/{x}/{y}/tile.png"
     },
@@ -32,12 +32,12 @@
     "env": {
       "NODE_ENV": "production",
       "PORT": "8003",
-      "API_KEY": "t69VHWi8eY6N4dYcyL,PERSONxMz4jp8tgACSKL7r",
+      "API_KEY": "{{{api_key}}},{{{person_api_key}}},{{travis_api_key}}",
       "AWS_S3_BUCKET_NAME": "alvarcarto-placement-assets",
-      "AWS_ACCESS_KEY_ID": "AKIAJM6PFBJBV6KEALWA",
-      "AWS_SECRET_ACCESS_KEY": "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",
+      "AWS_ACCESS_KEY_ID": "{{{placement_assets_aws_access_key_id}}}",
+      "AWS_SECRET_ACCESS_KEY": "{{{placement_assets_aws_secret_access_key}}}",
       "ALVARCARTO_RENDER_API_BASE_URL": "http://127.0.0.1:8001",
-      "ALVARCARTO_RENDER_API_KEY": "PLACEMENTAPIduGfZC4tx2pUQXJ5",
+      "ALVARCARTO_RENDER_API_KEY": "{{{placement_api_key}}}",
       "LOG_LEVEL": "debug"
     },
     "interpreter" : "node@10.8.0",

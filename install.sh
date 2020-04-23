@@ -22,9 +22,11 @@ set -e
 # creates that directory.
 # Path MUST NOT contain a trailing slash
 
+export ALVAR_MAP_SERVER_INSTALL_DIR=${ALVAR_MAP_SERVER_INSTALL_DIR:-/home/alvar}
 export ALVAR_MAP_SERVER_DATA_DIR=${ALVAR_MAP_SERVER_DATA_DIR:-/home/alvar/data}
 export ALVAR_ENV=${ALVAR_ENV:-prod}
 
+echo "ALVAR_MAP_SERVER_INSTALL_DIR=$ALVAR_MAP_SERVER_INSTALL_DIR"
 echo "ALVAR_MAP_SERVER_DATA_DIR=$ALVAR_MAP_SERVER_DATA_DIR"
 echo "ALVAR_ENV=$ALVAR_ENV"
 

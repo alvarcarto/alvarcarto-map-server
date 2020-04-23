@@ -17,7 +17,7 @@
       "NODE_ENV": "production",
       "PORT": "8001",
       "STYLE_DIR": "/home/alvar/mapnik-styles",
-      "API_KEY": "secret",
+      "API_KEY": "{{api_key}},{{{travis_api_key}}}",
       "FONT_DIR": "/usr/share/fonts/truetype/google-fonts",
       "TILE_URL": "http://localhost:8002/{style}/{z}/{x}/{y}/tile.png"
     },
@@ -29,10 +29,12 @@
     "env": {
       "NODE_ENV": "production",
       "PORT": "8003",
-      "API_KEY": "secret",
-      "ASSETS_BASE_URL": "https://s3-eu-west-1.amazonaws.com/alvarcarto-placement-assets/images",
+      "API_KEY": "{{api_key}},{{{travis_api_key}}}",
+      "AWS_S3_BUCKET_NAME": "alvarcarto-placement-assets",
+      "AWS_ACCESS_KEY_ID": "{{{placement_assets_aws_access_key_id}}}",
+      "AWS_SECRET_ACCESS_KEY": "{{{placement_assets_aws_secret_access_key}}}",
       "ALVARCARTO_RENDER_API_BASE_URL": "http://127.0.0.1:8001",
-      "ALVARCARTO_RENDER_API_KEY": "secret",
+      "ALVARCARTO_RENDER_API_KEY": "{{api_key}}",
       "LOG_LEVEL": "debug"
     },
     "interpreter" : "node@10.8.0",

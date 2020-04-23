@@ -206,6 +206,7 @@ nvm use 6
 pm2 stop all
 pm2 delete all
 cd $HOME/alvarcarto-map-server
+
 pm2 start confs/pm2.json
 
 # Check that everything went allright

@@ -34,6 +34,9 @@ for key, val in config.items():
   if val is None:
     raise Exception('{} env var not set!'.format(key))
 
+INSTALL_EXIT_CODE_FILE = path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_exit_code')
+INSTALL_STARTED_FILE = path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_started')
+
 s3 = boto3.client('s3',
   aws_access_key_id=config['AWS_ACCESS_KEY_ID'],
   aws_secret_access_key=config['AWS_SECRET_ACCESS_KEY'],
@@ -174,6 +177,12 @@ def format_and_reinstall_ubuntu(ip):
   return details
 
 
+def from_s3_to_server(s3_file_name, server_path):
+  s3.download_file('alvarcarto-keys', s3_file_name, s3_file_name)
+  c.put(s3_file_name, server_path)
+  os.remove(s3_file_name)
+
+
 def wait_until_responsive(server, wait_time=3, total_max_wait_time=60 * 10):
   start_time = time.time()
   while not is_server_alive(server):
@@ -259,11 +268,9 @@ def start_install_as_map_user(server):
     c.run('chmod 700 .ssh')
     pub_key_file = 'alvarcarto-server-key.pub'
     remote_pub_key_file = path.join(config['MAP_SERVER_INSTALL_DIR'], pub_key_file)
-    s3.download_file('alvarcarto-keys', pub_key_file, pub_key_file)
-    c.put(pub_key_file, remote_pub_key_file)
-    os.remove(pub_key_file)
-    c.run('cat {remote_pub_key_file} >> ~/.ssh/authorized_keys'.format(remote_pub_key_file=remote_pub_key_file))
-    c.run('rm {remote_pub_key_file}'.format(remote_pub_key_file=remote_pub_key_file))
+    from_s3_to_server(pub_key_file, remote_pub_key_file)
+    c.run('cat {} >> ~/.ssh/authorized_keys'.format(remote_pub_key_file))
+    c.run('rm {}'.format(remote_pub_key_file))
 
     logger.info('Starting installation inside screen ..')
     # Increase scrollback to 1M lines
@@ -273,39 +280,41 @@ def start_install_as_map_user(server):
 
     clone_url = 'https://alvarcarto-integration:{password}@github.com/alvarcarto/alvarcarto-map-server.git'.format(password=config['GITHUB_INTEGRATION_USER_TOKEN'])
     repo_dir = path.join(config['MAP_SERVER_INSTALL_DIR'], 'alvarcarto-map-server')
-    c.run('git clone {clone_url} {repo_dir}'.format(clone_url=clone_url, repo_dir=repo_dir))
+    c.run('git clone {} {}'.format(clone_url, repo_dir))
     with c.cd(repo_dir):
-      install_exit_file = path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_exit_code')
+      secrets_file = '{}.secrets.json'.format(config['ALVAR_ENV'])
+      remote_secrets_file = path.join(config['MAP_SERVER_INSTALL_DIR'], secrets_file)
+      from_s3_to_server(secrets_file, remote_secrets_file)
 
       # These commands are all executed regardless of the exit codes of individual steps
       # That is needed, we want to always launch the wait task in circle ci to show the status
       # even if the install failed
       cmd = '; '.join([
-        'ALVAR_MAP_SERVER_DATA_DIR={} ALVAR_ENV={} bash install.sh'.format(config['MAP_SERVER_DATA_DIR'], config['ALVAR_ENV']),
-        'echo "$?" > {}'.format(install_exit_file),
+        'ALVAR_MAP_SERVER_INSTALL_DIR={} ALVAR_MAP_SERVER_DATA_DIR={} ALVAR_ENV={} bash install.sh'.format(config['MAP_SERVER_INSTALL_DIR'], config['MAP_SERVER_DATA_DIR'], config['ALVAR_ENV']),
+        'echo "$?" > {}'.format(INSTALL_EXIT_CODE_FILE),
         'CIRCLECI_TOKEN="{}" bash .circleci/launch-wait.sh'.format(config['CIRCLECI_TOKEN'])
       ])
       # Screen command will immediately detach and run in background
       c.run('screen -S install -dm bash -c \'{}\''.format(cmd))
 
-      c.run('touch {}'.format(path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_started')))
+      c.run('touch {}'.format(INSTALL_STARTED_FILE))
       logger.info('Installation started as map user at {ip} ..'.format(**server))
+
+      c.run('rm {}'.format(remote_secrets_file))
 
 
 def is_install_ready_to_continue(server):
   with connection(server) as c:
-    start_file = path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_started')
-    logger.info('Testing if {} exists ..'.format(start_file))
-    start_file_exists = c.run('test -f {}'.format(start_file), hide=True, warn=True).exited == 0
+    logger.info('Testing if {} exists ..'.format(INSTALL_STARTED_FILE))
+    start_file_exists = c.run('test -f {}'.format(INSTALL_STARTED_FILE), hide=True, warn=True).exited == 0
     if not start_file_exists:
       raise Exception('Install has not been started, {} doesn\'t exist'.format(start_file))
 
-    install_exit_file = path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_exit_code')
-    exit_file_exists = c.run('test -f {}'.format(install_exit_file), hide=True, warn=True).exited == 0
+    exit_file_exists = c.run('test -f {}'.format(INSTALL_EXIT_CODE_FILE), hide=True, warn=True).exited == 0
     if not exit_file_exists:
       return False
 
-    result = c.run('cat {}'.format(install_exit_file), hide=True).stdout.strip()
+    result = c.run('cat {}'.format(INSTALL_EXIT_CODE_FILE), hide=True).stdout.strip()
     if result != '0':
       raise Exception('install.sh exited with non-zero exit code!')
 
@@ -318,19 +327,16 @@ def run_after_installation_tasks(server):
   with connection(server) as c:
     logger.info('Installing cloudflare certificates and keys ..')
     cert_file = 'cloudflare-origin-cert.pem'
-    key_file = 'cloudflare-origin-key.pem'
     remote_cert_file = path.join(config['MAP_SERVER_INSTALL_DIR'], cert_file)
+    from_s3_to_server(cert_file, remote_cert_file)
+
+    key_file = 'cloudflare-origin-key.pem'
     remote_key_file = path.join(config['MAP_SERVER_INSTALL_DIR'], key_file)
-    s3.download_file('alvarcarto-keys', cert_file, cert_file)
-    s3.download_file('alvarcarto-keys', key_file, key_file)
-    c.put(cert_file, remote_cert_file)
-    c.put(key_file, remote_key_file)
-    os.remove(cert_file)
-    os.remove(key_file)
+    from_s3_to_server(key_file, remote_key_file)
 
     c.run('sudo mkdir -p /etc/caddy')
-    c.run('sudo mv {remote_cert_file} /etc/caddy/cert.pem'.format(remote_cert_file=remote_cert_file))
-    c.run('sudo mv {remote_key_file} /etc/caddy/key.pem'.format(remote_key_file=remote_key_file))
+    c.run('sudo mv {} /etc/caddy/cert.pem'.format(remote_cert_file))
+    c.run('sudo mv {} /etc/caddy/key.pem'.format(remote_key_file))
     c.run('sudo chown www-data:www-data /etc/caddy/cert.pem /etc/caddy/key.pem')
     c.run('sudo chmod 644 /etc/caddy/cert.pem')
     c.run('sudo chmod 600 /etc/caddy/key.pem')
