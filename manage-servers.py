@@ -383,14 +383,14 @@ def task_is_install_ready_to_continue():
   try:
     ready = is_install_ready_to_continue(asMapUser)
   except TimeoutError:
-    read = False
+    return 'false'
 
   if ready:
     logger.info('Install is ready to continue!')
     return 'true'
-  else:
-    logger.info('Install is not ready yet')
-    return 'false'
+
+  logger.info('Install is not ready yet')
+  return 'false'
 
 
 def task_get_tile_api_reserve_ip():
@@ -492,7 +492,7 @@ def task_promote_reserve_to_production():
 def wrap_with_rollback(func):
   def run_func(*args, **kwargs):
     try:
-      func(*args, **kwargs)
+      return func(*args, **kwargs)
     except Exception as e:
       logger.error('Exception raised: {}'.format(e))
       if len(global_rollback_actions) == 0:
