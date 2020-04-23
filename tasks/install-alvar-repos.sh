@@ -21,12 +21,12 @@ npm i mustache
 
 # This step assumes that the installation dir contains <env>.secrets.json file with secrets
 if [ "$ALVAR_ENV" = "qa" ] || [ "$ALVAR_ENV" = "docker" ]; then
-    node tools/replace-secrets.js confs/pm2.qa.json "$ALVAR_MAP_SERVER_INSTALL_DIR/qa.secrets.json" > confs/pm2.qa.json
-    pm2 start confs/pm2.qa.json
+    node tools/replace-secrets.js confs/pm2.qa.json "$ALVAR_MAP_SERVER_INSTALL_DIR/qa.secrets.json" > confs/chosen-pm2.json
 else
-    node tools/replace-secrets.js confs/pm2.json "$ALVAR_MAP_SERVER_INSTALL_DIR/prod.secrets.json" > confs/pm2.json
-    pm2 start confs/pm2.json
+    node tools/replace-secrets.js confs/pm2.json "$ALVAR_MAP_SERVER_INSTALL_DIR/prod.secrets.json" > confs/chosen-pm2.json
 fi
+
+pm2 start confs/chosen-pm2.json
 
 sleep 3
 sudo env PATH=$PATH:/home/alvar/.nvm/versions/node/v10.8.0/bin /home/alvar/.nvm/versions/node/v10.8.0/lib/node_modules/pm2/bin/pm2 startup systemd -u alvar --hp /home/alvar
