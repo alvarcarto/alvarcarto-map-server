@@ -316,7 +316,7 @@ def run_after_installation_tasks(server):
   logger.info('Run tasks after map server installation at {ip} ..'.format(**server))
 
   with connection(server) as c:
-    # Install cloudflare origin certificate and keys
+    logger.info('Installing cloudflare certificates and keys ..')
     cert_file = 'cloudflare-origin-cert.pem'
     key_file = 'cloudflare-origin-key.pem'
     remote_cert_file = path.join(config['MAP_SERVER_INSTALL_DIR'], cert_file)
@@ -335,7 +335,7 @@ def run_after_installation_tasks(server):
     c.run('sudo chmod 644 /etc/caddy/cert.pem')
     c.run('sudo chmod 600 /etc/caddy/key.pem')
 
-    # SSH configuration
+    logger.info('SSH configuration ..')
     c.run('sudo sed -i \'s/PermitRootLogin yes/PermitRootLogin no/g\' /etc/ssh/sshd_config')
     # Note: in OSX, you need -i "" instead of just -i for this to work
     c.run('sudo sed -E -i \'s/^(Subsystem.*sftp.*)$/#\\1/g\' /etc/ssh/sshd_config')
@@ -344,15 +344,15 @@ def run_after_installation_tasks(server):
     c.run('sudo sed -i \'s/X11Forwarding yes/X11Forwarding no/g\' /etc/ssh/sshd_config')
     c.run('sudo service ssh restart')
 
-    # Disable unsecure sudo settings added for installation
+    logger.info('Disable unsecure sudo settings added for installation ..')
     c.run('sudo sed -E -i \'s/^(alvar ALL=(ALL) NOPASSWD: ALL.*)$/#\\1/g\' /etc/sudoers')
 
-    # Remove state files
+    logger.info('Remove temporary files ..')
     c.run('rm {}'.format(path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_started')))
     c.run('rm {}'.format(path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_exit_code')))
 
-    # Run final system upgrades before reboot
-    c.run('apt-get -y upgrade')
+    logger.info('Run final system upgrades before reboot ..')
+    c.run('sudo apt-get -y upgrade')
 
 
 def task_start_install():
