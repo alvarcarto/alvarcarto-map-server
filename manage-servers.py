@@ -116,33 +116,33 @@ def extend(a, b):
   return dict(a, **b)
 
 
-def initiate_linux_install(server):
-  res = robotApi.post('/boot/{ip}/linux'.format(**server), data={
+def initiate_linux_install(ip):
+  res = robotApi.post('/boot/{}/linux'.format(ip), data={
     'dist': 'Ubuntu 18.04.4 LTS minimal',
     'arch': '64',
     'lang': 'en'
   })
 
-  logger.info('Initiated linux install for {ip}'.format(**server))
+  logger.info('Initiated linux install for {}'.format(ip))
   return res
 
 
-def force_initiate_linux_install(server):
+def force_initiate_linux_install(ip):
   try:
-    return initiate_linux_install(server)
+    return initiate_linux_install(ip)
   except requests.exceptions.HTTPError as e:
     # 409 means we have already initiated a linux reboot
     if e.response.status_code != 409:
       raise
 
-  logger.info('Linux installation already initiated for {ip}, redoing it ..'.format(**server))
-  robotApi.delete('/boot/{ip}/linux'.format(**server))
-  return initiate_linux_install(server)
+  logger.info('Linux installation already initiated for {}, redoing it ..'.format(ip))
+  robotApi.delete('/boot/{}/linux'.format(ip))
+  return initiate_linux_install(ip)
 
 
-def hardware_reboot(server):
-  robotApi.post('/reset/{ip}'.format(**server), data={ 'type': 'hw' })
-  logger.info('Reboot request sent for {ip} '.format(**server))
+def hardware_reboot(ip):
+  robotApi.post('/reset/{}'.format(ip), data={ 'type': 'hw' })
+  logger.info('Reboot request sent for {} '.format(ip))
   time.sleep(10)
 
 
@@ -153,8 +153,8 @@ def reboot(server):
   time.sleep(10)
 
 
-def format_and_reinstall_ubuntu(server):
-  details = force_initiate_linux_install(server)
+def format_and_reinstall_ubuntu(ip):
+  details = force_initiate_linux_install(ip)
   logger.info('Got following details for reinstall: {}'.format(details))
 
   # These waits are done for just in case. Previously the reinstall wasn't registered
@@ -164,7 +164,7 @@ def format_and_reinstall_ubuntu(server):
   # https://robot.your-server.de/doc/webservice/en.html#post-boot-server-ip-linux
   logger.info('Waiting 30s for linux install to register ..')
   time.sleep(30)
-  hardware_reboot(server)
+  hardware_reboot(ip)
   logger.info('Waiting 5 minutes for linux installation to finish ..')
   time.sleep(60 * 5)
   # Another log message is needed so circle ci doesn't kill the job
@@ -361,7 +361,7 @@ def task_start_install():
     'ip': records['tile-api-reserve']['ip'],
   }
 
-  details = format_and_reinstall_ubuntu(server)
+  details = format_and_reinstall_ubuntu(server['ip'])
   asRoot = extend(server, { 'user': 'root', 'password': details['linux']['password'] })
   wait_until_responsive(asRoot, wait_time=30)
   initialise_as_root(asRoot)
@@ -412,7 +412,7 @@ def task_finish_install():
   }
 
   run_after_installation_tasks(asMapUser)
-  hardware_reboot(server)
+  hardware_reboot(asMapUser['ip'])
   wait_until_responsive(asMapUser)
 
 
