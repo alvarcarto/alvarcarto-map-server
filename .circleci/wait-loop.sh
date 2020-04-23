@@ -12,7 +12,7 @@ while true; do
     echo "Launching the wait task again"
     bash .circleci/launch-wait.sh
     break
-  if [[ "$output_trim" = "true" ]] then
+  elif [[ "$output_trim" = "true" ]]; then
     echo "Install ready!"
     bash .circleci/launch-further-steps.sh
     break
