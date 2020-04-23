@@ -4,7 +4,7 @@ set -e
 
 index=0
 while true; do
-  output=$(python manage-servers.py is_install_ready)
+  output=$(python manage-servers.py is_install_ready_to_continue)
   output_trim=$(echo "$output" | xargs)
 
   if [[ $index -gt 59 ]]; then

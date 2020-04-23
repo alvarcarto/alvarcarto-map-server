@@ -292,20 +292,20 @@ def start_install_as_map_user(server):
       logger.info('Installation started as map user at {ip} ..'.format(**server))
 
 
-def is_install_ready(server):
+def is_install_ready_to_continue(server):
   with connection(server) as c:
     start_file = path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_started')
     logger.info('Testing if {} exists ..'.format(start_file))
-    start_file_exists = c.run('test -f {}'.format(start_file), warn=True).exited == 0
+    start_file_exists = c.run('test -f {}'.format(start_file), hide=True, warn=True).exited == 0
     if not start_file_exists:
       raise Exception('Install has not been started, {} doesn\'t exist'.format(start_file))
 
     install_exit_file = path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_exit_code')
-    exit_file_exists = c.run('test -f {}'.format(install_exit_file), warn=True).exited == 0
+    exit_file_exists = c.run('test -f {}'.format(install_exit_file), hide=True, warn=True).exited == 0
     if not exit_file_exists:
       return False
 
-    result = c.run('cat {}'.format(install_exit_file)).stdout.strip()
+    result = c.run('cat {}'.format(install_exit_file), hide=True).stdout.strip()
     if result != '0':
       raise Exception('install.sh exited with non-zero exit code!')
 
@@ -371,7 +371,7 @@ def task_start_install():
   wait_until_responsive(asMapUser, wait_time=30)
 
 
-def task_is_install_ready():
+def task_is_install_ready_to_continue():
   records = get_dns_records()
 
   asMapUser = {
@@ -381,26 +381,26 @@ def task_is_install_ready():
   }
 
   try:
-    ready = is_install_ready(asMapUser)
+    ready = is_install_ready_to_continue(asMapUser)
   except TimeoutError:
     read = False
 
   if ready:
-    logger.info('Install is ready!')
-    print('true')
+    logger.info('Install is ready to continue!')
+    return 'true'
   else:
     logger.info('Install is not ready yet')
-    print('false')
+    return 'false'
 
 
 def task_get_tile_api_reserve_ip():
   records = get_dns_records()
-  print(records['tile-api-reserve']['ip'])
+  return records['tile-api-reserve']['ip']
 
 
 def task_get_tile_api_ip():
   records = get_dns_records()
-  print(records['tile-api']['ip'])
+  return records['tile-api']['ip']
 
 
 def task_finish_install():
@@ -514,7 +514,7 @@ def wrap_with_rollback(func):
 def execute_task(task, *task_args):
   tasks = {
     'start_install': wrap_with_rollback(task_start_install),
-    'is_install_ready': wrap_with_rollback(task_is_install_ready),
+    'is_install_ready_to_continue': wrap_with_rollback(task_is_install_ready_to_continue),
     'finish_install': wrap_with_rollback(task_finish_install),
     'download_file': wrap_with_rollback(task_download_file),
     'get_tile_api_reserve_ip': wrap_with_rollback(task_get_tile_api_reserve_ip),
@@ -530,7 +530,12 @@ def execute_task(task, *task_args):
 
   logger.info('Running task {}'.format(task))
   task_func = tasks[task]
-  task_func(*task_args)
+  result = task_func(*task_args)
+
+  # If the task returns result output, the individual steps should not output anything else
+  # to stdout!
+  if result is not None:
+    print(result)
 
 
 def print_err(*args, **kwargs):
