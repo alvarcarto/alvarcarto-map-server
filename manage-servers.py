@@ -36,6 +36,8 @@ for key, val in config.items():
 
 INSTALL_EXIT_CODE_FILE = path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_exit_code')
 INSTALL_STARTED_FILE = path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_started')
+SECRETS_FILE_NAME = '{}.secrets.json'.format(config['ALVAR_ENV'])
+SECRETS_FILE = path.join(config['MAP_SERVER_INSTALL_DIR'], SECRETS_FILE_NAME)
 
 s3 = boto3.client('s3',
   aws_access_key_id=config['AWS_ACCESS_KEY_ID'],
@@ -178,6 +180,7 @@ def format_and_reinstall_ubuntu(ip):
 
 
 def from_s3_to_server(conn, s3_file_name, server_path):
+  logger.info('Downloading {} from S3 to remote path {} ..'.format(s3_file_name, server_path))
   s3.download_file('alvarcarto-keys', s3_file_name, s3_file_name)
   conn.put(s3_file_name, server_path)
   os.remove(s3_file_name)
@@ -278,14 +281,12 @@ def start_install_as_map_user(server):
     c.run('echo "deflog on" >> ~/.screenrc')
     c.run('echo "logfile /home/alvar/screenlog.%n" >> ~/.screenrc')
 
+    from_s3_to_server(c, SECRETS_FILE_NAME, SECRETS_FILE)
+
     clone_url = 'https://alvarcarto-integration:{password}@github.com/alvarcarto/alvarcarto-map-server.git'.format(password=config['GITHUB_INTEGRATION_USER_TOKEN'])
     repo_dir = path.join(config['MAP_SERVER_INSTALL_DIR'], 'alvarcarto-map-server')
     c.run('git clone {} {}'.format(clone_url, repo_dir))
     with c.cd(repo_dir):
-      secrets_file = '{}.secrets.json'.format(config['ALVAR_ENV'])
-      remote_secrets_file = path.join(config['MAP_SERVER_INSTALL_DIR'], secrets_file)
-      from_s3_to_server(c, secrets_file, remote_secrets_file)
-
       # These commands are all executed regardless of the exit codes of individual steps
       # That is needed, we want to always launch the wait task in circle ci to show the status
       # even if the install failed
@@ -299,8 +300,6 @@ def start_install_as_map_user(server):
 
       c.run('touch {}'.format(INSTALL_STARTED_FILE))
       logger.info('Installation started as map user at {ip} ..'.format(**server))
-
-      c.run('rm {}'.format(remote_secrets_file))
 
 
 def is_install_ready_to_continue(server):
@@ -354,8 +353,9 @@ def run_after_installation_tasks(server):
     c.run('sudo sed -E -i \'s/^(alvar ALL=(ALL) NOPASSWD: ALL.*)$/#\\1/g\' /etc/sudoers')
 
     logger.info('Remove temporary files ..')
-    c.run('rm {}'.format(path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_started')))
-    c.run('rm {}'.format(path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_exit_code')))
+    c.run('rm {}'.format(INSTALL_STARTED_FILE))
+    c.run('rm {}'.format(INSTALL_EXIT_CODE_FILE))
+    c.run('rm {}'.format(SECRETS_FILE))
 
     logger.info('Run final system upgrades before reboot ..')
     c.run('sudo apt-get -y upgrade')
