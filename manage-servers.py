@@ -177,9 +177,9 @@ def format_and_reinstall_ubuntu(ip):
   return details
 
 
-def from_s3_to_server(s3_file_name, server_path):
+def from_s3_to_server(conn, s3_file_name, server_path):
   s3.download_file('alvarcarto-keys', s3_file_name, s3_file_name)
-  c.put(s3_file_name, server_path)
+  conn.put(s3_file_name, server_path)
   os.remove(s3_file_name)
 
 
@@ -268,7 +268,7 @@ def start_install_as_map_user(server):
     c.run('chmod 700 .ssh')
     pub_key_file = 'alvarcarto-server-key.pub'
     remote_pub_key_file = path.join(config['MAP_SERVER_INSTALL_DIR'], pub_key_file)
-    from_s3_to_server(pub_key_file, remote_pub_key_file)
+    from_s3_to_server(c, pub_key_file, remote_pub_key_file)
     c.run('cat {} >> ~/.ssh/authorized_keys'.format(remote_pub_key_file))
     c.run('rm {}'.format(remote_pub_key_file))
 
@@ -284,7 +284,7 @@ def start_install_as_map_user(server):
     with c.cd(repo_dir):
       secrets_file = '{}.secrets.json'.format(config['ALVAR_ENV'])
       remote_secrets_file = path.join(config['MAP_SERVER_INSTALL_DIR'], secrets_file)
-      from_s3_to_server(secrets_file, remote_secrets_file)
+      from_s3_to_server(c, secrets_file, remote_secrets_file)
 
       # These commands are all executed regardless of the exit codes of individual steps
       # That is needed, we want to always launch the wait task in circle ci to show the status
@@ -328,11 +328,11 @@ def run_after_installation_tasks(server):
     logger.info('Installing cloudflare certificates and keys ..')
     cert_file = 'cloudflare-origin-cert.pem'
     remote_cert_file = path.join(config['MAP_SERVER_INSTALL_DIR'], cert_file)
-    from_s3_to_server(cert_file, remote_cert_file)
+    from_s3_to_server(c, cert_file, remote_cert_file)
 
     key_file = 'cloudflare-origin-key.pem'
     remote_key_file = path.join(config['MAP_SERVER_INSTALL_DIR'], key_file)
-    from_s3_to_server(key_file, remote_key_file)
+    from_s3_to_server(c, key_file, remote_key_file)
 
     c.run('sudo mkdir -p /etc/caddy')
     c.run('sudo mv {} /etc/caddy/cert.pem'.format(remote_cert_file))
@@ -374,6 +374,11 @@ def task_start_install():
   # It is possible that it happens only in development mode when the server reinstall is
   # done multiple times in a short time
   wait_until_responsive(asRoot, wait_time=30, total_max_wait_time=60 * 30)
+
+  # TODO: if reinstall issues persists, we can order a manual reboot after
+  #       waiting 30 minutes. Manual reset may take even 2 hours, so it should be
+  #       properly waited
+  #       See https://github.com/aszlig/hetzner/blob/master/hetzner/reset.py#L116
   initialise_as_root(asRoot)
 
   asMapUser = extend(server, { 'user': 'alvar', 'password': config['MAP_USER_PASSWORD'] })
