@@ -369,7 +369,11 @@ def task_start_install():
 
   details = format_and_reinstall_ubuntu(server['ip'])
   asRoot = extend(server, { 'user': 'root', 'password': details['linux']['password'] })
-  wait_until_responsive(asRoot, wait_time=30)
+  # Waiting for maximum of 30 additional minutes for installation to finish
+  # Sometimes the linux installation takes a long time or does not finish
+  # It is possible that it happens only in development mode when the server reinstall is
+  # done multiple times in a short time
+  wait_until_responsive(asRoot, wait_time=30, total_max_wait_time=60 * 30)
   initialise_as_root(asRoot)
 
   asMapUser = extend(server, { 'user': 'alvar', 'password': config['MAP_USER_PASSWORD'] })
