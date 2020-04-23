@@ -15,16 +15,10 @@ workflows:
     when: << pipeline.parameters.manual_start >>
     jobs:
       - start_install
-      - wait_for_install:
-          requires:
-            - start_install
 
   start_install_automatic:
     jobs:
       - start_install
-      - wait_for_install:
-          requires:
-            - start_install
 
     triggers:
         # Every Monday at 12:00 or 13:00 Helsinki time (depending on DST)
@@ -35,6 +29,7 @@ workflows:
               only:
                 - master
 
+  # Remote server will star this step after installation is ready to proceed
   wait_for_install:
     when: << pipeline.parameters.wait >>
     jobs:
@@ -112,7 +107,12 @@ jobs:
       - run:
           name: Wait for install to finish
           command: |
+            mkdir -p ~/repo/artifacts
             python manage-servers.py finish_install
+            python manage-servers.py download_file '/home/alvar/screenlog.0' ~/repo/artifacts/screenlog.0
+
+      - store_artifacts:
+          path: ~/repo/artifacts
 
   test_release_candidate:
     docker:

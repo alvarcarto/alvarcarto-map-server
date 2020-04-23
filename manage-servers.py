@@ -27,6 +27,7 @@ config = {
   'AWS_SECRET_ACCESS_KEY': getenv('AWS_SECRET_ACCESS_KEY'),
   'GITHUB_INTEGRATION_USER_TOKEN': getenv('GITHUB_INTEGRATION_USER_TOKEN'),
   'CLOUDFLARE_TOKEN': getenv('CLOUDFLARE_TOKEN'),
+  'CIRCLECI_TOKEN': getenv('CIRCLECI_TOKEN'),
 }
 
 for key, val in config.items():
@@ -211,6 +212,13 @@ def get_dns_records():
     if record_type != 'A':
       raise Exception('Unexcepted DNS record type found: {}'.format(record_type))
 
+  logger.info('DNS records:')
+  logger.info(json.dumps(records))
+  logger.info('')
+  for name, record in records.items():
+    logger.info('{}.alvarcarto.com = {}'.format(name, records[name]['ip']))
+  logger.info('\n')
+
   return records
 
 
@@ -267,7 +275,17 @@ def start_install_as_map_user(server):
     c.run('git clone {clone_url} {repo_dir}'.format(clone_url=clone_url, repo_dir=repo_dir))
     with c.cd(repo_dir):
       install_exit_file = path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_exit_code')
-      c.run('screen -S install -dm bash -c \'ALVAR_MAP_SERVER_DATA_DIR={} ALVAR_ENV={} bash install.sh; echo "$?" > {}\''.format(config['MAP_SERVER_DATA_DIR'], config['ALVAR_ENV'], install_exit_file))
+
+      # These commands are all executed regardless of the exit codes of individual steps
+      # That is needed, we want to always launch the wait task in circle ci to show the status
+      # even if the install failed
+      cmd = '; '.join([
+        'ALVAR_MAP_SERVER_DATA_DIR={} ALVAR_ENV={} bash install.sh'.format(config['MAP_SERVER_DATA_DIR'], config['ALVAR_ENV']),
+        'echo "$?" > {}'.format(install_exit_file),
+        'CIRCLECI_TOKEN="{}" .circleci/launch-wait.sh'.format(config['CIRCLECI_TOKEN'])
+      ])
+      # Screen command will immediately detach and run in background
+      c.run('screen -S install -dm bash -c \'{}\''.format(cmd))
 
       c.run('touch {}'.format(path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_started')))
       logger.info('Installation started as map user at {ip} ..'.format(**server))
@@ -333,7 +351,8 @@ def run_after_installation_tasks(server):
     c.run('rm {}'.format(path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_exit_code')))
 
 
-def task_start_install(records):
+def task_start_install():
+  records = get_dns_records()
   server = {
     'ip': records['tile-api-reserve']['ip'],
   }
@@ -349,6 +368,8 @@ def task_start_install(records):
 
 
 def task_is_install_ready(records):
+  records = get_dns_records()
+
   asMapUser = {
     'ip': records['tile-api-reserve']['ip'],
     'user': 'alvar',
@@ -362,21 +383,24 @@ def task_is_install_ready(records):
 
   if ready:
     logger.info('Install is ready!')
-    sys.exit(0)
+    print('true')
   else:
     logger.info('Install is not ready yet')
-    sys.exit(50)
+    print('false')
 
 
-def task_get_tile_api_reserve_ip(records):
+def task_get_tile_api_reserve_ip():
+  records = get_dns_records()
   print(records['tile-api-reserve']['ip'])
 
 
-def task_get_tile_api_ip(records):
+def task_get_tile_api_ip():
+  records = get_dns_records()
   print(records['tile-api']['ip'])
 
 
-def task_finish_install(records):
+def task_finish_install():
+  records = get_dns_records()
   asMapUser = {
     'ip': records['tile-api-reserve']['ip'],
     'user': 'alvar',
@@ -388,7 +412,22 @@ def task_finish_install(records):
   wait_until_responsive(asMapUser)
 
 
-def task_clear_cached_tile_api(records):
+def task_download_file(remote_path, local_path):
+  records = get_dns_records()
+  asMapUser = {
+    'ip': records['tile-api-reserve']['ip'],
+    'user': 'alvar',
+    'password': config['MAP_USER_PASSWORD']
+  }
+
+  with connection(asMapUser) as c:
+    logger.info('Downloading remote file {} to local {} ..'.format(remote_path, local_path))
+    c.get(remote_path, local_path)
+    logger.info('Download done!')
+
+
+def task_clear_cached_tile_api():
+  records = get_dns_records()
   asMapUser = {
     'ip': records['cached-tile-api']['ip'],
     'user': 'alvar',
@@ -402,7 +441,8 @@ def task_clear_cached_tile_api(records):
     logger.info('Cache cleared!')
 
 
-def task_purge_cloudflare_cache(records):
+def task_purge_cloudflare_cache():
+  records = get_dns_records()
   # Note: 400 error might be returned when invalid token provided
   res = cloudflareApi.get('/client/v4/zones', params={ 'name': 'alvarcarto.com' })
   zone_id = res['result'][0]['id']
@@ -412,7 +452,8 @@ def task_purge_cloudflare_cache(records):
   logger.info('Cache purge called!')
 
 
-def task_promote_reserve_to_production(records):
+def task_promote_reserve_to_production():
+  records = get_dns_records()
   switch_pairs = [('tile-api-reserve', 'tile-api')]
 
   logger.info('Promoting to production!')
@@ -466,19 +507,12 @@ def wrap_with_rollback(func):
   return run_func
 
 
-def execute_task(task):
-  records = get_dns_records()
-  logger.info('DNS records at start:')
-  logger.info(json.dumps(records))
-  print('')
-  for name, record in records.items():
-    logger.info('{}.alvarcarto.com = {}'.format(name, records[name]['ip']))
-  print('\n')
-
+def execute_task(task, *task_args):
   tasks = {
     'start_install': wrap_with_rollback(task_start_install),
     'is_install_ready': wrap_with_rollback(task_is_install_ready),
     'finish_install': wrap_with_rollback(task_finish_install),
+    'download_file': wrap_with_rollback(task_download_file),
     'get_tile_api_reserve_ip': wrap_with_rollback(task_get_tile_api_reserve_ip),
     'get_tile_api_ip': wrap_with_rollback(task_get_tile_api_ip),
     'clear_cached_tile_api': wrap_with_rollback(task_clear_cached_tile_api),
@@ -492,15 +526,23 @@ def execute_task(task):
 
   logger.info('Running task {}'.format(task))
   task_func = tasks[task]
-  task_func(records)
+  task_func(*task_args)
 
 
+def print_err(*args, **kwargs):
+  print(*args, file=sys.stderr, **kwargs)
+
+
+# Note: only use stdout for command output, not for logging!
 if __name__ == "__main__":
-  if len(sys.argv) != 2:
-    print('Usage: python {} <task_name>'.format(__file__))
+  if len(sys.argv) < 2:
+    print_err('Usage: python {} <task_name> [parameters]'.format(__file__))
 
-    print('Example:')
-    print('  python {} start_install\n'.format(__file__))
+    print_err('Example:')
+    print_err('  python {} start_install\n'.format(__file__))
+    print_err('  python {} download_file <remote_path> <local_path>\n'.format(__file__))
     sys.exit(2)
 
-  execute_task(sys.argv[1])
+  head, *tail = sys.argv
+  task, *task_args = tail
+  execute_task(task, *task_args)

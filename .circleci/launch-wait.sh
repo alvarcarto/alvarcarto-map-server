@@ -10,7 +10,7 @@ body='{
 }'
 
 echo "Sending body: $body"
-http_code=$(curl -o out -w '%{http_code}' -v -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d "$body" https://circleci.com/api/v2/project/github/alvarcarto/alvarcarto-map-server/pipeline)
+http_code=$(curl -o out -w '%{http_code}' -u ${CIRCLECI_TOKEN}: -X POST --header "Content-Type: application/json" -d "$body" https://circleci.com/api/v2/project/github/alvarcarto/alvarcarto-map-server/pipeline)
 
 echo -e "\nResponse:"
 cat out
