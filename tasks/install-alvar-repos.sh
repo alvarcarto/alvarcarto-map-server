@@ -15,7 +15,8 @@ source $ALVAR_MAP_SERVER_REPOSITORY_DIR/tasks/install-alvar-repo-tile.sh
 nvm use 10.8.0
 
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
-npm install -g pm2
+# Use pm2@3.x version until this is solved: https://github.com/Unitech/pm2/issues/4686
+npm install -g pm2@3.x.x
 
 npm i mustache
 

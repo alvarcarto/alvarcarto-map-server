@@ -179,10 +179,11 @@ def format_and_reinstall_ubuntu(ip):
   return details
 
 
-def from_s3_to_server(conn, s3_file_name, server_path):
+def from_s3_to_server(server, s3_file_name, server_path):
   logger.info('Downloading {} from S3 to remote path {} ..'.format(s3_file_name, server_path))
   s3.download_file('alvarcarto-keys', s3_file_name, s3_file_name)
-  conn.put(s3_file_name, server_path)
+  with connection(server) as c:
+    c.put(s3_file_name, server_path)
   os.remove(s3_file_name)
 
 
@@ -271,7 +272,7 @@ def start_install_as_map_user(server):
     c.run('chmod 700 .ssh')
     pub_key_file = 'alvarcarto-server-key.pub'
     remote_pub_key_file = path.join(config['MAP_SERVER_INSTALL_DIR'], pub_key_file)
-    from_s3_to_server(c, pub_key_file, remote_pub_key_file)
+    from_s3_to_server(server, pub_key_file, remote_pub_key_file)
     c.run('cat {} >> ~/.ssh/authorized_keys'.format(remote_pub_key_file))
     c.run('rm {}'.format(remote_pub_key_file))
 
@@ -281,7 +282,7 @@ def start_install_as_map_user(server):
     c.run('echo "deflog on" >> ~/.screenrc')
     c.run('echo "logfile /home/alvar/screenlog.%n" >> ~/.screenrc')
 
-    from_s3_to_server(c, SECRETS_FILE_NAME, SECRETS_FILE)
+    from_s3_to_server(server, SECRETS_FILE_NAME, SECRETS_FILE)
 
     clone_url = 'https://alvarcarto-integration:{password}@github.com/alvarcarto/alvarcarto-map-server.git'.format(password=config['GITHUB_INTEGRATION_USER_TOKEN'])
     repo_dir = path.join(config['MAP_SERVER_INSTALL_DIR'], 'alvarcarto-map-server')
@@ -327,16 +328,16 @@ def run_after_installation_tasks(server):
     logger.info('Installing cloudflare certificates and keys ..')
     cert_file = 'cloudflare-origin-cert.pem'
     remote_cert_file = path.join(config['MAP_SERVER_INSTALL_DIR'], cert_file)
-    from_s3_to_server(c, cert_file, remote_cert_file)
+    from_s3_to_server(server, cert_file, remote_cert_file)
 
     key_file = 'cloudflare-origin-key.pem'
     remote_key_file = path.join(config['MAP_SERVER_INSTALL_DIR'], key_file)
-    from_s3_to_server(c, key_file, remote_key_file)
+    from_s3_to_server(server, key_file, remote_key_file)
 
-    c.run('sudo mkdir -p /etc/caddy')
+    c.run('sudo mkdir -p /etc/caddy', warn=True)
     c.run('sudo mv {} /etc/caddy/cert.pem'.format(remote_cert_file))
     c.run('sudo mv {} /etc/caddy/key.pem'.format(remote_key_file))
-    c.run('sudo chown www-data:www-data /etc/caddy/cert.pem /etc/caddy/key.pem')
+    c.run('sudo chown caddy:caddy /etc/caddy/cert.pem /etc/caddy/key.pem')
     c.run('sudo chmod 644 /etc/caddy/cert.pem')
     c.run('sudo chmod 600 /etc/caddy/key.pem')
 
@@ -350,7 +351,7 @@ def run_after_installation_tasks(server):
     c.run('sudo service ssh restart')
 
     logger.info('Disable unsecure sudo settings added for installation ..')
-    c.run('sudo sed -E -i \'s/^(alvar ALL=(ALL) NOPASSWD: ALL.*)$/#\\1/g\' /etc/sudoers')
+    c.run('sudo sed -E -i \'s/^(alvar ALL=\\(ALL\\) NOPASSWD: ALL.*)$/#\\1/g\' /etc/sudoers')
 
     logger.info('Remove temporary files ..')
     c.run('rm {}'.format(INSTALL_STARTED_FILE))

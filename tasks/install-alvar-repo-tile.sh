@@ -11,5 +11,5 @@ mkdir -p $ALVAR_MAP_SERVER_DATA_DIR/tiles/
 git clone https://alvarcarto-integration:c20a4fe9a8771c17eab5f0470fba434ab2fcf901@github.com/alvarcarto/alvarcarto-tile-service.git
 cd alvarcarto-tile-service
 
-nvm use 6.9.4
+nvm use 8.17.0
 npm install

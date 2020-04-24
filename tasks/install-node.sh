@@ -15,7 +15,6 @@ export NVM_DIR="$HOME/.nvm"
 
 source ~/.bashrc
 
-nvm install 6.9.4
 nvm install 8.17.0
 
 nvm install 10.8.0

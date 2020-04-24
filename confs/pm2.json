@@ -10,7 +10,7 @@
       "CACHE_DIR": "/home/alvar/data/tiles",
       "PORT": "8002"
     },
-    "interpreter" : "/home/alvar/.nvm/versions/node/v6.9.4/bin/node"
+    "interpreter" : "/home/alvar/.nvm/versions/node/v8.17.0/bin/node"
  }, {
     "name" : "render",
     "script" : "/home/alvar/alvarcarto-render-service/dist/index.js",
@@ -25,10 +25,12 @@
       "TILE_URL": "http://localhost:8002/{style}/{z}/{x}/{y}/tile.png"
     },
     "interpreter" : "/home/alvar/.nvm/versions/node/v8.17.0/bin/node",
-    "node_args": "--max_old_space_size=4096"
+    "interpreter_args": "--max_old_space_size=4096"
  }, {
     "name" : "placement",
     "script" : "/home/alvar/alvarcarto-placement-service/src/index.js",
+    "instances" : 2,
+    "exec_mode" : "cluster",
     "env": {
       "NODE_ENV": "production",
       "PORT": "8003",
@@ -41,6 +43,6 @@
       "LOG_LEVEL": "debug"
     },
     "interpreter" : "/home/alvar/.nvm/versions/node/v10.8.0/bin/node",
-    "node_args": "--max_old_space_size=4096"
+    "interpreter_args": "--max_old_space_size=4096"
  }]
 }

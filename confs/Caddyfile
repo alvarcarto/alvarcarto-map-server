@@ -1,25 +1,49 @@
-http://0.0.0.0, https://0.0.0.0 {
+http:// {
+  encode gzip
+  log {
+    output file /var/log/caddy/access.log
+  }
+  header -Server
+  header Access-Control-Allow-Origin *
 
+  route /render/* {
+    uri strip_prefix /render
+    reverse_proxy http://localhost:8001
+  }
+  route /tiles/* {
+    uri strip_prefix /tiles
+    reverse_proxy http://localhost:8002
+  }
+  route /placement/* {
+    uri strip_prefix /placement
+    reverse_proxy http://localhost:8003
+  }
+
+  respond * 404
+}
+
+https:// {
   tls /etc/caddy/cert.pem /etc/caddy/key.pem
 
-  gzip
-  log /var/log/access.log
-
-  proxy  /render 127.0.0.1:8001 {
-    transparent
-    without /render
+  encode gzip
+  log {
+    output file /var/log/caddy/access.log
   }
-  header /render Access-Control-Allow-Origin *
+  header -Server
+  header Access-Control-Allow-Origin *
 
-  proxy  /tiles 127.0.0.1:8002 {
-    transparent
-    without /tiles
+  route /render/* {
+    uri strip_prefix /render
+    reverse_proxy http://localhost:8001
   }
-  header /tiles Access-Control-Allow-Origin *
+  route /tiles/* {
+    uri strip_prefix /tiles
+    reverse_proxy http://localhost:8002
+  }
+  route /placement/* {
+    uri strip_prefix /placement
+    reverse_proxy http://localhost:8003
+  }
 
-  proxy  /placement 127.0.0.1:8003 {
-    transparent
-    without /placement
-  }
-  header /placement Access-Control-Allow-Origin *
+  respond * 404
 }

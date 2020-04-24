@@ -113,7 +113,7 @@ sudo nano /etc/caddy/cert.pem
 # Add private key from 1password
 sudo nano /etc/caddy/key.pem
 
-sudo chown www-data:www-data /etc/caddy/cert.pem /etc/caddy/key.pem
+sudo chown caddy:caddy /etc/caddy/cert.pem /etc/caddy/key.pem
 sudo chmod 644 /etc/caddy/cert.pem
 sudo chmod 600 /etc/caddy/key.pem
 ```
@@ -213,7 +213,7 @@ pm2 start confs/pm2.json
 pm2 logs --lines 1000
 
 # Then save the startup:
-sudo env PATH=$PATH:/home/alvar/.nvm/versions/node/v6.9.4/bin /home/alvar/.nvm/versions/node/v6.9.4/lib/node_modules/pm2/bin/pm2 startup systemd -u alvar --hp /home/alvar
+sudo env PATH=$PATH:/home/alvar/.nvm/versions/node/v10.8.0/bin /home/alvar/.nvm/versions/node/v10.8.0/lib/node_modules/pm2/bin/pm2 startup systemd -u alvar --hp /home/alvar
 pm2 save
 
 ```
@@ -227,7 +227,7 @@ pm2 save
 
 **Caddy errors:**
 
-`sudo cat /var/log/syslog` or `sudo journalctl -u caddy`
+`sudo cat /var/log/syslog` or `sudo journalctl -u caddy | tail -n 300`
 
 **Edit Caddyfile:**
 
