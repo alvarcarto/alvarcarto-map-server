@@ -6,9 +6,7 @@ Requirements:
 * At least 16GB RAM for the installation phase. 32GB minimum is recommended for production.
 * 450GB disk space (tested: 350GB disk space was not enough)
 
-The full planet import should be done in a dedicated OVH server.
-
-See [DigitalOcean install](#digitalocean-install) for QA install example.
+The full planet import should be done in a dedicated Hetzner server.
 
 This package will:
 
@@ -45,156 +43,34 @@ docker-compose build
 docker-compose up postgres
 ```
 
-## Installing
+## Production installation process
 
-As root in the remote server, create `alvar` user:
+The process has been automated to a CI task. See [.circleci/config.yml](.circleci/config.yml).
 
-```
-adduser alvar
-adduser alvar sudo
-```
+Idea is that we have two servers, which are switched between "production" and "reserve". We automatically
+re-install the server and deploy new version to production with Circle CI cron trigger. The process is:
 
-Installing map server is automated with [install.sh](install.sh).
-
-
-**Note! Configure install.sh variables to suit the installation environment.
-The variables define data directory which should have at least 450GB free disk
-space. The default data directory is `/home/alvar/data`.**
-
-Start a new ssh session with `ssh alvar@<ip>`. In the remote server, run:
-
-```
-sudo apt-get install -y screen nano git
-
-# Increase scrollback to 500k lines
-echo "defscrollback 500000" >> ~/.screenrc
-echo "deflog on" >> ~/.screenrc
-echo "logfile /home/alvar/screenlog.%n" >> ~/.screenrc
-
-git clone https://alvarcarto-integration:c20a4fe9a8771c17eab5f0470fba434ab2fcf901@github.com/kimmobrunfeldt/alvarcarto-map-server.git
-cd alvarcarto-map-server
-
-# Add:
-#    Defaults    timestamp_timeout=-1
-# to sudo configuration to extend the sudo timeout
-#
-# REMEMBER: remove the infinite timeout after install!
-EDITOR=nano sudo visudo
-```
-
-Also disallow root SSH login:
-
-```
-sudo nano /etc/ssh/sshd_config
-# And set PermitRootLogin no
-#
-# Also disable sftp server by commenting this line:
-# # Subsystem     sftp    /usr/lib/openssh/sftp-server
-
-# Restart
-sudo service ssh restart
-```
-
-If this is a QA install, change:
-
-* `ALVAR_ENV=qa`
-* `ALVAR_MAP_SERVER_DATA_DIR=/mnt/volume1/alvar`
-
-in install.sh.
-
-Add public cert and private key for Caddy:
-
-```
-sudo mkdir -p /etc/caddy
-
-# Add cert from 1password (*.alvarcarto.com and apex cert by CloudFlare)
-sudo nano /etc/caddy/cert.pem
-
-# Add private key from 1password
-sudo nano /etc/caddy/key.pem
-
-sudo chown caddy:caddy /etc/caddy/cert.pem /etc/caddy/key.pem
-sudo chmod 644 /etc/caddy/cert.pem
-sudo chmod 600 /etc/caddy/key.pem
-```
-
-Then run:
-
-```
-screen -S install
-./install.sh
-```
-
-Then finally comment the sudo setting we set before:
-
-```
-# Comment:
-#    Defaults    timestamp_timeout=-1
-# to sudo configuration to make sudo timeout back
-
-EDITOR=nano sudo visudo
-```
-
-Now the server should have all the components installed and node processes
-running. **Go through [Testing installation](#testing-installation).**
-
-**Note:** sudo password is asked a couple of times. When the osm2psql import starts,
-you'll know nothing is prompted at least for the next 15 hours.
-
-Now press `Ctrl` + `a` + `d` and wait. With the DigitalOcean example machine,
-it takes around 70 hours. `osm2psql` takes most of the time: 63h34m.
-
-If this is a QA install, remember to scale down DO droplet after install.
-
-## Testing installation
-
-What you should test after the install:
-
-* Run `sudo reboot` and see if node processes are automatically spawned on boot
-* Verify that CloudFlare origin certificates have been correctly installed
-* Run [snapshot tool](https://github.com/kimmobrunfeldt/alvarcarto-render-snapshot) to verify that posters are still correctly generated
-
-### Warming caches
-
-```bash
-npm i -g @alvarcarto/tilewarm
-
-curl -O https://raw.githubusercontent.com/alvarcarto/tilewarm/master/geojson/world.geojson
-tilewarm 'http://54.36.173.210:8002/bw/{z}/{x}/{y}/tile.png' --input world.geojson -c 10 --zoom 1-8 --verbose
-tilewarm 'http://54.36.173.210:8002/gray/{z}/{x}/{y}/tile.png' --input world.geojson -c 10 --zoom 1-8 --verbose
-tilewarm 'http://54.36.173.210:8002/black/{z}/{x}/{y}/tile.png' --input world.geojson -c 10 --zoom 1-8 --verbose
-tilewarm 'http://54.36.173.210:8002/copper/{z}/{x}/{y}/tile.png' --input world.geojson -c 10 --zoom 1-8 --verbose
-tilewarm 'http://54.36.173.210:8002/petrol/{z}/{x}/{y}/tile.png' --input world.geojson -c 10 --zoom 1-8 --verbose
-
-curl -O https://raw.githubusercontent.com/alvarcarto/tilewarm/master/geojson/all-cities.geojson
-tilewarm 'http://54.36.173.210:8002/bw/{z}/{x}/{y}/tile.png' --input all-cities.geojson -c 10 --zoom 8-13 --verbose
-tilewarm 'http://54.36.173.210:8002/gray/{z}/{x}/{y}/tile.png' --input all-cities.geojson -c 10 --zoom 8-13 --verbose
-tilewarm 'http://54.36.173.210:8002/black/{z}/{x}/{y}/tile.png' --input all-cities.geojson -c 10 --zoom 8-13 --verbose
-tilewarm 'http://54.36.173.210:8002/copper/{z}/{x}/{y}/tile.png' --input all-cities.geojson -c 10 --zoom 8-13 --verbose
-tilewarm 'http://54.36.173.210:8002/petrol/{z}/{x}/{y}/tile.png' --input all-cities.geojson -c 10 --zoom 8-13 --verbose
-```
-
-After that, go to tiles cache folder and run `find . -name '*' -size 0 -print0` to find
-possible tiles which are 0 bytes (incorrect render).
+* Order a reinstall to the reserve server via Hetzner API
+* Wait until server is responsive
+* Initial setup of the machine
+* Copy this repo into the server and run install.sh inside a screen
+* Wait for the server installation to finish
+* Restrict security after installation (sudo needs password etc)
+* Reboot server to verify all services start after reboot
+* Wait until server is responsive
+* Run snapshot tool to verify differences between production and new installation
+* Warm tile caches inside the server
+* Wait for developer approval
+* If approval is give, point the freshly installed server to tile-api.alvarcarto.com
+* Invalidate everything from CloudFlare cache
 
 
-## DigitalOcean Install (QA)
+### Diagram of the deployment process
 
-Fire up a new Droplet and an SSD Volume:
+![](docs/deployment.png)
 
-* First create an 1GB droplet with 50GB SSD Block storage attached
-* Resize the droplet to 16GB Memory, 8 Core Processor, 160GB SSD Disk, 6TB Transfer ($160/mo)
 
-This allows changing the droplet size back to 1GB RAM when it's not used.
-
-1. Login as root. You will get the root password of the droplet to your email.
-2. Set root password and alvar user password as in 1password.
-3. Go to https://cloud.digitalocean.com/droplets/volumes and click "More" link near the attached Volume. Press "Config instructions".
-4. Copy the instructions to an editor. Replace all `/mnt/volume-fra1-01` references with `/mnt/volume1`.
-5. Follow the instructions until you have /mnt/volume1 available in the Droplet.
-
-After following the software install steps, remember to scale down the droplet for runtime.
-
+*Open the PNG in draw.io to edit*
 
 
 ## Common tasks
@@ -202,7 +78,7 @@ After following the software install steps, remember to scale down the droplet f
 ### Reload pm2 config
 
 ```bash
-nvm use 6
+nvm use 10
 pm2 stop all
 pm2 delete all
 cd $HOME/alvarcarto-map-server
@@ -298,33 +174,5 @@ precedence ::ffff:0:0/96  100
 https://github.com/n-st/nench
 
 
-## Local install on Macbook
-
-```
-osm2pgsql -U osm -d osm -H localhost -P 5432 --create --slim \
-  --flat-nodes ~/code/alvarcarto/osm2pgsql_flat_nodes.bin \
-  --cache 14000 --number-processes 8 --hstore \
-  --style openstreetmap-carto.style --multi-geometry \
-  ../finland-latest.osm.pbf
-```
-
-
-## Installation steps
-
-* Order a reinstall server via Hetzner API
-* Reboot the machine
-* Wait until server is responsive
-* Execute all previously manually done steps (secure ssh etc)
-* Copy alvar-map-server repo into the server and start installation process
-* Wait for the server installation to finish
-* Undo some security releases (like sudo password asking) done for install.sh
-* Reboot server (to verify all services start after reboot)
-* Wait until server is responsive
-* Warm tile caches inside the server
-* Run snapshot tool to verify differences between previous installation
-* If the steps and tests so far has succeeded, continue with production switch
-* Point the freshly installed server to tile-api.alvarcarto.com
-* Invalidate cache from cached-tile-api server
-* Invalidate all caches in CloudFlare
 
 
