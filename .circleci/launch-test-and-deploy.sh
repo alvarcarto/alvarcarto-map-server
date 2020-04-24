@@ -4,7 +4,7 @@ set -e
 
 body='{
   "parameters": {
-    "wait": true
+    "test_and_deploy": true
   }
 }'
 

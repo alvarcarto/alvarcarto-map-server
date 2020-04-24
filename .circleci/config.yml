@@ -9,6 +9,9 @@ parameters:
   finish_install:
     type: boolean
     default: false
+  test_and_deploy:
+    type: boolean
+    default: false
 
 workflows:
   start_install_manual:
@@ -29,19 +32,26 @@ workflows:
               only:
                 - master
 
-  # Remote server will star this step after installation is ready to proceed
+  # Remote server will start this step after installation is ready to proceed
+  # This would also work on it's own as a polling job, but it spends so much computation
+  # credits in Circle CI it makes no sense
   wait_for_install:
     when: << pipeline.parameters.wait >>
     jobs:
       - wait_for_install
 
-  finish_install_and_deploy:
+  finish_install:
     when: << pipeline.parameters.finish_install >>
     jobs:
       - finish_install
-      - test_release_candidate:
-          requires:
-            - finish_install
+
+  # This is a separate task so that we are able to independently install the server and
+  # test installation if needed. Not sure if this separation will be useful but at least
+  # in dev phase it helps
+  test_and_deploy:
+    when: << pipeline.parameters.test_and_deploy >>
+    jobs:
+      - test_release_candidate
       - warm_caches:
           requires:
             - test_release_candidate
@@ -52,7 +62,6 @@ workflows:
       - update_snapshots:
           requires:
             - deploy_to_production
-
 
 jobs:
   start_install:
@@ -111,25 +120,35 @@ jobs:
             python manage-servers.py finish_install
             python manage-servers.py download_file '/home/alvar/screenlog.0' ~/repo/artifacts/screenlog.0
 
+      - run:
+          name: Launch test and deploy
+          command: |
+            bash .circleci/launch-test-and-deploy.sh
+
       - store_artifacts:
           path: ~/repo/artifacts
 
   test_release_candidate:
     docker:
       - image: circleci/node:10
-      - image: circleci/python:3.8
     working_directory: ~/repo
     steps:
       - checkout
 
+      - run:
+          name: Install dependencies
+          command: |
+            pip3 install -r requirements.txt
+
       - deploy:
           name: Run tests for release candidate server
           command: |
-            git clone "https://alvarcarto-integration:$GITHUB_INTEGRATION_USER_TOKEN@github.com/alvarcarto/alvarcarto-map-server.git"
-            cd alvarcarto-map-server
+            IP=$(python3 manage-servers.py get_tile_api_reserve_ip)
+
+            git clone "https://alvarcarto-integration:$GITHUB_INTEGRATION_USER_TOKEN@github.com/alvarcarto/alvarcarto-render-snapshot.git"
+            cd alvarcarto-render-snapshot
             npm i
 
-            IP=$(python manage-servers.py get_tile_api_reserve_ip)
             export RENDER_API_URL="http://$IP:8001"
             export RENDER_API_KEY=PERSONxMz4jp8tgACSKL7r
             export PLACEMENT_API_URL="http://$IP:8003"
@@ -138,8 +157,6 @@ jobs:
             export AWS_ACCESS_KEY_ID="$SNAPSHOT_TOOL_AWS_ACCESS_KEY_ID"
             export AWS_SECRET_ACCESS_KEY="$SNAPSHOT_TOOL_AWS_SECRET_ACCESS_KEY"
 
-            # TODO: Implement same comparison with useTileRender parameter
-            # TODO: Implement placement service diff test as well
             npm run compare
 
       - store_artifacts:
@@ -191,19 +208,24 @@ jobs:
   update_snapshots:
     docker:
       - image: circleci/node:10
-      - image: circleci/python:3.8
     working_directory: ~/repo
     steps:
       - checkout
 
+      - run:
+          name: Install dependencies
+          command: |
+            pip3 install -r requirements.txt
+
       - deploy:
           name: Update poster snapshots to S3
           command: |
+            IP=$(python3 manage-servers.py get_tile_api_ip)
+
             git clone "https://alvarcarto-integration:$GITHUB_INTEGRATION_USER_TOKEN@github.com/alvarcarto/alvarcarto-render-snapshot.git"
             cd alvarcarto-render-snapshot
-            npm i
+            npm install
 
-            IP=$(python manage-servers.py get_tile_api_ip)
             export RENDER_API_URL="http://$IP:8001"
             export RENDER_API_KEY=TRAVISx1902AjdkTnsadjI
             export PLACEMENT_API_URL="http://$IP:8003"

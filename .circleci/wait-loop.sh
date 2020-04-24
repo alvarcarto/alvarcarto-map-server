@@ -14,7 +14,7 @@ while true; do
     break
   elif [[ "$output_trim" = "true" ]]; then
     echo "Install ready!"
-    bash .circleci/launch-further-steps.sh
+    bash .circleci/launch-finish-install.sh
     break
   elif [[ "$output_trim" = "false" ]]; then
     echo "Install not ready yet"
