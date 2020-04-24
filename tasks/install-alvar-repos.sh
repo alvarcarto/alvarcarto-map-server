@@ -10,6 +10,7 @@ source $ALVAR_MAP_SERVER_REPOSITORY_DIR/tasks/install-alvar-repo-render.sh
 source $ALVAR_MAP_SERVER_REPOSITORY_DIR/tasks/install-alvar-repo-cartocss.sh
 source $ALVAR_MAP_SERVER_REPOSITORY_DIR/tasks/install-alvar-repo-placement.sh
 source $ALVAR_MAP_SERVER_REPOSITORY_DIR/tasks/install-alvar-repo-tile.sh
+source $ALVAR_MAP_SERVER_REPOSITORY_DIR/tasks/install-alvar-repo-http-cache.sh
 
 
 nvm use 10.8.0

@@ -283,6 +283,14 @@ def start_install_as_map_user(server):
     c.run('echo "logfile /home/alvar/screenlog.%n" >> ~/.screenrc')
 
     from_s3_to_server(server, SECRETS_FILE_NAME, SECRETS_FILE)
+    temp_file = '{}.tmp'.format(SECRETS_FILE)
+    c.run('jq \'. + {{ map_server_install_dir: {}, map_server_data_dir: {}}}\' {} > {}'.format(
+      config['MAP_SERVER_INSTALL_DIR'],
+      config['MAP_SERVER_DATA_DIR'],
+      SECRETS_FILE,
+      tmp_file
+    ))
+    c.run('mv {} {}'.format(tmp_file, SECRETS_FILE))
 
     clone_url = 'https://alvarcarto-integration:{password}@github.com/alvarcarto/alvarcarto-map-server.git'.format(password=config['GITHUB_INTEGRATION_USER_TOKEN'])
     repo_dir = path.join(config['MAP_SERVER_INSTALL_DIR'], 'alvarcarto-map-server')
@@ -350,9 +358,6 @@ def run_after_installation_tasks(server):
     c.run('sudo sed -i \'s/X11Forwarding yes/X11Forwarding no/g\' /etc/ssh/sshd_config')
     c.run('sudo service ssh restart')
 
-    logger.info('Disable unsecure sudo settings added for installation ..')
-    c.run('sudo sed -E -i \'s/^(alvar ALL=\\(ALL\\) NOPASSWD: ALL.*)$/#\\1/g\' /etc/sudoers')
-
     logger.info('Remove temporary files ..')
     c.run('rm {}'.format(INSTALL_STARTED_FILE))
     c.run('rm {}'.format(INSTALL_EXIT_CODE_FILE))
@@ -360,6 +365,9 @@ def run_after_installation_tasks(server):
 
     logger.info('Run final system upgrades before reboot ..')
     c.run('sudo apt-get -y upgrade')
+
+    logger.info('Disable unsecure sudo settings added for installation ..')
+    c.run('sudo sed -E -i \'s/^(alvar ALL=\\(ALL\\) NOPASSWD: ALL.*)$/#\\1/g\' /etc/sudoers')
 
 
 def task_start_install():
