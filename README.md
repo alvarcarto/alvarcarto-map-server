@@ -30,6 +30,7 @@ This package will:
 * Simplify downloaded .shp files using `shapeindex`.
 * Import latest OSM data to Postgis server using [osm2psql](github.com/openstreetmap/osm2pgsql). [imposm3](https://github.com/omniscale/imposm3) was an alternative but openstreetmap style worked better.
 
+
 ## Local development with Docker
 
 **WARNING:** Docker container is unsafe for production, sudo commands without password are allowed
@@ -42,6 +43,17 @@ Run command below to start postgres with map data from Finland loaded:
 docker-compose build
 docker-compose up postgres
 ```
+
+### Rebuild docker image
+
+Note: you need to comment or lines or rename `.env` with docker-compose version <1.26.0. See https://github.com/docker/compose/issues/6511.
+
+```bash
+docker-compose down && docker-compose rm && docker system prune
+docker-compose build --no-cache
+docker-compose up postgres
+```
+
 
 ## Production installation process
 
