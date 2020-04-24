@@ -288,9 +288,9 @@ def start_install_as_map_user(server):
       config['MAP_SERVER_INSTALL_DIR'],
       config['MAP_SERVER_DATA_DIR'],
       SECRETS_FILE,
-      tmp_file
+      temp_file
     ))
-    c.run('mv {} {}'.format(tmp_file, SECRETS_FILE))
+    c.run('mv {} {}'.format(temp_file, SECRETS_FILE))
 
     clone_url = 'https://alvarcarto-integration:{password}@github.com/alvarcarto/alvarcarto-map-server.git'.format(password=config['GITHUB_INTEGRATION_USER_TOKEN'])
     repo_dir = path.join(config['MAP_SERVER_INSTALL_DIR'], 'alvarcarto-map-server')
