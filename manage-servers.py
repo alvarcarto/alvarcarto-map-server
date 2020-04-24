@@ -283,6 +283,7 @@ def start_install_as_map_user(server):
     c.run('echo "logfile /home/alvar/screenlog.%n" >> ~/.screenrc')
 
     from_s3_to_server(server, SECRETS_FILE_NAME, SECRETS_FILE)
+    logger.info('Injecting additional information into secrets file for convenience ..')
     c.run('sudo apt-get install -y jq')
     temp_file = '{}.tmp'.format(SECRETS_FILE)
     c.run('jq \'. + {{ map_server_install_dir: "{}", map_server_data_dir: "{}"}}\' {} > {}'.format(
