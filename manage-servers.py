@@ -455,21 +455,6 @@ def task_download_file(remote_path, local_path):
     logger.info('Download done!')
 
 
-def task_clear_cached_tile_api():
-  records = get_dns_records()
-  asMapUser = {
-    'ip': records['cached-tile-api']['ip'],
-    'user': 'alvar',
-    'password': config['MAP_USER_PASSWORD']
-  }
-
-  with connection(asMapUser) as c:
-    logger.info('Clearing cache folder in cached-tile-api.alvarcarto.com .. ')
-    c.run('du -sh /cache/files')
-    c.run('find /cache/files -maxdepth 1 -type f -delete')
-    logger.info('Cache cleared!')
-
-
 def task_purge_cloudflare_cache():
   records = get_dns_records()
   # Note: 400 error might be returned when invalid token provided
@@ -544,7 +529,6 @@ def execute_task(task, *task_args):
     'download_file': wrap_with_rollback(task_download_file),
     'get_tile_api_reserve_ip': wrap_with_rollback(task_get_tile_api_reserve_ip),
     'get_tile_api_ip': wrap_with_rollback(task_get_tile_api_ip),
-    'clear_cached_tile_api': wrap_with_rollback(task_clear_cached_tile_api),
     'purge_cloudflare_cache': wrap_with_rollback(task_purge_cloudflare_cache),
     'promote_reserve_to_production': wrap_with_rollback(task_promote_reserve_to_production),
   }

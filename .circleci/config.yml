@@ -204,7 +204,6 @@ jobs:
       - run:
           name: Clear previously cached tiles and renders
           command: |
-            python manage-servers.py clear_cached_tile_api
             python manage-servers.py purge_cloudflare_cache
 
   update_snapshots:
