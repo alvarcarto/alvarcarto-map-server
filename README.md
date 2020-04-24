@@ -67,6 +67,8 @@ re-install the server and deploy new version to production with Circle CI cron t
 
 ### Diagram of the deployment process
 
+Diagram tries to capture the process in an overview. See Circle CI config for exact details.
+
 ![](docs/deployment.png)
 
 
