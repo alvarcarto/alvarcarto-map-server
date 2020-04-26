@@ -151,10 +151,9 @@ jobs:
             cd alvarcarto-render-snapshot
             npm i
 
+            # RENDER_API_KEY and PLACEMENT_API_KEY in circle ci env variables
             export RENDER_API_URL="http://$IP:8001"
-            export RENDER_API_KEY=PERSONxMz4jp8tgACSKL7r
             export PLACEMENT_API_URL="http://$IP:8003"
-            export PLACEMENT_API_KEY=TRAVISx1902AjdkTnsadjI
             export AWS_S3_BUCKET_NAME=alvarcarto-render-snapshots
             export AWS_ACCESS_KEY_ID="$SNAPSHOT_TOOL_AWS_ACCESS_KEY_ID"
             export AWS_SECRET_ACCESS_KEY="$SNAPSHOT_TOOL_AWS_SECRET_ACCESS_KEY"
@@ -162,7 +161,7 @@ jobs:
             npm run compare
 
       - store_artifacts:
-          path: ~/repo/images
+          path: ~/repo/alvarcarto-render-snapshot/images
 
   warm_caches:
     docker:
@@ -229,10 +228,9 @@ jobs:
             cd alvarcarto-render-snapshot
             npm install
 
+            # RENDER_API_KEY and PLACEMENT_API_KEY in circle ci env variables
             export RENDER_API_URL="http://$IP:8001"
-            export RENDER_API_KEY=TRAVISx1902AjdkTnsadjI
             export PLACEMENT_API_URL="http://$IP:8003"
-            export PLACEMENT_API_KEY=TRAVISx1902AjdkTnsadjI
             export AWS_S3_BUCKET_NAME=alvarcarto-render-snapshots
             export AWS_ACCESS_KEY_ID="$SNAPSHOT_TOOL_AWS_ACCESS_KEY_ID"
             export AWS_SECRET_ACCESS_KEY="$SNAPSHOT_TOOL_AWS_SECRET_ACCESS_KEY"
