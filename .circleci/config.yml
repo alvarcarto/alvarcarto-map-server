@@ -171,13 +171,20 @@ jobs:
       - checkout
 
       - run:
+          name: Install dependencies
+          command: |
+            # When taking SSH into the box, it had python 3.5.3, but no pip
+            sudo apt-get install python3-pip
+            pip3 install -r requirements.txt
+
+      - run:
           name: Warm server caches
           command: |
             npm install @alvarcarto/tilewarm
             curl -O https://raw.githubusercontent.com/alvarcarto/tilewarm/master/geojson/world.geojson
             curl -O https://raw.githubusercontent.com/alvarcarto/tilewarm/master/geojson/all-cities.geojson
 
-            IP=$(python manage-servers.py get_tile_api_reserve_ip)
+            IP=$(python3 manage-servers.py get_tile_api_reserve_ip)
             # Iterate all styles in cartocss repo
             NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input world.geojson -c 10 --zoom 1-8 --verbose
             NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input all-cities.geojson -c 10 --zoom 8-13 --verbose
