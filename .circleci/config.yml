@@ -24,7 +24,7 @@ workflows:
       - start_install
 
     triggers:
-        # Every Monday at 12:00 or 13:00 Helsinki time (depending on DST)
+        # Every Monday at 12:00 (winter) or 13:00 (summer) Helsinki time depending on DST
       - schedule:
           cron: "0 10 * * 1"
           filters:
