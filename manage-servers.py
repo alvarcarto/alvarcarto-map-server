@@ -28,6 +28,8 @@ config = {
   'GITHUB_INTEGRATION_USER_TOKEN': getenv('GITHUB_INTEGRATION_USER_TOKEN'),
   'CLOUDFLARE_TOKEN': getenv('CLOUDFLARE_TOKEN'),
   'CIRCLECI_TOKEN': getenv('CIRCLECI_TOKEN'),
+  'RESERVE_DNS_NAME': 'tile-api-reserve2',
+  'PRODUCTION_DNS_NAME': 'tile-api2'
 }
 
 for key, val in config.items():
@@ -214,7 +216,7 @@ def get_dns_records():
   zone_id = res['result'][0]['id']
 
   records = {}
-  names = ['tile-api', 'tile-api-reserve', 'cached-tile-api', 'cached-tile-api-reserve']
+  names = [config['PRODUCTION_DNS_NAME'], config['RESERVE_DNS_NAME']]
   for name in names:
     res = cloudflareApi.get('/client/v4/zones/{}/dns_records'.format(zone_id), params={ 'name': '{}.alvarcarto.com'.format(name) })
     records[name] = {
@@ -373,7 +375,7 @@ def run_after_installation_tasks(server):
 def task_start_install():
   records = get_dns_records()
   server = {
-    'ip': records['tile-api-reserve']['ip'],
+    'ip': records[config['RESERVE_DNS_NAME']]['ip'],
   }
 
   details = format_and_reinstall_ubuntu(server['ip'])
@@ -399,7 +401,7 @@ def task_is_install_ready_to_continue():
   records = get_dns_records()
 
   asMapUser = {
-    'ip': records['tile-api-reserve']['ip'],
+    'ip': records[config['RESERVE_DNS_NAME']]['ip'],
     'user': 'alvar',
     'password': config['MAP_USER_PASSWORD']
   }
@@ -419,18 +421,18 @@ def task_is_install_ready_to_continue():
 
 def task_get_tile_api_reserve_ip():
   records = get_dns_records()
-  return records['tile-api-reserve']['ip']
+  return records[config['RESERVE_DNS_NAME']]['ip']
 
 
 def task_get_tile_api_ip():
   records = get_dns_records()
-  return records['tile-api']['ip']
+  return records[config['PRODUCTION_DNS_NAME']]['ip']
 
 
 def task_finish_install():
   records = get_dns_records()
   asMapUser = {
-    'ip': records['tile-api-reserve']['ip'],
+    'ip': records[config['RESERVE_DNS_NAME']]['ip'],
     'user': 'alvar',
     'password': config['MAP_USER_PASSWORD']
   }
@@ -443,7 +445,7 @@ def task_finish_install():
 def task_download_file(remote_path, local_path):
   records = get_dns_records()
   asMapUser = {
-    'ip': records['tile-api-reserve']['ip'],
+    'ip': records[config['RESERVE_DNS_NAME']]['ip'],
     'user': 'alvar',
     'password': config['MAP_USER_PASSWORD']
   }
@@ -467,7 +469,7 @@ def task_purge_cloudflare_cache():
 
 def task_promote_reserve_to_production():
   records = get_dns_records()
-  switch_pairs = [('tile-api-reserve', 'tile-api')]
+  switch_pairs = [(config['RESERVE_DNS_NAME'], config['PRODUCTION_DNS_NAME'])]
 
   logger.info('Promoting to production!')
   logger.info('\n'.join(map(lambda p: '{} -> {}'.format(p[0], p[1]), switch_pairs)))
