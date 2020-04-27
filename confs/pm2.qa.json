@@ -2,6 +2,7 @@
   "apps" : [{
     "name" : "tile",
     "script" : "{{{map_server_install_dir}}}/alvarcarto-tile-service/server.js",
+    "cwd": "{{map_server_install_dir}}/alvarcarto-tile-service",
     "env": {
       "NODE_ENV": "production",
       "DISABLE_CACHE": "true",
@@ -13,6 +14,7 @@
  }, {
     "name" : "render",
     "script" : "{{{map_server_install_dir}}}/alvarcarto-render-service/dist/index.js",
+    "cwd": "{{map_server_install_dir}}/alvarcarto-render-service",
     "env": {
       "NODE_ENV": "production",
       "PORT": "8001",
@@ -26,6 +28,7 @@
  }, {
     "name" : "placement",
     "script" : "{{{map_server_install_dir}}}/alvarcarto-placement-service/src/index.js",
+    "cwd": "{{map_server_install_dir}}/alvarcarto-placement-service",
     "env": {
       "NODE_ENV": "production",
       "PORT": "8003",
@@ -42,6 +45,7 @@
  }, {
     "name" : "http-cache",
     "script" : "{{{map_server_install_dir}}}/alvarcarto-http-cache-service/src/index.js",
+    "cwd": "{{map_server_install_dir}}/alvarcarto-http-cache-service",
     "instances" : 2,
     "exec_mode" : "cluster",
     "env": {
