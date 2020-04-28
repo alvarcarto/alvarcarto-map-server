@@ -282,7 +282,7 @@ def start_install_as_map_user(server):
     # Increase scrollback to 1M lines
     c.run('echo "defscrollback 1000000" >> ~/.screenrc')
     c.run('echo "deflog on" >> ~/.screenrc')
-    c.run('echo "logfile /home/alvar/screenlog.%n" >> ~/.screenrc')
+    c.run('echo "logfile {}/screenlog.%n" >> ~/.screenrc'.format(config['MAP_SERVER_INSTALL_DIR']))
 
     from_s3_to_server(server, SECRETS_FILE_NAME, SECRETS_FILE)
     logger.info('Injecting additional information into secrets file for convenience ..')
@@ -328,6 +328,8 @@ def is_install_ready_to_continue(server):
 
     result = c.run('cat {}'.format(INSTALL_EXIT_CODE_FILE), hide=True).stdout.strip()
     if result != '0':
+      # Try to tail last lines from install log
+      c.run('tail -n 100 {}'.format(path.join(config['MAP_SERVER_INSTALL_DIR'], 'screenlog.0')), warn=True)
       raise Exception('install.sh exited with non-zero exit code!')
 
     return True
