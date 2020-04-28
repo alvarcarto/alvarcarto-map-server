@@ -1,8 +1,8 @@
 {
   "apps" : [{
     "name" : "tile",
-    "script" : "{{{map_server_install_dir}}}/alvarcarto-tile-service/server.js",
-    "cwd": "{{map_server_install_dir}}/alvarcarto-tile-service",
+    "script" : "server.js",
+    "cwd": "{{{map_server_install_dir}}}/alvarcarto-tile-service",
     "env": {
       "NODE_ENV": "production",
       "DISABLE_CACHE": "true",
@@ -13,13 +13,13 @@
     "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v8.17.0/bin/node"
  }, {
     "name" : "render",
-    "script" : "{{{map_server_install_dir}}}/alvarcarto-render-service/dist/index.js",
-    "cwd": "{{map_server_install_dir}}/alvarcarto-render-service",
+    "script" : "dist/index.js",
+    "cwd": "{{{map_server_install_dir}}}/alvarcarto-render-service",
     "env": {
       "NODE_ENV": "production",
       "PORT": "8001",
       "STYLE_DIR": "{{{map_server_install_dir}}}/mapnik-styles",
-      "API_KEY": "{{api_key}},{{{travis_api_key}}}",
+      "API_KEY": "{{{api_key}}},{{{travis_api_key}}}",
       "FONT_DIR": "/usr/share/fonts/truetype/google-fonts",
       "TILE_URL": "http://localhost:8002/{style}/{z}/{x}/{y}/tile.png"
     },
@@ -27,8 +27,8 @@
     "interpreter_args": "--max_old_space_size=4096"
  }, {
     "name" : "placement",
-    "script" : "{{{map_server_install_dir}}}/alvarcarto-placement-service/src/index.js",
-    "cwd": "{{map_server_install_dir}}/alvarcarto-placement-service",
+    "script" : "src/index.js",
+    "cwd": "{{{map_server_install_dir}}}/alvarcarto-placement-service",
     "env": {
       "NODE_ENV": "production",
       "PORT": "8003",
@@ -37,15 +37,15 @@
       "AWS_ACCESS_KEY_ID": "{{{placement_assets_aws_access_key_id}}}",
       "AWS_SECRET_ACCESS_KEY": "{{{placement_assets_aws_secret_access_key}}}",
       "ALVARCARTO_RENDER_API_BASE_URL": "http://127.0.0.1:8001",
-      "ALVARCARTO_RENDER_API_KEY": "{{api_key}}",
+      "ALVARCARTO_RENDER_API_KEY": "{{{api_key}}}",
       "LOG_LEVEL": "debug"
     },
     "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v10.8.0/bin/node",
     "interpreter_args": "--max_old_space_size=4096"
  }, {
     "name" : "http-cache",
-    "script" : "{{{map_server_install_dir}}}/alvarcarto-http-cache-service/src/index.js",
-    "cwd": "{{map_server_install_dir}}/alvarcarto-http-cache-service",
+    "script" : "src/index.js",
+    "cwd": "{{{map_server_install_dir}}}/alvarcarto-http-cache-service",
     "instances" : 2,
     "exec_mode" : "cluster",
     "env": {

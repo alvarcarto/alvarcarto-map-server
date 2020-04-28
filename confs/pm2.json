@@ -1,37 +1,37 @@
 {
   "apps" : [{
     "name" : "tile",
-    "script" : "{{map_server_install_dir}}/alvarcarto-tile-service/server.js",
-    "cwd": "{{map_server_install_dir}}/alvarcarto-tile-service",
+    "script" : "server.js",
+    "cwd": "{{{map_server_install_dir}}}/alvarcarto-tile-service",
     "instances" : 4,
     "exec_mode" : "cluster",
     "env": {
       "NODE_ENV": "production",
-      "STYLE_DIR": "{{map_server_install_dir}}/mapnik-styles",
-      "CACHE_DIR": "{{map_server_data_dir}}/tiles",
+      "STYLE_DIR": "{{{map_server_install_dir}}}/mapnik-styles",
+      "CACHE_DIR": "{{{map_server_data_dir}}}/tiles",
       "PORT": "8002"
     },
-    "interpreter" : "{{map_server_install_dir}}/.nvm/versions/node/v8.17.0/bin/node"
+    "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v8.17.0/bin/node"
  }, {
     "name" : "render",
-    "script" : "{{map_server_install_dir}}/alvarcarto-render-service/dist/index.js",
-    "cwd": "{{map_server_install_dir}}/alvarcarto-render-service",
+    "script" : "dist/index.js",
+    "cwd": "{{{map_server_install_dir}}}/alvarcarto-render-service",
     "instances" : 2,
     "exec_mode" : "cluster",
     "env": {
       "NODE_ENV": "production",
       "PORT": "8001",
-      "STYLE_DIR": "{{map_server_install_dir}}/mapnik-styles",
-      "API_KEY": "{{{api_key}}},{{{placement_api_key}}},{{{person_api_key}}},{{travis_api_key}}",
+      "STYLE_DIR": "{{{map_server_install_dir}}}/mapnik-styles",
+      "API_KEY": "{{{api_key}}},{{{placement_api_key}}},{{{person_api_key}}},{{{travis_api_key}}}",
       "FONT_DIR": "/usr/share/fonts/truetype/google-fonts",
       "TILE_URL": "http://localhost:8002/{style}/{z}/{x}/{y}/tile.png"
     },
-    "interpreter" : "{{map_server_install_dir}}/.nvm/versions/node/v8.17.0/bin/node",
+    "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v8.17.0/bin/node",
     "interpreter_args": "--max_old_space_size=4096"
  }, {
     "name" : "placement",
-    "script" : "{{map_server_install_dir}}/alvarcarto-placement-service/src/index.js",
-    "cwd": "{{map_server_install_dir}}/alvarcarto-placement-service",
+    "script" : "src/index.js",
+    "cwd": "{{{map_server_install_dir}}}/alvarcarto-placement-service",
     "instances" : 2,
     "exec_mode" : "cluster",
     "env": {
@@ -45,12 +45,12 @@
       "ALVARCARTO_RENDER_API_KEY": "{{{placement_api_key}}}",
       "LOG_LEVEL": "debug"
     },
-    "interpreter" : "{{map_server_install_dir}}/.nvm/versions/node/v10.8.0/bin/node",
+    "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v10.8.0/bin/node",
     "interpreter_args": "--max_old_space_size=4096"
  }, {
     "name" : "http-cache",
-    "script" : "{{map_server_install_dir}}/alvarcarto-http-cache-service/src/index.js",
-    "cwd": "{{map_server_install_dir}}/alvarcarto-http-cache-service",
+    "script" : "src/index.js",
+    "cwd": "{{{map_server_install_dir}}}/alvarcarto-http-cache-service",
     "instances" : 2,
     "exec_mode" : "cluster",
     "env": {
@@ -59,7 +59,7 @@
       "CACHE_INCLUDE_MIME_TYPES": "image/* video/* audio/*",
       "CACHE_DIR": "{{{map_server_data_dir}}}/http-cache"
     },
-    "interpreter" : "{{map_server_install_dir}}/.nvm/versions/node/v10.8.0/bin/node",
+    "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v10.8.0/bin/node",
     "interpreter_args": "--max_old_space_size=1024"
   }]
 }

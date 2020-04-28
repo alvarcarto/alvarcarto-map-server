@@ -81,7 +81,7 @@ jobs:
           command: |
             export MAP_SERVER_INSTALL_DIR=/home/alvar
             export MAP_SERVER_DATA_DIR=/home/alvar/data
-            export ALVAR_ENV=prod
+            export ALVAR_ENV=qa
             python manage-servers.py start_install
 
   wait_for_install:
@@ -118,7 +118,7 @@ jobs:
           command: |
             export MAP_SERVER_INSTALL_DIR=/home/alvar
             export MAP_SERVER_DATA_DIR=/home/alvar/data
-            export ALVAR_ENV=prod
+            export ALVAR_ENV=qa
             mkdir -p ~/repo/artifacts
             python manage-servers.py finish_install
             python manage-servers.py download_file '/home/alvar/screenlog.0' ~/repo/artifacts/screenlog.0
