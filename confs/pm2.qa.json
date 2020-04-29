@@ -1,7 +1,7 @@
 {
   "apps" : [{
     "name" : "tile",
-    "script" : "server.js",
+    "script" : "src/index.js",
     "cwd": "{{{map_server_install_dir}}}/alvarcarto-tile-service",
     "env": {
       "NODE_ENV": "production",
@@ -14,7 +14,7 @@
     "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v8.17.0/bin/node"
  }, {
     "name" : "render",
-    "script" : "dist/index.js",
+    "script" : "src/index.js",
     "cwd": "{{{map_server_install_dir}}}/alvarcarto-render-service",
     "env": {
       "NODE_ENV": "production",
