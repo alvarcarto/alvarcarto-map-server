@@ -7,7 +7,8 @@
       "NODE_ENV": "production",
       "STYLE_DIR": "{{{map_server_install_dir}}}/mapnik-styles",
       "CACHE_DIR": "{{{map_server_data_dir}}}/tiles",
-      "PORT": "8002"
+      "PORT": "8002",
+      "CLUSTER_INSTANCES": "4"
     },
     "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v8.17.0/bin/node"
  }, {
@@ -17,6 +18,7 @@
     "env": {
       "NODE_ENV": "production",
       "PORT": "8001",
+      "CLUSTER_INSTANCES": "2",
       "STYLE_DIR": "{{{map_server_install_dir}}}/mapnik-styles",
       "API_KEY": "{{{api_key}}},{{{placement_api_key}}},{{{person_api_key}}},{{{travis_api_key}}}",
       "FONT_DIR": "/usr/share/fonts/truetype/google-fonts",

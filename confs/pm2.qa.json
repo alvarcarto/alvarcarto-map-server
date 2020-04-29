@@ -6,6 +6,7 @@
     "env": {
       "NODE_ENV": "production",
       "DISABLE_CACHE": "true",
+      "CLUSTER_INSTANCES": "2",
       "STYLE_DIR": "{{{map_server_install_dir}}}/mapnik-styles",
       "CACHE_DIR": "{{{map_server_data_dir}}}/tiles",
       "PORT": "8002"
