@@ -20,6 +20,7 @@
       "NODE_ENV": "production",
       "PORT": "8001",
       "STYLE_DIR": "{{{map_server_install_dir}}}/mapnik-styles",
+      "BACKGROUNDS_DIR": "{{{map_server_data_dir}}}/tmp-downloads",
       "API_KEY": "{{{api_key}}},{{{travis_api_key}}}",
       "FONT_DIR": "/usr/share/fonts/truetype/google-fonts",
       "TILE_URL": "http://localhost:8002/{style}/{z}/{x}/{y}/tile.png"
