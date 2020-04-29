@@ -40,7 +40,7 @@
       "ALVARCARTO_RENDER_API_KEY": "{{{api_key}}}",
       "LOG_LEVEL": "debug"
     },
-    "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v10.8.0/bin/node",
+    "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v10.20.1/bin/node",
     "interpreter_args": "--max_old_space_size=4096"
  }, {
     "name" : "http-cache",
@@ -54,7 +54,7 @@
       "CACHE_INCLUDE_MIME_TYPES": "image/* video/* audio/*",
       "CACHE_DIR": "{{{map_server_data_dir}}}/http-cache"
     },
-    "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v10.8.0/bin/node",
+    "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v10.20.1/bin/node",
     "interpreter_args": "--max_old_space_size=1024"
   }]
 }

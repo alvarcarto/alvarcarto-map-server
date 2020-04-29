@@ -12,5 +12,5 @@ cd alvarcarto-http-cache-service
 
 mkdir -p $ALVAR_MAP_SERVER_DATA_DIR/http-cache/
 
-nvm use 10.8.0
+nvm use 10.20.1
 npm install

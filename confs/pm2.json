@@ -3,8 +3,6 @@
     "name" : "tile",
     "script" : "server.js",
     "cwd": "{{{map_server_install_dir}}}/alvarcarto-tile-service",
-    "instances" : 4,
-    "exec_mode" : "cluster",
     "env": {
       "NODE_ENV": "production",
       "STYLE_DIR": "{{{map_server_install_dir}}}/mapnik-styles",
@@ -16,8 +14,6 @@
     "name" : "render",
     "script" : "dist/index.js",
     "cwd": "{{{map_server_install_dir}}}/alvarcarto-render-service",
-    "instances" : 2,
-    "exec_mode" : "cluster",
     "env": {
       "NODE_ENV": "production",
       "PORT": "8001",
@@ -45,7 +41,7 @@
       "ALVARCARTO_RENDER_API_KEY": "{{{placement_api_key}}}",
       "LOG_LEVEL": "debug"
     },
-    "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v10.8.0/bin/node",
+    "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v10.20.1/bin/node",
     "interpreter_args": "--max_old_space_size=4096"
  }, {
     "name" : "http-cache",
@@ -59,7 +55,7 @@
       "CACHE_INCLUDE_MIME_TYPES": "image/* video/* audio/*",
       "CACHE_DIR": "{{{map_server_data_dir}}}/http-cache"
     },
-    "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v10.8.0/bin/node",
+    "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v10.20.1/bin/node",
     "interpreter_args": "--max_old_space_size=1024"
   }]
 }

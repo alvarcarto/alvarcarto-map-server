@@ -13,7 +13,7 @@ source $ALVAR_MAP_SERVER_REPOSITORY_DIR/tasks/install-alvar-repo-tile.sh
 source $ALVAR_MAP_SERVER_REPOSITORY_DIR/tasks/install-alvar-repo-http-cache.sh
 
 
-nvm use 10.8.0
+nvm use 10.20.1
 
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 # Use pm2@3.x version until this is solved: https://github.com/Unitech/pm2/issues/4686
@@ -31,6 +31,6 @@ fi
 pm2 start confs/chosen-pm2.json
 
 sleep 3
-sudo env PATH=$PATH:/home/alvar/.nvm/versions/node/v10.8.0/bin /home/alvar/.nvm/versions/node/v10.8.0/lib/node_modules/pm2/bin/pm2 startup systemd -u alvar --hp /home/alvar
+sudo env PATH=$PATH:/home/alvar/.nvm/versions/node/v10.20.1/bin /home/alvar/.nvm/versions/node/v10.20.1/lib/node_modules/pm2/bin/pm2 startup systemd -u alvar --hp /home/alvar
 sleep 2
 pm2 save

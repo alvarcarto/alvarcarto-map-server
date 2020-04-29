@@ -17,7 +17,7 @@ source ~/.bashrc
 
 nvm install 8.17.0
 
-nvm install 10.8.0
-nvm use 10.8.0
-nvm alias default 10.8.0
-echo "nvm use 10.8.0" >> ~/.bashrc
+nvm install 10.20.1
+nvm use 10.20.1
+nvm alias default 10.20.1
+echo "nvm use 10.20.1" >> ~/.bashrc

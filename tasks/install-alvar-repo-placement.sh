@@ -11,5 +11,5 @@ git clone https://alvarcarto-integration:c20a4fe9a8771c17eab5f0470fba434ab2fcf90
 cd alvarcarto-placement-service
 sudo apt-get install -y imagemagick
 
-nvm use 10.8.0
+nvm use 10.20.1
 npm install
