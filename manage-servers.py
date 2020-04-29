@@ -105,7 +105,7 @@ def connection(server, **kwargs):
 
   def new_run(command, **kwargs):
     logger.info('Run "{}"'.format(command))
-    c.orig_run(command, **kwargs)
+    return c.orig_run(command, **kwargs)
 
   c.orig_run = c.run
   c.run = new_run
