@@ -101,7 +101,15 @@ def connection(server, **kwargs):
 
   new_kwargs = extend({ 'connect_timeout': 5 }, kwargs)
   config = Config(overrides={ 'sudo': { 'password': server['password'] } })
-  return Connection(server['ip'], user=server['user'], config=config, connect_kwargs=connect_kwargs, **new_kwargs)
+  c = Connection(server['ip'], user=server['user'], config=config, connect_kwargs=connect_kwargs, **new_kwargs)
+
+  def new_run(command, **kwargs):
+    logger.info('Run "{}"'.format(command))
+    c.orig_run(command, **kwargs)
+
+  c.orig_run = c.run
+  c.run = new_run
+  return c
 
 
 def is_server_alive(server):
