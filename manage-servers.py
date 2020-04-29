@@ -452,6 +452,19 @@ def task_finish_install():
   wait_until_responsive(asMapUser)
 
 
+def task_test():
+  records = get_dns_records()
+  asMapUser = {
+    'ip': records[config['RESERVE_DNS_NAME']]['ip'],
+    'user': 'alvar',
+    'password': config['MAP_USER_PASSWORD']
+  }
+
+  with connection(asMapUser) as c:
+    c.run('exit 1', warn=True)
+    c.run('rm not_existing')
+
+
 def task_download_file(remote_path, local_path):
   records = get_dns_records()
   asMapUser = {
@@ -542,6 +555,7 @@ def execute_task(task, *task_args):
     'get_tile_api_ip': wrap_with_rollback(task_get_tile_api_ip),
     'purge_cloudflare_cache': wrap_with_rollback(task_purge_cloudflare_cache),
     'promote_reserve_to_production': wrap_with_rollback(task_promote_reserve_to_production),
+    'test': wrap_with_rollback(task_test),
   }
 
   if not task in tasks:
