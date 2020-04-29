@@ -183,6 +183,8 @@ jobs:
       - run:
           name: Warm server caches
           command: |
+            IP=$(python3 manage-servers.py get_tile_api_reserve_ip)
+
             git clone "https://alvarcarto-integration:$GITHUB_INTEGRATION_USER_TOKEN@github.com/alvarcarto/alvarcarto-cartocss.git"
             cd alvarcarto-cartocss
             npm i
@@ -191,8 +193,6 @@ jobs:
             npm install @alvarcarto/tilewarm
             curl -O https://raw.githubusercontent.com/alvarcarto/tilewarm/master/geojson/world.geojson
             curl -O https://raw.githubusercontent.com/alvarcarto/tilewarm/master/geojson/all-cities.geojson
-
-            IP=$(python3 manage-servers.py get_tile_api_reserve_ip)
 
             # Iterate all styles in cartocss repo
             for i in $(find ./dist -name '*.xml');
