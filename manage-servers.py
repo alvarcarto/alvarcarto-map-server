@@ -28,7 +28,7 @@ config = {
   'GITHUB_INTEGRATION_USER_TOKEN': getenv('GITHUB_INTEGRATION_USER_TOKEN'),
   'CLOUDFLARE_TOKEN': getenv('CLOUDFLARE_TOKEN'),
   'CIRCLECI_TOKEN': getenv('CIRCLECI_TOKEN'),
-  'RESERVE_DNS_NAME': 'tile-api2',
+  'RESERVE_DNS_NAME': 'tile-api-reserve2',
   'PRODUCTION_DNS_NAME': 'tile-api2'
 }
 
