@@ -18,6 +18,10 @@ http:// {
     uri strip_prefix /placement
     reverse_proxy http://localhost:8003
   }
+  route /cached/* {
+    uri strip_prefix /cached
+    reverse_proxy http://localhost:8004
+  }
 
   respond * 404
 }
@@ -43,6 +47,10 @@ https:// {
   route /placement/* {
     uri strip_prefix /placement
     reverse_proxy http://localhost:8003
+  }
+  route /cached/* {
+    uri strip_prefix /cached
+    reverse_proxy http://localhost:8004
   }
 
   respond * 404
