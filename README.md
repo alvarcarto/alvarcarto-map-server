@@ -137,6 +137,42 @@ sudo systemctl restart caddy
 
 ## Known errors
 
+
+### Dependency issues
+
+* Mapnik project timeline is a mess, so we are stuck at 3.0.x version.
+
+    No release plan for 3.1
+    https://github.com/mapnik/mapnik/issues/3747
+
+    3.0 -> 3.1 upgrade docs are not done:
+    https://github.com/mapnik/mapnik/issues/3919
+
+    Incomplete upgrade docs:
+    https://github.com/mapnik/mapnik/wiki/API-changes-between-v3.0-and-v3.1
+
+    Nothing new at CHANGELOG either:
+    https://github.com/mapnik/mapnik/blob/master/CHANGELOG.md
+
+    Milestones only have 4.0.0, 3.1 seems to have disappeared:
+    https://github.com/mapnik/mapnik/milestones
+
+
+* Since the Mapnik 3.0 -> 3.1 upgrade path is undocumented, we don't know what to change in the Mapnik style XML.
+
+    The style we are based on supports only Mapnik 3.0.22:
+    https://github.com/gravitystorm/openstreetmap-carto/issues/4046
+
+
+* node-mapnik@3.x is required for Mapnik 3.0.x, node-mapnik@4.x version requires Mapnik 3.1
+
+* node-mapnik@3.x doesn't support Node 8+ versions, so we are stuck at Node 8
+
+* pm2 doesn't support different node versions when clustering, so we should run all our services at node version 8..
+
+* The only solution seems to be to do clustering manually in render and tile apis (the services that require node 8)
+
+
 ### Mapnik `make test` fails
 
 First it may fail to: `Postgis Plugin: FATAL:  role "alvar" does not exist`.
