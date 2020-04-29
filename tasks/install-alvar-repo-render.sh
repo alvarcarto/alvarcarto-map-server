@@ -12,5 +12,4 @@ cd alvarcarto-render-service
 
 nvm use 8.17.0
 npm install
-npm run build
 npm run build-posters
