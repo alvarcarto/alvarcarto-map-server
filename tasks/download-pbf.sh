@@ -19,8 +19,7 @@ if [ "$ALVAR_ENV" = "qa" ] || [ "$ALVAR_ENV" = "docker" ]; then
 else
     # Use another mirror to download planet PBF faster
     # https://wiki.openstreetmap.org/wiki/Planet.osm#Downloading
-    #PBF_URL=https://ftp.fau.de/osm-planet/pbf/planet-latest.osm.pbf
-    PBF_URL=http://download.geofabrik.de/europe/finland-latest.osm.pbf
+    PBF_URL=https://ftp.fau.de/osm-planet/pbf/planet-latest.osm.pbf
 
     # Original:
     #PBF_URL=http://planet.openstreetmap.org/pbf/planet-latest.osm.pbf
