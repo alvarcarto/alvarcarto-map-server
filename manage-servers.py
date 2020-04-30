@@ -457,6 +457,8 @@ def task_is_install_ready_to_continue(server_env):
 
 def task_get_ip(server_env):
   assert_server_env(server_env, production_allowed=True)
+
+  records = get_dns_records()
   return records[server_envs[server_env]]['ip']
 
 
