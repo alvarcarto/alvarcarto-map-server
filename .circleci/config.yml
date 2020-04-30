@@ -261,10 +261,10 @@ jobs:
 
               if [ "$ALVAR_SERVER_ENV" == "reserve" ]; then
                 echo "Warming caches (production) with world.geojson for style $style .."
-                NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input world.geojson -c 10 --zoom 1-8 --verbose
+                NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input world.geojson --max-retries 10 --retry-base-timeout 100 -c 10 --zoom 1-8 --verbose
 
                 echo "Warming caches (production) with all-cities.geojson for style $style .."
-                NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input all-cities.geojson -c 10 --zoom 8-13 --verbose
+                NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input all-cities.geojson --max-retries 10 --retry-base-timeout 100 -c 10 --zoom 8-13 --verbose
               else
                 echo "Warming caches (qa) with world.geojson for style $style .."
                 NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input world.geojson -c 10 --zoom 1-6 --verbose
