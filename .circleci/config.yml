@@ -83,10 +83,10 @@ workflows:
   test_and_deploy:
     when: << pipeline.parameters.test_and_deploy >>
     jobs:
-      - warm_caches
-      #- warm_caches:
-      #    requires:
-      #      - test_server
+      - test_server
+      - warm_caches:
+          requires:
+            - test_server
       - deploy_to_production:
           type: approval
           requires:
