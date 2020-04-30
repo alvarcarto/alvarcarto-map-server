@@ -248,7 +248,7 @@ jobs:
             npm i
             npm run build
 
-            npm install @alvarcarto/tilewarm
+            npm install -g @alvarcarto/tilewarm
             curl -O https://raw.githubusercontent.com/alvarcarto/tilewarm/master/geojson/world.geojson
             curl -O https://raw.githubusercontent.com/alvarcarto/tilewarm/master/geojson/all-cities.geojson
 
