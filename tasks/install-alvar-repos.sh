@@ -34,3 +34,10 @@ sleep 3
 sudo env PATH=$PATH:/home/alvar/.nvm/versions/node/v10.20.1/bin /home/alvar/.nvm/versions/node/v10.20.1/lib/node_modules/pm2/bin/pm2 startup systemd -u alvar --hp /home/alvar
 sleep 2
 pm2 save
+
+
+if [ "$ALVAR_ENV" != "docker" ]; then
+  mkdir -p $ALVAR_MAP_SERVER_DATA_DIR/tmp-downloads
+  echo "Installing cron task to restart services when needed .."
+  (crontab -l 2>/dev/null; echo "* * * * * /bin/bash -c 'source $HOME/.bashrc; bash $ALVAR_MAP_SERVER_REPOSITORY_DIR/tools/health-check.sh") | crontab -
+fi
