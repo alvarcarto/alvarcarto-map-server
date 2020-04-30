@@ -45,11 +45,12 @@ workflows:
       - launch_reserve_install
 
     triggers:
-        # Every Sunday at 12:00 (winter) or 13:00 (summer) Helsinki time depending on DST
-        # The whole installation and test steps take around 24h, so it is ready for production
+        # Every Saturday at 12:00 (winter) or 13:00 (summer) Helsinki time depending on DST
+        # The whole installation (15h) and test steps may take a few deays, so it is ready for production
         # push on Monday morning
+        # Syntax: https://pubs.opengroup.org/onlinepubs/7908799/xcu/crontab.html
       - schedule:
-          cron: "0 10 * * 0"
+          cron: "0 10 * * 6"
           filters:
             branches:
               only:
