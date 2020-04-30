@@ -315,14 +315,14 @@ def start_install_as_map_user(server, alvar_env='prod'):
     from_s3_to_server(server, secret_file['name'], secret_file['abspath'])
     logger.info('Injecting additional information into secrets file for convenience ..')
     c.run('sudo apt-get install -y jq')
-    temp_file = '{}.tmp'.format(SECRETS_FILE)
+    temp_file = '{}.tmp'.format(secret_file['abspath'])
     c.run('jq \'. + {{ map_server_install_dir: "{}", map_server_data_dir: "{}"}}\' {} > {}'.format(
       config['MAP_SERVER_INSTALL_DIR'],
       config['MAP_SERVER_DATA_DIR'],
-      SECRETS_FILE,
+      secret_file['abspath'],
       temp_file
     ))
-    c.run('mv {} {}'.format(temp_file, SECRETS_FILE))
+    c.run('mv {} {}'.format(temp_file, secret_file['abspath']))
 
     clone_url = 'https://alvarcarto-integration:{password}@github.com/alvarcarto/alvarcarto-map-server.git'.format(password=config['GITHUB_INTEGRATION_USER_TOKEN'])
     repo_dir = path.join(config['MAP_SERVER_INSTALL_DIR'], 'alvarcarto-map-server')
