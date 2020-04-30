@@ -22,14 +22,17 @@ config = {
   'MAP_USER_PASSWORD': getenv('MAP_USER_PASSWORD'),
   'MAP_SERVER_INSTALL_DIR': getenv('MAP_SERVER_INSTALL_DIR', default='/home/alvar'),
   'MAP_SERVER_DATA_DIR': getenv('MAP_SERVER_DATA_DIR', default='/home/alvar/data'),
-  'ALVAR_ENV': getenv('ALVAR_ENV', default='qa'),
   'AWS_ACCESS_KEY_ID': getenv('AWS_ACCESS_KEY_ID'),
   'AWS_SECRET_ACCESS_KEY': getenv('AWS_SECRET_ACCESS_KEY'),
   'GITHUB_INTEGRATION_USER_TOKEN': getenv('GITHUB_INTEGRATION_USER_TOKEN'),
   'CLOUDFLARE_TOKEN': getenv('CLOUDFLARE_TOKEN'),
   'CIRCLECI_TOKEN': getenv('CIRCLECI_TOKEN'),
-  'RESERVE_DNS_NAME': 'tile-api-reserve2',
-  'PRODUCTION_DNS_NAME': 'tile-api2'
+}
+
+server_envs = {
+  'qa': 'tile-api-qa',
+  'reserve': 'tile-api-reserve2',
+  'production': 'tile-api2'
 }
 
 for key, val in config.items():
@@ -38,8 +41,6 @@ for key, val in config.items():
 
 INSTALL_EXIT_CODE_FILE = path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_exit_code')
 INSTALL_STARTED_FILE = path.join(config['MAP_SERVER_INSTALL_DIR'], 'install_started')
-SECRETS_FILE_NAME = '{}.secrets.json'.format(config['ALVAR_ENV'])
-SECRETS_FILE = path.join(config['MAP_SERVER_INSTALL_DIR'], SECRETS_FILE_NAME)
 
 s3 = boto3.client('s3',
   aws_access_key_id=config['AWS_ACCESS_KEY_ID'],
@@ -53,7 +54,7 @@ ch.setFormatter(logging.Formatter('%(asctime)-15s %(name)-5s %(levelname)-8s: %(
 logger.addHandler(ch)
 
 # Set to DEBUG if issues with SSH connection occur
-logging.getLogger("paramiko").setLevel(logging.WARNING)
+logging.getLogger("paramiko").setLevel(logging.DEBUG)
 
 
 global_rollback_actions = []
@@ -100,16 +101,11 @@ def connection(server, **kwargs):
     raise Exception('No password or ssh key provided!')
 
   new_kwargs = extend({ 'connect_timeout': 5 }, kwargs)
-  config = Config(overrides={ 'sudo': { 'password': server['password'] } })
-  c = Connection(server['ip'], user=server['user'], config=config, connect_kwargs=connect_kwargs, **new_kwargs)
-
-  def new_run(command, **kwargs):
-    logger.info('Run "{}"'.format(command))
-    return c.orig_run(command, **kwargs)
-
-  c.orig_run = c.run
-  c.run = new_run
-  return c
+  config = Config(overrides={
+    'sudo': { 'password': server['password'] },
+    'run': { 'echo': True }
+  })
+  return Connection(server['ip'], user=server['user'], config=config, connect_kwargs=connect_kwargs, **new_kwargs)
 
 
 def is_server_alive(server):
@@ -129,6 +125,13 @@ def is_server_alive(server):
 
 def extend(a, b):
   return dict(a, **b)
+
+
+def get_alvar_env(server_env):
+  if server_env == 'qa':
+    return 'qa'
+
+  return 'prod'
 
 
 def initiate_linux_install(ip):
@@ -166,6 +169,14 @@ def reboot(server):
   with connection(server) as c:
     c.run('reboot')
   time.sleep(10)
+
+
+def get_secret_file_info(alvar_env):
+  file_name = '{}.secrets.json'.format(alvar_env)
+  return {
+    'abspath': path.join(config['MAP_SERVER_INSTALL_DIR'], file_name),
+    'name': file_name
+  }
 
 
 def format_and_reinstall_ubuntu(ip):
@@ -224,7 +235,7 @@ def get_dns_records():
   zone_id = res['result'][0]['id']
 
   records = {}
-  names = [config['PRODUCTION_DNS_NAME'], config['RESERVE_DNS_NAME']]
+  names = [val for key, val in server_envs.items()]
   for name in names:
     res = cloudflareApi.get('/client/v4/zones/{}/dns_records'.format(zone_id), params={ 'name': '{}.alvarcarto.com'.format(name) })
     records[name] = {
@@ -272,7 +283,15 @@ def initialise_as_root(server):
     c.run('echo -e "\nalvar ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers')
 
 
-def start_install_as_map_user(server):
+def assert_server_env(server_env, production_allowed=False):
+  if not production_allowed and server_env == 'production':
+    raise Exception('Unsafe task! Running task on production environment is dangerous.')
+
+  if server_env not in server_envs:
+    raise Exception('Server with env "{}" not found!'.format(server_env))
+
+
+def start_install_as_map_user(server, alvar_env='prod'):
   logger.info('Start installation as map user at {ip} ..'.format(**server))
 
   with connection(server) as c:
@@ -292,7 +311,8 @@ def start_install_as_map_user(server):
     c.run('echo "deflog on" >> ~/.screenrc')
     c.run('echo "logfile {}/screenlog.%n" >> ~/.screenrc'.format(config['MAP_SERVER_INSTALL_DIR']))
 
-    from_s3_to_server(server, SECRETS_FILE_NAME, SECRETS_FILE)
+    secret_file = get_secret_file_info(alvar_env)
+    from_s3_to_server(server, secret_file['name'], secret_file['abspath'])
     logger.info('Injecting additional information into secrets file for convenience ..')
     c.run('sudo apt-get install -y jq')
     temp_file = '{}.tmp'.format(SECRETS_FILE)
@@ -312,9 +332,9 @@ def start_install_as_map_user(server):
       # That is needed, we want to always launch the wait task in circle ci to show the status
       # even if the install failed
       cmd = '; '.join([
-        'ALVAR_MAP_SERVER_INSTALL_DIR={} ALVAR_MAP_SERVER_DATA_DIR={} ALVAR_ENV={} bash install.sh'.format(config['MAP_SERVER_INSTALL_DIR'], config['MAP_SERVER_DATA_DIR'], config['ALVAR_ENV']),
+        'ALVAR_MAP_SERVER_INSTALL_DIR={} ALVAR_MAP_SERVER_DATA_DIR={} ALVAR_ENV={} bash install.sh'.format(config['MAP_SERVER_INSTALL_DIR'], config['MAP_SERVER_DATA_DIR'], alvar_env),
         'echo "$?" > {}'.format(INSTALL_EXIT_CODE_FILE),
-        'CIRCLECI_TOKEN="{}" bash .circleci/launch-wait.sh'.format(config['CIRCLECI_TOKEN'])
+        'CIRCLECI_TOKEN="{}" bash .circleci/launch-wait-for-install.sh {}'.format(config['CIRCLECI_TOKEN'], server['env'])
       ])
       # Screen command will immediately detach and run in background
       c.run('screen -S install -dm bash -c \'{}\''.format(cmd))
@@ -343,7 +363,7 @@ def is_install_ready_to_continue(server):
     return True
 
 
-def run_after_installation_tasks(server):
+def run_after_installation_tasks(server, alvar_env='prod'):
   logger.info('Run tasks after map server installation at {ip} ..'.format(**server))
 
   with connection(server) as c:
@@ -373,7 +393,8 @@ def run_after_installation_tasks(server):
     logger.info('Remove temporary files ..')
     c.run('rm {}'.format(INSTALL_STARTED_FILE))
     c.run('rm {}'.format(INSTALL_EXIT_CODE_FILE))
-    c.run('rm {}'.format(SECRETS_FILE))
+    secret_file = get_secret_file_info(alvar_env)
+    c.run('rm {}'.format(secret_file['abspath']))
 
     logger.info('Run final system upgrades before reboot ..')
     c.run('sudo apt-get -y upgrade')
@@ -382,10 +403,13 @@ def run_after_installation_tasks(server):
     c.run('sudo sed -E -i \'s/^(alvar ALL=\\(ALL\\) NOPASSWD: ALL.*)$/#\\1/g\' /etc/sudoers')
 
 
-def task_start_install():
+def task_start_install(server_env):
+  assert_server_env(server_env)
+
   records = get_dns_records()
   server = {
-    'ip': records[config['RESERVE_DNS_NAME']]['ip'],
+    'env': server_env,
+    'ip': records[server_envs[server_env]]['ip'],
   }
 
   details = format_and_reinstall_ubuntu(server['ip'])
@@ -403,15 +427,17 @@ def task_start_install():
   initialise_as_root(asRoot)
 
   asMapUser = extend(server, { 'user': 'alvar', 'password': config['MAP_USER_PASSWORD'] })
-  start_install_as_map_user(asMapUser)
+  start_install_as_map_user(asMapUser, alvar_env=get_alvar_env(server_env))
   wait_until_responsive(asMapUser, wait_time=30)
 
 
-def task_is_install_ready_to_continue():
+def task_is_install_ready_to_continue(server_env):
+  assert_server_env(server_env)
   records = get_dns_records()
 
   asMapUser = {
-    'ip': records[config['RESERVE_DNS_NAME']]['ip'],
+    'env': server_env,
+    'ip': records[server_envs[server_env]]['ip'],
     'user': 'alvar',
     'password': config['MAP_USER_PASSWORD']
   }
@@ -429,33 +455,38 @@ def task_is_install_ready_to_continue():
   return 'false'
 
 
-def task_get_tile_api_reserve_ip():
-  records = get_dns_records()
-  return records[config['RESERVE_DNS_NAME']]['ip']
+def task_get_ip(server_env):
+  assert_server_env(server_env, production_allowed=True)
+  return records[server_envs[server_env]]['ip']
 
 
-def task_get_tile_api_ip():
-  records = get_dns_records()
-  return records[config['PRODUCTION_DNS_NAME']]['ip']
+def task_finish_install(server_env):
+  assert_server_env(server_env)
 
-
-def task_finish_install():
   records = get_dns_records()
   asMapUser = {
-    'ip': records[config['RESERVE_DNS_NAME']]['ip'],
+    'env': server_env,
+    'ip': records[server_envs[server_env]]['ip'],
     'user': 'alvar',
     'password': config['MAP_USER_PASSWORD']
   }
 
-  run_after_installation_tasks(asMapUser)
+  run_after_installation_tasks(asMapUser, alvar_env=get_alvar_env(server_env))
+  # For some reason the last commands have not been executed of the finish installation tas
+  # It might be because we immediately run HW reset after the commands.
+  # This sleep tries to prevent that
+  time.sleep(10)
   hardware_reboot(asMapUser['ip'])
   wait_until_responsive(asMapUser)
 
 
-def task_test():
+def task_test(server_env):
+  assert_server_env(server_env)
+
   records = get_dns_records()
   asMapUser = {
-    'ip': records[config['RESERVE_DNS_NAME']]['ip'],
+    'env': server_env,
+    'ip': records[server_envs[server_env]]['ip'],
     'user': 'alvar',
     'password': config['MAP_USER_PASSWORD']
   }
@@ -465,10 +496,13 @@ def task_test():
     c.run('rm not_existing')
 
 
-def task_download_file(remote_path, local_path):
+def task_download_file(server_env, remote_path, local_path):
+  assert_server_env(server_env)
+
   records = get_dns_records()
   asMapUser = {
-    'ip': records[config['RESERVE_DNS_NAME']]['ip'],
+    'env': server_env,
+    'ip': records[server_envs[server_env]]['ip'],
     'user': 'alvar',
     'password': config['MAP_USER_PASSWORD']
   }
@@ -492,7 +526,7 @@ def task_purge_cloudflare_cache():
 
 def task_promote_reserve_to_production():
   records = get_dns_records()
-  switch_pairs = [(config['RESERVE_DNS_NAME'], config['PRODUCTION_DNS_NAME'])]
+  switch_pairs = [(server_envs['reserve'], server_envs['production'])]
 
   logger.info('Promoting to production!')
   logger.info('\n'.join(map(lambda p: '{} -> {}'.format(p[0], p[1]), switch_pairs)))
@@ -551,8 +585,7 @@ def execute_task(task, *task_args):
     'is_install_ready_to_continue': wrap_with_rollback(task_is_install_ready_to_continue),
     'finish_install': wrap_with_rollback(task_finish_install),
     'download_file': wrap_with_rollback(task_download_file),
-    'get_tile_api_reserve_ip': wrap_with_rollback(task_get_tile_api_reserve_ip),
-    'get_tile_api_ip': wrap_with_rollback(task_get_tile_api_ip),
+    'get_ip': wrap_with_rollback(task_get_ip),
     'purge_cloudflare_cache': wrap_with_rollback(task_purge_cloudflare_cache),
     'promote_reserve_to_production': wrap_with_rollback(task_promote_reserve_to_production),
     'test': wrap_with_rollback(task_test),

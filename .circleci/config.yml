@@ -1,9 +1,9 @@
 version: 2.1
 parameters:
-  manual_start:
+  start_install:
     type: boolean
     default: false
-  wait:
+  wait_for_install:
     type: boolean
     default: false
   finish_install:
@@ -12,16 +12,37 @@ parameters:
   test_and_deploy:
     type: boolean
     default: false
+  test_and_deploy_qa:
+    type: boolean
+    default: false
+  server_env:
+    default: 'qa'
+    description: The target server environment for installation
+    type: enum
+    enum: ['qa', 'reserve']
 
 workflows:
-  start_install_manual:
-    when: << pipeline.parameters.manual_start >>
+  start_install:
+    when: << pipeline.parameters.start_install >>
     jobs:
       - start_install
 
-  start_install_automatic:
+  start_install_qa_automatic:
     jobs:
-      - start_install
+      - launch_qa_install
+
+    triggers:
+        # Every night at 1AM UTC, meaning 03:00 (winter) or 04:00 (summer) Helsinki time
+      - schedule:
+          cron: "0 1 * * *"
+          filters:
+            branches:
+              only:
+                - master
+
+  start_install_reserve_automatic:
+    jobs:
+      - launch_reserve_install
 
     triggers:
         # Every Monday at 12:00 (winter) or 13:00 (summer) Helsinki time depending on DST
@@ -36,7 +57,7 @@ workflows:
   # This would also work on it's own as a polling job, but it spends so much computation
   # credits in Circle CI it makes no sense
   wait_for_install:
-    when: << pipeline.parameters.wait >>
+    when: << pipeline.parameters.wait_for_install >>
     jobs:
       - wait_for_install
 
@@ -45,16 +66,24 @@ workflows:
     jobs:
       - finish_install
 
+  test_and_deploy_qa:
+    when: << pipeline.parameters.test_and_deploy_qa >>
+    jobs:
+      - test_server
+      - warm_caches:
+          requires:
+            - test_server
+
   # This is a separate task so that we are able to independently install the server and
   # test installation if needed. Not sure if this separation will be useful but at least
   # in dev phase it helps
   test_and_deploy:
     when: << pipeline.parameters.test_and_deploy >>
     jobs:
-      - test_release_candidate
+      - test_server
       - warm_caches:
           requires:
-            - test_release_candidate
+            - test_server
       - deploy_to_production:
           type: approval
           requires:
@@ -63,7 +92,30 @@ workflows:
           requires:
             - deploy_to_production
 
+
 jobs:
+  launch_qa_install:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Launch QA installation
+          command: |
+            bash .circleci/lanch-start-install.sh qa
+
+  launch_reserve_install:
+    docker:
+      - image: circleci/python:3.8
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Launch Reserve installation
+          command: |
+            bash .circleci/lanch-start-install.sh reserve
+
   start_install:
     docker:
       - image: circleci/python:3.8
@@ -79,10 +131,8 @@ jobs:
       - run:
           name: Start server installation
           command: |
-            export MAP_SERVER_INSTALL_DIR=/home/alvar
-            export MAP_SERVER_DATA_DIR=/home/alvar/data
-            export ALVAR_ENV=prod
-            python manage-servers.py start_install
+            export ALVAR_SERVER_ENV="<< pipeline.parameters.server_env >>"
+            python manage-servers.py start_install $ALVAR_SERVER_ENV
 
   wait_for_install:
     docker:
@@ -99,7 +149,8 @@ jobs:
       - run:
           name: Wait for install to finish
           command: |
-            bash .circleci/wait-loop.sh
+            export ALVAR_SERVER_ENV="<< pipeline.parameters.server_env >>"
+            bash .circleci/wait-loop.sh $ALVAR_SERVER_ENV
 
   finish_install:
     docker:
@@ -116,22 +167,21 @@ jobs:
       - run:
           name: Wait for install to finish
           command: |
-            export MAP_SERVER_INSTALL_DIR=/home/alvar
-            export MAP_SERVER_DATA_DIR=/home/alvar/data
-            export ALVAR_ENV=prod
+            export ALVAR_SERVER_ENV="<< pipeline.parameters.server_env >>"
             mkdir -p ~/repo/artifacts
-            python manage-servers.py finish_install
-            python manage-servers.py download_file '/home/alvar/screenlog.0' ~/repo/artifacts/screenlog.0
+            python manage-servers.py finish_install $ALVAR_SERVER_ENV
+            python manage-servers.py download_file $ALVAR_SERVER_ENV '/home/alvar/screenlog.0' ~/repo/artifacts/screenlog.0
 
       - run:
           name: Launch test and deploy
           command: |
-            bash .circleci/launch-test-and-deploy.sh
+            export ALVAR_SERVER_ENV="<< pipeline.parameters.server_env >>"
+            bash .circleci/launch-test-and-deploy.sh $ALVAR_SERVER_ENV
 
       - store_artifacts:
           path: ~/repo/artifacts
 
-  test_release_candidate:
+  test_server:
     docker:
       - image: circleci/node:10
     working_directory: ~/repo
@@ -146,9 +196,10 @@ jobs:
             pip3 install -r requirements.txt
 
       - deploy:
-          name: Run tests for release candidate server
+          name: Run tests for << pipeline.parameters.server_env >> server
           command: |
-            IP=$(python3 manage-servers.py get_tile_api_reserve_ip)
+            export ALVAR_SERVER_ENV="<< pipeline.parameters.server_env >>"
+            IP=$(python3 manage-servers.py get_ip $ALVAR_SERVER_ENV)
 
             git clone "https://alvarcarto-integration:$GITHUB_INTEGRATION_USER_TOKEN@github.com/alvarcarto/alvarcarto-render-snapshot.git"
             cd alvarcarto-render-snapshot
@@ -161,7 +212,11 @@ jobs:
             export AWS_ACCESS_KEY_ID="$SNAPSHOT_TOOL_AWS_ACCESS_KEY_ID"
             export AWS_SECRET_ACCESS_KEY="$SNAPSHOT_TOOL_AWS_SECRET_ACCESS_KEY"
 
-            npm run compare
+            if [ "$ALVAR_SERVER_ENV" == "reserve" ]; then
+              npm run compare
+            else
+              npm run compare -- --main-location-id hki_c --only 'locationId:hki_c' --only 'orientation:portrait'
+            fi
 
       - store_artifacts:
           path: ~/repo/alvarcarto-render-snapshot/images
@@ -183,7 +238,8 @@ jobs:
       - run:
           name: Warm server caches
           command: |
-            IP=$(python3 manage-servers.py get_tile_api_reserve_ip)
+            export ALVAR_SERVER_ENV="<< pipeline.parameters.server_env >>"
+            IP=$(python3 manage-servers.py get_ip $ALVAR_SERVER_ENV)
 
             git clone "https://alvarcarto-integration:$GITHUB_INTEGRATION_USER_TOKEN@github.com/alvarcarto/alvarcarto-cartocss.git"
             cd alvarcarto-cartocss
@@ -199,11 +255,19 @@ jobs:
             do
               style=$(basename "$i" .xml)
 
-              echo "Warming caches with world.geojson for style $style .."
-              NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input world.geojson -c 10 --zoom 1-8 --verbose
+              if [ "$ALVAR_SERVER_ENV" == "reserve" ]; then
+                echo "Warming caches (production) with world.geojson for style $style .."
+                NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input world.geojson -c 10 --zoom 1-8 --verbose
 
-              echo "Warming caches with all-cities.geojson for style $style .."
-              NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input all-cities.geojson -c 10 --zoom 8-13 --verbose
+                echo "Warming caches (production) with all-cities.geojson for style $style .."
+                NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input all-cities.geojson -c 10 --zoom 8-13 --verbose
+              else
+                echo "Warming caches (qa) with world.geojson for style $style .."
+                NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input world.geojson -c 10 --zoom 1-6 --verbose
+
+                echo "Warming caches (qa) with all-cities.geojson for style $style .."
+                NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input all-cities.geojson -c 10 --zoom 11 --verbose
+              fi
             done
 
   deploy_to_production:
@@ -245,7 +309,7 @@ jobs:
       - deploy:
           name: Update poster snapshots to S3
           command: |
-            IP=$(python3 manage-servers.py get_tile_api_ip)
+            IP=$(python3 manage-servers.py get_ip production)
 
             git clone "https://alvarcarto-integration:$GITHUB_INTEGRATION_USER_TOKEN@github.com/alvarcarto/alvarcarto-render-snapshot.git"
             cd alvarcarto-render-snapshot
