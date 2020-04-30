@@ -49,7 +49,7 @@ workflows:
         # The whole installation and test steps take around 24h, so it is ready for production
         # push on Monday morning
       - schedule:
-          cron: "0 10 * * Sun"
+          cron: "0 10 * * 0"
           filters:
             branches:
               only:
