@@ -17,7 +17,7 @@ fi
 
 # Tile service
 exit_code=0
-curl --fail 'http://localhost:8002/bw/13/4665/2367/tile.png'
+curl --fail 'http://localhost:8002/bw/13/4665/2367/tile.png' || exit_code=$?
 if [ $exit_code -ne 0 ]; then
   echo "$(date '+%Y-%m-%d %H:%M:%S') Tile service request failed! Restarting .." >> $LOG_FILE
   pm2 restart tile
