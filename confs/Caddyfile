@@ -4,7 +4,6 @@ http:// {
     output file /var/log/caddy/access.log
   }
   header -Server
-  header Access-Control-Allow-Origin *
 
   route /render/* {
     uri strip_prefix /render
@@ -34,7 +33,6 @@ https:// {
     output file /var/log/caddy/access.log
   }
   header -Server
-  header Access-Control-Allow-Origin *
 
   route /render/* {
     uri strip_prefix /render
