@@ -45,9 +45,11 @@ workflows:
       - launch_reserve_install
 
     triggers:
-        # Every Monday at 12:00 (winter) or 13:00 (summer) Helsinki time depending on DST
+        # Every Sunday at 12:00 (winter) or 13:00 (summer) Helsinki time depending on DST
+        # The whole installation and test steps take around 24h, so it is ready for production
+        # push on Monday morning
       - schedule:
-          cron: "0 10 * * 1"
+          cron: "0 10 * * Sun"
           filters:
             branches:
               only:
