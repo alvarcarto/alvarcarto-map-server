@@ -40,21 +40,21 @@ workflows:
               only:
                 - master
 
-  start_install_reserve_automatic:
-    jobs:
-      - launch_reserve_install
-
-    triggers:
-        # Every Saturday at 12:00 (winter) or 13:00 (summer) Helsinki time depending on DST
-        # The whole installation (15h) and test steps may take a few deays, so it is ready for production
-        # push on Monday morning
-        # Syntax: https://pubs.opengroup.org/onlinepubs/7908799/xcu/crontab.html
-      - schedule:
-          cron: "0 10 * * 6"
-          filters:
-            branches:
-              only:
-                - master
+#  start_install_reserve_automatic:
+#    jobs:
+#      - launch_reserve_install
+#
+#    triggers:
+#        # Every Saturday at 12:00 (winter) or 13:00 (summer) Helsinki time depending on DST
+#        # The whole installation (15h) and test steps may take a few deays, so it is ready for production
+#        # push on Monday morning
+#        # Syntax: https://pubs.opengroup.org/onlinepubs/7908799/xcu/crontab.html
+#      - schedule:
+#          cron: "0 10 * * 6"
+#          filters:
+#            branches:
+#              only:
+#                - master
 
   # Remote server will start this step after installation is ready to proceed
   # This would also work on it's own as a polling job, but it spends so much computation
