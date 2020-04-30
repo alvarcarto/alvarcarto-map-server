@@ -13,7 +13,7 @@ cd alvarcarto-render-service
 if [ "$ALVAR_ENV" != "docker" ]; then
   mkdir -p $ALVAR_MAP_SERVER_DATA_DIR/tmp-downloads
   echo "Installing cron task to remove temp downloads .."
-  (crontab -l 2>/dev/null; echo "0 * * * * /bin/bash -c 'find $ALVAR_MAP_SERVER_DATA_DIR/tmp-downloads -type f -name \"*\" -delete'") | crontab -
+  echo -e "$(crontab -l 2>/dev/null)\n0 * * * * /bin/bash -c 'find $ALVAR_MAP_SERVER_DATA_DIR/tmp-downloads -type f -name \"*\" -delete'" | crontab -
 fi
 
 nvm use 8.17.0

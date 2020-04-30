@@ -37,7 +37,6 @@ pm2 save
 
 
 if [ "$ALVAR_ENV" != "docker" ]; then
-  mkdir -p $ALVAR_MAP_SERVER_DATA_DIR/tmp-downloads
   echo "Installing cron task to restart services when needed .."
-  (crontab -l 2>/dev/null; echo "* * * * * /bin/bash -c 'source $HOME/.bashrc; bash $ALVAR_MAP_SERVER_REPOSITORY_DIR/tools/health-check.sh") | crontab -
+  echo -e "$(crontab -l 2>/dev/null)\n* * * * * /bin/bash -c 'source $HOME/.bashrc; bash $ALVAR_MAP_SERVER_REPOSITORY_DIR/tools/health-check.sh'" | crontab -
 fi
