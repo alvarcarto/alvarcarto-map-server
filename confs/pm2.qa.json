@@ -11,7 +11,8 @@
       "CACHE_DIR": "{{{map_server_data_dir}}}/tiles",
       "PORT": "8002"
     },
-    "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v8.17.0/bin/node"
+    "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v8.17.0/bin/node",
+    "interpreter_args": "--max_old_space_size=4096"
  }, {
     "name" : "render",
     "script" : "src/index.js",
@@ -43,7 +44,7 @@
       "LOG_LEVEL": "debug"
     },
     "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v10.20.1/bin/node",
-    "interpreter_args": "--max_old_space_size=4096"
+    "interpreter_args": "--max_old_space_size=2048"
  }, {
     "name" : "http-cache",
     "script" : "src/index.js",
