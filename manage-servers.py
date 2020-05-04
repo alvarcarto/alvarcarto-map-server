@@ -498,6 +498,25 @@ def task_test(server_env):
     c.run('rm not_existing')
 
 
+def task_restart_all_services(server_env):
+  assert_server_env(server_env)
+
+  records = get_dns_records()
+  asMapUser = {
+    'env': server_env,
+    'ip': records[server_envs[server_env]]['ip'],
+    'user': 'alvar',
+    'password': config['MAP_USER_PASSWORD']
+  }
+
+  with connection(asMapUser) as c:
+    # These commands are run after server installation
+    # so we need to use .sudo method
+    c.sudo('service postgresql restart')
+    c.sudo('service caddy restart')
+    c.run('pm2 restart all')
+
+
 def task_download_file(server_env, remote_path, local_path):
   assert_server_env(server_env)
 
@@ -588,6 +607,7 @@ def execute_task(task, *task_args):
     'finish_install': wrap_with_rollback(task_finish_install),
     'download_file': wrap_with_rollback(task_download_file),
     'get_ip': wrap_with_rollback(task_get_ip),
+    'restart_all_services': wrap_with_rollback(task_restart_all_services),
     'purge_cloudflare_cache': wrap_with_rollback(task_purge_cloudflare_cache),
     'promote_reserve_to_production': wrap_with_rollback(task_promote_reserve_to_production),
     'test': wrap_with_rollback(task_test),

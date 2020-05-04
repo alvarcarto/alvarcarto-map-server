@@ -72,10 +72,13 @@ workflows:
   test_and_deploy_qa:
     when: << pipeline.parameters.test_and_deploy_qa >>
     jobs:
-      - test_server
-      - warm_caches:
+      - warm_caches
+      - restart_services:
           requires:
-            - test_server
+            - warm_caches
+      - test_server:
+          requires:
+            - restart_services
 
   # This is a separate task so that we are able to independently install the server and
   # test installation if needed. Not sure if this separation will be useful but at least
@@ -83,10 +86,13 @@ workflows:
   test_and_deploy:
     when: << pipeline.parameters.test_and_deploy >>
     jobs:
-      - test_server
-      - warm_caches:
+      - warm_caches
+      - restart_services:
           requires:
-            - test_server
+            - warm_caches
+      - test_server:
+          requires:
+            - restart_services
       - deploy_to_production:
           type: approval
           requires:
@@ -100,7 +106,6 @@ jobs:
   launch_qa_install:
     docker:
       - image: circleci/python:3.8
-    working_directory: ~/repo
     steps:
       - checkout
       - run:
@@ -111,7 +116,6 @@ jobs:
   launch_reserve_install:
     docker:
       - image: circleci/python:3.8
-    working_directory: ~/repo
     steps:
       - checkout
       - run:
@@ -122,7 +126,6 @@ jobs:
   start_install:
     docker:
       - image: circleci/python:3.8
-    working_directory: ~/repo
     steps:
       - checkout
 
@@ -140,7 +143,6 @@ jobs:
   wait_for_install:
     docker:
       - image: circleci/python:3.8
-    working_directory: ~/repo
     steps:
       - checkout
 
@@ -158,7 +160,6 @@ jobs:
   finish_install:
     docker:
       - image: circleci/python:3.8
-    working_directory: ~/repo
     steps:
       - checkout
 
@@ -171,9 +172,9 @@ jobs:
           name: Wait for install to finish
           command: |
             export ALVAR_SERVER_ENV="<< pipeline.parameters.server_env >>"
-            mkdir -p ~/repo/artifacts
+            mkdir -p ~/project/artifacts
             python manage-servers.py finish_install $ALVAR_SERVER_ENV
-            python manage-servers.py download_file $ALVAR_SERVER_ENV '/home/alvar/screenlog.0' ~/repo/artifacts/screenlog.0
+            python manage-servers.py download_file $ALVAR_SERVER_ENV '/home/alvar/screenlog.0' ~/project/artifacts/screenlog.0
 
       - run:
           name: Launch test and deploy
@@ -182,12 +183,11 @@ jobs:
             bash .circleci/launch-test-and-deploy.sh $ALVAR_SERVER_ENV
 
       - store_artifacts:
-          path: ~/repo/artifacts
+          path: ~/project/artifacts
 
   test_server:
     docker:
       - image: circleci/node:10
-    working_directory: ~/repo
     steps:
       - checkout
 
@@ -222,12 +222,11 @@ jobs:
             fi
 
       - store_artifacts:
-          path: ~/repo/alvarcarto-render-snapshot/images
+          path: ~/project/alvarcarto-render-snapshot/images
 
   warm_caches:
     docker:
       - image: circleci/node:10
-    working_directory: ~/repo
     steps:
       - checkout
 
@@ -266,18 +265,31 @@ jobs:
                 echo "Warming caches (production) with all-cities.geojson for style $style .."
                 NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input all-cities.geojson --max-retries 10 --retry-base-timeout 100 -c 10 --zoom 8-13 --verbose
               else
-                echo "Warming caches (qa) with world.geojson for style $style .."
-                NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input world.geojson -c 10 --zoom 1-6 --verbose
-
                 echo "Warming caches (qa) with all-cities.geojson for style $style .."
                 NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input all-cities.geojson -c 10 --zoom 11 --verbose
               fi
             done
 
+  restart_services:
+    docker:
+      - image: circleci/python:3.8
+    steps:
+      - checkout
+
+      - run:
+          name: Install dependencies
+          command: |
+            pip install -r requirements.txt
+
+      - deploy:
+          name: Restart all services (cleans pg-data/base/pgsql_tmp)
+          command: |
+            export ALVAR_SERVER_ENV="<< pipeline.parameters.server_env >>"
+            python manage-servers.py restart_all_services $ALVAR_SERVER_ENV
+
   deploy_to_production:
     docker:
       - image: circleci/python:3.8
-    working_directory: ~/repo
     steps:
       - checkout
 
@@ -299,7 +311,6 @@ jobs:
   update_snapshots:
     docker:
       - image: circleci/node:10
-    working_directory: ~/repo
     steps:
       - checkout
 
