@@ -5,7 +5,7 @@ set -x
 
 sudo apt-get install -y python python-dev curl zlib1g-dev clang make pkg-config protobuf-compiler git
 
-cd $HOME
+cd $ALVAR_MAP_SERVER_INSTALL_DIR
 git clone https://github.com/mapnik/mapnik mapnik-3.x
 cd mapnik-3.x
 

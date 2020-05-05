@@ -1,6 +1,7 @@
 FROM ubuntu:18.04
 
 ENV ALVAR_MAP_SERVER_REPOSITORY_DIR=/home/alvar/alvarcarto-map-server
+ENV ALVAR_MAP_SERVER_INSTALL_DIR=/home/alvar
 ENV ALVAR_MAP_SERVER_DATA_DIR=/home/alvar/data
 ENV ALVAR_ENV=docker
 
