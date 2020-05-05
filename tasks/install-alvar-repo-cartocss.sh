@@ -23,11 +23,9 @@ if [ "$1" != "warm_caches" ]; then
 fi
 
 
-# WARNING: This operation takes a VERY LONG time
-# Warm tile caches.
+# Warm tile caches. WARNING: This operation takes a VERY LONG time
 
-# https://discuss.circleci.com/t/globally-installed-node-module-yields-eacess-permission-denied/13608
-sudo npm install -g @alvarcarto/tilewarm
+npm install -g @alvarcarto/tilewarm
 curl -O https://raw.githubusercontent.com/alvarcarto/tilewarm/master/geojson/world.geojson
 curl -O https://raw.githubusercontent.com/alvarcarto/tilewarm/master/geojson/all-cities.geojson
 
