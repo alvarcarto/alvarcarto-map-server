@@ -17,6 +17,12 @@ mkdir -p $HOME/mapnik-styles
 cp -r dist/*.xml $HOME/mapnik-styles
 cp -r $HOME/osm/openstreetmap-carto/data $HOME/mapnik-styles
 
+if [ "$1" != "warm_caches" ]; then
+  echo "Skipping warm_caches step"
+  exit 0;
+fi
+
+
 # WARNING: This operation takes a VERY LONG time
 # Warm tile caches.
 

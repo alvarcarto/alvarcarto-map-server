@@ -75,4 +75,4 @@ cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
 source tasks/install-caddy.sh
 
 cd $ALVAR_MAP_SERVER_REPOSITORY_DIR
-source tasks/install-alvar-repos.sh
+source tasks/install-alvar-repos.sh "$1"

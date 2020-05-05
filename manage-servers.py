@@ -332,7 +332,7 @@ def start_install_as_map_user(server, alvar_env='prod'):
       # That is needed, we want to always launch the wait task in circle ci to show the status
       # even if the install failed
       cmd = '; '.join([
-        'ALVAR_MAP_SERVER_INSTALL_DIR={} ALVAR_MAP_SERVER_DATA_DIR={} ALVAR_ENV={} bash install.sh'.format(config['MAP_SERVER_INSTALL_DIR'], config['MAP_SERVER_DATA_DIR'], alvar_env),
+        'ALVAR_MAP_SERVER_INSTALL_DIR={} ALVAR_MAP_SERVER_DATA_DIR={} ALVAR_ENV={} bash install.sh warm_caches'.format(config['MAP_SERVER_INSTALL_DIR'], config['MAP_SERVER_DATA_DIR'], alvar_env),
         'echo "$?" > {}'.format(INSTALL_EXIT_CODE_FILE),
         'CIRCLECI_TOKEN="{}" bash .circleci/launch-wait-for-install.sh {}'.format(config['CIRCLECI_TOKEN'], server['env'])
       ])
