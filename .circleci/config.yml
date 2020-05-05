@@ -72,10 +72,7 @@ workflows:
   test_and_deploy_qa:
     when: << pipeline.parameters.test_and_deploy_qa >>
     jobs:
-      - warm_caches
-      - restart_services:
-          requires:
-            - warm_caches
+      - restart_services
       - test_server:
           requires:
             - restart_services
@@ -86,17 +83,14 @@ workflows:
   test_and_deploy:
     when: << pipeline.parameters.test_and_deploy >>
     jobs:
-      - warm_caches
-      - restart_services:
-          requires:
-            - warm_caches
+      - restart_services
       - test_server:
           requires:
             - restart_services
       - deploy_to_production:
           type: approval
           requires:
-            - warm_caches
+            - test_server
       - update_snapshots:
           requires:
             - deploy_to_production
@@ -225,31 +219,6 @@ jobs:
 
       - store_artifacts:
           path: ~/project/alvarcarto-render-snapshot/images
-
-  warm_caches:
-    docker:
-      - image: circleci/node:10
-    steps:
-      - checkout
-
-      - run:
-          name: Install dependencies
-          command: |
-            # When taking SSH into the box, it had python 3.5.3, but no pip
-            sudo apt-get install python3-pip
-            pip3 install -r requirements.txt
-
-      - run:
-          name: Warm server caches
-          command: |
-            export ALVAR_SERVER_ENV="<< pipeline.parameters.server_env >>"
-            IP=$(python3 manage-servers.py get_ip $ALVAR_SERVER_ENV)
-
-            git clone "https://alvarcarto-integration:$GITHUB_INTEGRATION_USER_TOKEN@github.com/alvarcarto/alvarcarto-cartocss.git"
-            cd alvarcarto-cartocss
-            npm i
-            npm run build
-
 
   restart_services:
     docker:
