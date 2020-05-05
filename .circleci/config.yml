@@ -112,6 +112,7 @@ jobs:
       - run:
           name: Launch QA installation
           command: |
+            cd ~/project  # For some reason cron triggered job doesn't do this
             bash .circleci/lanch-start-install.sh qa
 
   launch_reserve_install:
@@ -123,6 +124,7 @@ jobs:
       - run:
           name: Launch Reserve installation
           command: |
+            cd ~/project  # For some reason cron triggered job doesn't do this
             bash .circleci/lanch-start-install.sh reserve
 
   start_install:
