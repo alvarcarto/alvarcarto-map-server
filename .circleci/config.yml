@@ -34,7 +34,7 @@ workflows:
     triggers:
         # Every night at 1AM UTC, meaning 03:00 (winter) or 04:00 (summer) Helsinki time
       - schedule:
-          cron: "* * * * *"
+          cron: "0 1 * * *"
           filters:
             branches:
               only:
@@ -112,8 +112,7 @@ jobs:
       - run:
           name: Launch QA installation
           command: |
-            cd ~/project  # For some reason cron triggered job doesn't do this
-            bash .circleci/lanch-start-install.sh qa
+            bash .circleci/launch-start-install.sh qa
 
   launch_reserve_install:
     docker:
@@ -124,8 +123,7 @@ jobs:
       - run:
           name: Launch Reserve installation
           command: |
-            cd ~/project  # For some reason cron triggered job doesn't do this
-            bash .circleci/lanch-start-install.sh reserve
+            bash .circleci/launch-start-install.sh reserve
 
   start_install:
     docker:
