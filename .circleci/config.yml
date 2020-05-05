@@ -34,7 +34,7 @@ workflows:
     triggers:
         # Every night at 1AM UTC, meaning 03:00 (winter) or 04:00 (summer) Helsinki time
       - schedule:
-          cron: "/5 * * * *"
+          cron: "*/5 * * * *"
           filters:
             branches:
               only:
