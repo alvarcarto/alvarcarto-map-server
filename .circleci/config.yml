@@ -34,7 +34,7 @@ workflows:
     triggers:
         # Every night at 1AM UTC, meaning 03:00 (winter) or 04:00 (summer) Helsinki time
       - schedule:
-          cron: "0 1 * * *"
+          cron: "/5 * * * *"
           filters:
             branches:
               only:
@@ -108,6 +108,7 @@ jobs:
       - image: circleci/python:3.8
     steps:
       - checkout
+
       - run:
           name: Launch QA installation
           command: |
@@ -118,6 +119,7 @@ jobs:
       - image: circleci/python:3.8
     steps:
       - checkout
+
       - run:
           name: Launch Reserve installation
           command: |
@@ -248,27 +250,6 @@ jobs:
             npm i
             npm run build
 
-            # https://discuss.circleci.com/t/globally-installed-node-module-yields-eacess-permission-denied/13608
-            sudo npm install -g @alvarcarto/tilewarm
-            curl -O https://raw.githubusercontent.com/alvarcarto/tilewarm/master/geojson/world.geojson
-            curl -O https://raw.githubusercontent.com/alvarcarto/tilewarm/master/geojson/all-cities.geojson
-
-            # Iterate all styles in cartocss repo
-            for i in $(find ./dist -name '*.xml');
-            do
-              style=$(basename "$i" .xml)
-
-              if [ "$ALVAR_SERVER_ENV" == "reserve" ]; then
-                echo "Warming caches (production) with world.geojson for style $style .."
-                NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input world.geojson --max-retries 10 --retry-base-timeout 100 -c 10 --zoom 1-8 --verbose
-
-                echo "Warming caches (production) with all-cities.geojson for style $style .."
-                NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input all-cities.geojson --max-retries 10 --retry-base-timeout 100 -c 10 --zoom 8-13 --verbose
-              else
-                echo "Warming caches (qa) with all-cities.geojson for style $style .."
-                NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input all-cities.geojson -c 10 --zoom 11 --verbose
-              fi
-            done
 
   restart_services:
     docker:
