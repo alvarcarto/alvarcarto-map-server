@@ -23,7 +23,8 @@
       "STYLE_DIR": "{{{map_server_install_dir}}}/mapnik-styles",
       "BACKGROUNDS_DIR": "{{{map_server_data_dir}}}/tmp-downloads",
       "API_KEY": "{{{api_key}}},{{{placement_api_key}}},{{{person_api_key}}},{{{travis_api_key}}}",
-      "TILE_URL": "http://localhost:8002/{style}/{z}/{x}/{y}/tile.png"
+      "TILE_URL": "http://localhost:8002/{style}/{z}/{x}/{y}/tile.png",
+      "RSVG_LOG": "parse_errors,filters"
     },
     "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v8.17.0/bin/node",
     "interpreter_args": "--max_old_space_size=2048"
