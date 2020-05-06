@@ -236,6 +236,8 @@ jobs:
           command: |
             export ALVAR_SERVER_ENV="<< pipeline.parameters.server_env >>"
             python manage-servers.py restart_all_services $ALVAR_SERVER_ENV
+            echo "Waiting until services are back up .."
+            sleep 120
 
   deploy_to_production:
     docker:
