@@ -103,7 +103,9 @@ def connection(server, **kwargs):
   new_kwargs = extend({ 'connect_timeout': 5 }, kwargs)
   config = Config(overrides={
     'sudo': { 'password': server['password'] },
-    'run': { 'echo': True }
+    # Note that the system running this python code needs to have UTF-8 locale to be
+    # able to log unicode characters into stdout!
+    'run': { 'echo': True, 'encoding': 'utf8' }
   })
   return Connection(server['ip'], user=server['user'], config=config, connect_kwargs=connect_kwargs, **new_kwargs)
 
@@ -295,6 +297,9 @@ def start_install_as_map_user(server, alvar_env='prod'):
   logger.info('Start installation as map user at {ip} ..'.format(**server))
 
   with connection(server) as c:
+    # File to recognize installation
+    c.run('echo "This file is safe to remove" > {}'.format(path.join(config['MAP_SERVER_INSTALL_DIR'], alvar_env)))
+
     logger.info('Adding SSH key ..')
     # Add SSH key
     c.run('mkdir -p ~/.ssh')
@@ -307,7 +312,7 @@ def start_install_as_map_user(server, alvar_env='prod'):
 
     logger.info('Starting installation inside screen ..')
     # Increase scrollback to 1M lines
-    c.run('echo "defscrollback 1000000" >> ~/.screenrc')
+    c.run('echo "defscrollback 5000000" >> ~/.screenrc')
     c.run('echo "deflog on" >> ~/.screenrc')
     c.run('echo "logfile {}/screenlog.%n" >> ~/.screenrc'.format(config['MAP_SERVER_INSTALL_DIR']))
 
@@ -357,7 +362,7 @@ def is_install_ready_to_continue(server):
     result = c.run('cat {}'.format(INSTALL_EXIT_CODE_FILE), hide=True).stdout.strip()
     if result != '0':
       # Try to tail last lines from install log
-      c.run('tail -n 100 {}'.format(path.join(config['MAP_SERVER_INSTALL_DIR'], 'screenlog.0')), warn=True)
+      c.run('tail -n 1000 {}'.format(path.join(config['MAP_SERVER_INSTALL_DIR'], 'screenlog.0')), warn=True)
       raise Exception('install.sh exited with non-zero exit code!')
 
     return True
@@ -514,7 +519,7 @@ def task_restart_all_services(server_env):
     # so we need to use .sudo method
     c.sudo('service postgresql restart')
     c.sudo('service caddy restart')
-    c.run('pm2 restart all')
+    c.run('bash -i -c "pm2 restart all"')
 
 
 def task_download_file(server_env, remote_path, local_path):
