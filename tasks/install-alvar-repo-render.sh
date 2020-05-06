@@ -19,3 +19,6 @@ fi
 nvm use 8.17.0
 npm install
 npm run build-posters
+
+cp -r /usr/share/fonts/truetype/google-fonts/* posters/dist/fonts/
+
