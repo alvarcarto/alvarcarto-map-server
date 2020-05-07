@@ -11,7 +11,7 @@
       "CLUSTER_INSTANCES": "2"
     },
     "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v8.17.0/bin/node",
-    "interpreter_args": "--max_old_space_size=4096"
+    "node_args": "--max_old_space_size=2048"
  }, {
     "name" : "render",
     "script" : "src/index.js",
@@ -27,7 +27,7 @@
       "RSVG_LOG": "parse_errors,filters"
     },
     "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v8.17.0/bin/node",
-    "interpreter_args": "--max_old_space_size=2048"
+    "node_args": "--max_old_space_size=4096"
  }, {
     "name" : "placement",
     "script" : "src/index.js",
@@ -46,7 +46,7 @@
       "LOG_LEVEL": "debug"
     },
     "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v10.20.1/bin/node",
-    "interpreter_args": "--max_old_space_size=4096"
+    "node_args": "--max_old_space_size=4096"
  }, {
     "name" : "http-cache",
     "script" : "src/index.js",
@@ -61,6 +61,6 @@
       "ORIGIN_BASE_URL": "http://localhost"
     },
     "interpreter" : "{{{map_server_install_dir}}}/.nvm/versions/node/v10.20.1/bin/node",
-    "interpreter_args": "--max_old_space_size=1024"
+    "node_args": "--max_old_space_size=1024"
   }]
 }
