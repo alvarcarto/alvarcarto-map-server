@@ -20,14 +20,14 @@ do
   if [ "$ALVAR_ENV" == "prod" ]; then
     # 1-8 zoom levels for whole world is 80k tiles
     echo "Warming caches (production) with world.geojson for style $style .."
-    NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input world.geojson --max-retries 20 --retry-base-timeout 1000 -c 'z < 7 ? 1 : 5' --zoom 1-8 --verbose
+    NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://localhost:8002/bw/{z}/{x}/{y}/tile.png" --input world.geojson --max-retries 20 --retry-base-timeout 1000 -c 'z < 7 ? 1 : 5' --zoom 1-8 --verbose
 
     # 10 zoom level for all cities is 13k tiles
     echo "Warming caches (production) with all-cities.geojson for style $style .."
-    NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input all-cities.geojson --max-retries 10 --retry-base-timeout 1000 -c 20 --zoom 10 --verbose
+    NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://localhost:8002/bw/{z}/{x}/{y}/tile.png" --input all-cities.geojson --max-retries 10 --retry-base-timeout 1000 -c 20 --zoom 10 --verbose
   else
     # 10 zoom level for all cities is 13k tiles
     echo "Warming caches (qa) with all-cities.geojson for style $style .."
-    NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://$IP:8002/bw/{z}/{x}/{y}/tile.png" --input all-cities.geojson --max-retries 10 --retry-base-timeout 1000 -c 20 --zoom 10 --verbose
+    NODE_OPTIONS=--max_old_space_size=4096 tilewarm "http://localhost:8002/bw/{z}/{x}/{y}/tile.png" --input all-cities.geojson --max-retries 10 --retry-base-timeout 1000 -c 20 --zoom 10 --verbose
   fi
 done
