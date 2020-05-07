@@ -40,7 +40,7 @@ sleep 120
 
 if [ "$ALVAR_ENV" != "docker" ]; then
   echo "Installing cron task to restart services when needed .."
-  echo -e "$(crontab -l 2>/dev/null)\n*/5 * * * * /bin/bash -c 'source $HOME/.bashrc; bash $ALVAR_MAP_SERVER_REPOSITORY_DIR/tools/health-check.sh'" | crontab -
+  echo -e "$(crontab -l 2>/dev/null)\n*/3 * * * * /bin/bash -c 'source $HOME/.bashrc; bash $ALVAR_MAP_SERVER_REPOSITORY_DIR/tools/health-check.sh'" | crontab -
 fi
 
 
