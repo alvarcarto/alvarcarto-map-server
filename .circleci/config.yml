@@ -87,10 +87,13 @@ workflows:
       - test_server:
           requires:
             - restart_services
-      - deploy_to_production:
+      - approval_to_deploy:
           type: approval
           requires:
             - test_server
+      - deploy_to_production:
+          requires:
+            - approval_to_deploy
       - update_snapshots:
           requires:
             - deploy_to_production
