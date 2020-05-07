@@ -3,7 +3,7 @@
 set -e
 set -x
 
-LOG_FILE="$ALVAR_MAP_SERVER_INSTALL_DIR/health_cronlog.log"
+LOG_FILE="$HOME/health_cronlog.log"
 
 # All these requests are from Helsinki area
 
