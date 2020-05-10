@@ -219,9 +219,9 @@ jobs:
             export AWS_SECRET_ACCESS_KEY="$SNAPSHOT_TOOL_AWS_SECRET_ACCESS_KEY"
 
             if [ "$ALVAR_SERVER_ENV" == "reserve" ]; then
-              NODE_OPTIONS=--max_old_space_size=6000 npm run compare -- --concurrency 3
+              NODE_OPTIONS=--max_old_space_size=6000 npm run compare -- --concurrency 2
             else
-              NODE_OPTIONS=--max_old_space_size=6000 npm run compare -- --concurrency 3 --main-location-id hki_c --only 'locationId:hki_c' --only 'orientation:portrait'
+              NODE_OPTIONS=--max_old_space_size=6000 npm run compare -- --concurrency 2 --main-location-id hki_c --only 'locationId:hki_c' --only 'orientation:portrait'
             fi
 
       - store_artifacts:
@@ -295,4 +295,4 @@ jobs:
             export AWS_S3_BUCKET_NAME=alvarcarto-render-snapshots
             export AWS_ACCESS_KEY_ID="$SNAPSHOT_TOOL_AWS_ACCESS_KEY_ID"
             export AWS_SECRET_ACCESS_KEY="$SNAPSHOT_TOOL_AWS_SECRET_ACCESS_KEY"
-            NODE_OPTIONS=--max_old_space_size=6000 npm run snapshot -- --concurrency 3
+            NODE_OPTIONS=--max_old_space_size=6000 npm run snapshot -- --concurrency 2
