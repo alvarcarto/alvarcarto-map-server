@@ -312,7 +312,7 @@ def start_install_as_map_user(server, alvar_env='prod'):
 
     logger.info('Starting installation inside screen ..')
     # Increase scrollback to 1M lines
-    c.run('echo "defscrollback 5000000" >> ~/.screenrc')
+    c.run('echo "defscrollback 1000000" >> ~/.screenrc')
     c.run('echo "deflog on" >> ~/.screenrc')
     c.run('echo "logfile {}/screenlog.%n" >> ~/.screenrc'.format(config['MAP_SERVER_INSTALL_DIR']))
 
