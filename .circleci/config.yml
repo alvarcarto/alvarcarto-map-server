@@ -191,6 +191,7 @@ jobs:
   test_server:
     docker:
       - image: circleci/node:10
+    resource_class: large
     steps:
       - checkout
 
@@ -219,9 +220,9 @@ jobs:
             export AWS_SECRET_ACCESS_KEY="$SNAPSHOT_TOOL_AWS_SECRET_ACCESS_KEY"
 
             if [ "$ALVAR_SERVER_ENV" == "reserve" ]; then
-              NODE_OPTIONS=--max_old_space_size=6000 npm run compare -- --concurrency 2
+              NODE_OPTIONS=--max_old_space_size=6000 npm run compare -- --concurrency 3
             else
-              NODE_OPTIONS=--max_old_space_size=6000 npm run compare -- --concurrency 2 --main-location-id hki_c --only 'locationId:hki_c' --only 'orientation:portrait'
+              NODE_OPTIONS=--max_old_space_size=6000 npm run compare -- --concurrency 3 --main-location-id hki_c --only 'locationId:hki_c' --only 'orientation:portrait'
             fi
 
       - store_artifacts:
@@ -270,6 +271,7 @@ jobs:
   update_snapshots:
     docker:
       - image: circleci/node:10
+    resource_class: large
     steps:
       - checkout
 
