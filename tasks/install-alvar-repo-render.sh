@@ -24,3 +24,4 @@ npm install
 npm run build-posters
 
 cp -r /usr/share/fonts/truetype/google-fonts/* posters/dist/fonts/
+cp -r /usr/share/fonts/opentype/google-fonts/* posters/dist/fonts/

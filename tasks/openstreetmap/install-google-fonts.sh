@@ -29,6 +29,26 @@ sudo mkdir -p /usr/share/fonts/truetype/$_gf
 echo "Installing all .ttf fonts in /usr/share/fonts/truetype/$_gf"
 find "$PWD/fonts-$_branch/" -name "*.ttf" -exec sudo install -m644 {} /usr/share/fonts/truetype/$_gf/ \; || return 1
 
+mkdir -p noto-cjk
+cd noto-cjk
+echo "Installing noto font variations..."
+_noto_branch="be6c059ac1587e556e2412b27f5155c8eb3ddbe6"
+curl -O https://raw.githubusercontent.com/googlefonts/noto-cjk/$_noto_branch/NotoSansSC-Black.otf
+curl -O https://raw.githubusercontent.com/googlefonts/noto-cjk/$_noto_branch/NotoSansSC-Bold.otf
+curl -O https://raw.githubusercontent.com/googlefonts/noto-cjk/$_noto_branch/NotoSansSC-DemiLight.otf
+curl -O https://raw.githubusercontent.com/googlefonts/noto-cjk/$_noto_branch/NotoSansSC-Light.otf
+curl -O https://raw.githubusercontent.com/googlefonts/noto-cjk/$_noto_branch/NotoSansSC-Medium.otf
+curl -O https://raw.githubusercontent.com/googlefonts/noto-cjk/$_noto_branch/NotoSansSC-Regular.otf
+curl -O https://raw.githubusercontent.com/googlefonts/noto-cjk/$_noto_branch/NotoSansSC-Thin.otf
+
+cd ..
+
+echo "Creating the /usr/share/fonts/opentype/$_gf folder"
+sudo mkdir -p /usr/share/fonts/opentype/$_gf
+
+echo "Installing all .otf fonts in /usr/share/fonts/opentype/$_gf"
+find "$PWD/noto-cjk/" -name "*.otf" -exec sudo install -m644 {} /usr/share/fonts/opentype/$_gf/ \; || return 1
+
 echo "Updating the font cache"
 fc-cache -f > /dev/null
 
