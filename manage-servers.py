@@ -202,15 +202,14 @@ def format_and_reinstall_ubuntu(ip):
   return details
 
 
-def from_s3_to_server(server, s3_file_name, server_path):
+def from_s3_to_server(conn, s3_file_name, server_path):
   logger.info('Downloading {} from S3 to remote path {} ..'.format(s3_file_name, server_path))
   s3.download_file('alvarcarto-keys', s3_file_name, s3_file_name)
   local_bytes = os.path.getsize(s3_file_name)
   logger.info('Downloaded {} bytes from S3 to local file {}'.format(local_bytes, s3_file_name))
-  with connection(server) as c:
-    c.put(s3_file_name, server_path)
-    logger.info('File uploaded to server! File information:')
-    c.run('ls -la {}'.format(server_path))
+  conn.put(s3_file_name, server_path)
+  logger.info('File uploaded to server! File information:')
+  conn.run('ls -la {}'.format(server_path))
   logger.info('Removing local file {}'.format(s3_file_name))
   os.remove(s3_file_name)
 
@@ -307,22 +306,22 @@ def start_install_as_map_user(server, alvar_env='prod'):
 
     logger.info('Adding SSH key ..')
     # Add SSH key
-    c.run('mkdir -p ~/.ssh')
+    c.run('mkdir -p $HOME/.ssh')
     c.run('chmod 700 .ssh')
     pub_key_file = 'alvarcarto-server-key.pub'
     remote_pub_key_file = path.join(config['MAP_SERVER_INSTALL_DIR'], pub_key_file)
-    from_s3_to_server(server, pub_key_file, remote_pub_key_file)
-    c.run('cat {} >> ~/.ssh/authorized_keys'.format(remote_pub_key_file))
+    from_s3_to_server(c, pub_key_file, remote_pub_key_file)
+    c.run('cat {} >> $HOME/.ssh/authorized_keys'.format(remote_pub_key_file))
     c.run('rm {}'.format(remote_pub_key_file))
 
     logger.info('Starting installation inside screen ..')
     # Increase scrollback to 1M lines
-    c.run('echo "defscrollback 1000000" >> ~/.screenrc')
-    c.run('echo "deflog on" >> ~/.screenrc')
-    c.run('echo "logfile {}/screenlog.%n" >> ~/.screenrc'.format(config['MAP_SERVER_INSTALL_DIR']))
+    c.run('echo "defscrollback 1000000" >> $HOME/.screenrc')
+    c.run('echo "deflog on" >> $HOME/.screenrc')
+    c.run('echo "logfile {}/screenlog.%n" >> $HOME/.screenrc'.format(config['MAP_SERVER_INSTALL_DIR']))
 
     secret_file = get_secret_file_info(alvar_env)
-    from_s3_to_server(server, secret_file['name'], secret_file['abspath'])
+    from_s3_to_server(c, secret_file['name'], secret_file['abspath'])
     logger.info('Injecting additional information into secrets file for convenience ..')
     c.run('sudo apt-get install -y jq')
     temp_file = '{}.tmp'.format(secret_file['abspath'])
@@ -380,13 +379,13 @@ def run_after_installation_tasks(server, alvar_env='prod'):
     logger.info('Installing cloudflare certificates and keys ..')
     cert_file = 'cloudflare-origin-cert.pem'
     remote_cert_file = path.join(config['MAP_SERVER_INSTALL_DIR'], cert_file)
-    from_s3_to_server(server, cert_file, remote_cert_file)
+    from_s3_to_server(c, cert_file, remote_cert_file)
 
     key_file = 'cloudflare-origin-key.pem'
     remote_key_file = path.join(config['MAP_SERVER_INSTALL_DIR'], key_file)
-    from_s3_to_server(server, key_file, remote_key_file)
+    from_s3_to_server(c, key_file, remote_key_file)
 
-    c.run('sudo mkdir -p /etc/caddy', warn=True)
+    c.run('sudo mkdir -p /etc/caddy')
     c.run('sudo mv {} /etc/caddy/cert.pem'.format(remote_cert_file))
     c.run('sudo mv {} /etc/caddy/key.pem'.format(remote_key_file))
     c.run('sudo chown caddy:caddy /etc/caddy/cert.pem /etc/caddy/key.pem')
