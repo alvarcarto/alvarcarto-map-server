@@ -205,8 +205,13 @@ def format_and_reinstall_ubuntu(ip):
 def from_s3_to_server(server, s3_file_name, server_path):
   logger.info('Downloading {} from S3 to remote path {} ..'.format(s3_file_name, server_path))
   s3.download_file('alvarcarto-keys', s3_file_name, s3_file_name)
+  local_bytes = os.path.getsize(s3_file_name)
+  logger.info('Downloaded {} bytes from S3 to local file {}'.format(local_bytes, s3_file_name))
   with connection(server) as c:
     c.put(s3_file_name, server_path)
+    logger.info('File uploaded to server! File information:')
+    c.run('ls -la {}'.format(server_path))
+  logger.info('Removing local file {}'.format(s3_file_name))
   os.remove(s3_file_name)
 
 
