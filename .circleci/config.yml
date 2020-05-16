@@ -30,16 +30,10 @@ workflows:
     when: << pipeline.parameters.start_install >>
     jobs:
       - start_install
-      - slack/status:
-          fail_only: true
-          only_for_branches: master
 
   start_install_qa_automatic:
     jobs:
       - launch_qa_install
-      - slack/status:
-          fail_only: true
-          only_for_branches: master
 
     triggers:
         # Every night at 1AM UTC, meaning 03:00 (winter) or 04:00 (summer) Helsinki time
@@ -55,9 +49,6 @@ workflows:
       - slack/notify:
           message: "Starting reserve production server installation"
       - launch_reserve_install
-      - slack/status:
-          fail_only: true
-          only_for_branches: master
 
     triggers:
         # Every Friday at 19:00 (winter) or 20:00 (summer) Helsinki time depending on DST
@@ -82,17 +73,11 @@ workflows:
     when: << pipeline.parameters.wait_for_install >>
     jobs:
       - wait_for_install
-      - slack/status:
-          fail_only: true
-          only_for_branches: master
 
   finish_install:
     when: << pipeline.parameters.finish_install >>
     jobs:
       - finish_install
-      - slack/status:
-          fail_only: true
-          only_for_branches: master
 
   test_and_deploy_qa:
     when: << pipeline.parameters.test_and_deploy_qa >>
@@ -103,9 +88,6 @@ workflows:
             - restart_services
       - slack/notify:
           message: "QA deployment has finished! Visual diffs are now available in artifacts."
-      - slack/status:
-          fail_only: true
-          only_for_branches: master
 
   # This is a separate task so that we are able to independently install the server and
   # test installation if needed. Not sure if this separation will be useful but at least
@@ -131,9 +113,6 @@ workflows:
       - update_snapshots:
           requires:
             - deploy_to_production
-      - slack/status:
-          fail_only: true
-          only_for_branches: master
 
 jobs:
   launch_qa_install:
@@ -147,6 +126,10 @@ jobs:
           command: |
             bash .circleci/launch-start-install.sh qa
 
+      - slack/status:
+          fail_only: true
+          only_for_branches: master
+
   launch_reserve_install:
     docker:
       - image: circleci/python:3.8
@@ -157,6 +140,10 @@ jobs:
           name: Launch Reserve installation
           command: |
             bash .circleci/launch-start-install.sh reserve
+
+      - slack/status:
+          fail_only: true
+          only_for_branches: master
 
   start_install:
     docker:
@@ -175,6 +162,10 @@ jobs:
             export ALVAR_SERVER_ENV="<< pipeline.parameters.server_env >>"
             python manage-servers.py start_install $ALVAR_SERVER_ENV
 
+      - slack/status:
+          fail_only: true
+          only_for_branches: master
+
   wait_for_install:
     docker:
       - image: circleci/python:3.8
@@ -191,6 +182,10 @@ jobs:
           command: |
             export ALVAR_SERVER_ENV="<< pipeline.parameters.server_env >>"
             bash .circleci/wait-loop.sh $ALVAR_SERVER_ENV
+
+      - slack/status:
+          fail_only: true
+          only_for_branches: master
 
   finish_install:
     docker:
@@ -219,6 +214,10 @@ jobs:
 
       - store_artifacts:
           path: ~/project/artifacts
+
+      - slack/status:
+          fail_only: true
+          only_for_branches: master
 
   test_server:
     docker:
@@ -260,6 +259,10 @@ jobs:
       - store_artifacts:
           path: ~/project/alvarcarto-render-snapshot/images
 
+      - slack/status:
+          fail_only: true
+          only_for_branches: master
+
   restart_services:
     docker:
       - image: circleci/python:3.8
@@ -278,6 +281,10 @@ jobs:
             python manage-servers.py restart_all_services $ALVAR_SERVER_ENV
             echo "Waiting until services are back up .."
             sleep 120
+
+      - slack/status:
+          fail_only: true
+          only_for_branches: master
 
   deploy_to_production:
     docker:
@@ -299,6 +306,10 @@ jobs:
           name: Clear previously cached tiles and renders
           command: |
             python manage-servers.py purge_cloudflare_cache
+
+      - slack/status:
+          fail_only: true
+          only_for_branches: master
 
   update_snapshots:
     docker:
@@ -330,3 +341,7 @@ jobs:
             export AWS_ACCESS_KEY_ID="$SNAPSHOT_TOOL_AWS_ACCESS_KEY_ID"
             export AWS_SECRET_ACCESS_KEY="$SNAPSHOT_TOOL_AWS_SECRET_ACCESS_KEY"
             NODE_OPTIONS=--max_old_space_size=6000 npm run snapshot -- --concurrency 2
+
+      - slack/status:
+          fail_only: true
+          only_for_branches: master
