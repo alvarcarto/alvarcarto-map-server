@@ -46,8 +46,6 @@ workflows:
 
   start_install_reserve_automatic:
     jobs:
-      - slack/notify:
-          message: "Starting reserve production server installation"
       - launch_reserve_install
 
     triggers:
@@ -86,8 +84,6 @@ workflows:
       - test_server:
           requires:
             - restart_services
-      - slack/notify:
-          message: "QA deployment has finished! Visual diffs are now available in artifacts."
 
   # This is a separate task so that we are able to independently install the server and
   # test installation if needed. Not sure if this separation will be useful but at least
@@ -95,8 +91,6 @@ workflows:
   test_and_deploy:
     when: << pipeline.parameters.test_and_deploy >>
     jobs:
-      - slack/notify:
-          message: "Starting to snapshot visual diffs for reserve production server"
       - restart_services
       - test_server:
           requires:
@@ -134,6 +128,9 @@ jobs:
     docker:
       - image: circleci/python:3.8
     steps:
+      - slack/notify:
+          message: "Starting reserve production server installation"
+
       - checkout
 
       - run:
@@ -224,6 +221,9 @@ jobs:
       - image: circleci/node:10
     resource_class: large
     steps:
+      - slack/notify:
+          message: "Starting to snapshot visual diffs for << pipeline.parameters.server_env >> server"
+
       - checkout
 
       - run:
@@ -258,6 +258,9 @@ jobs:
 
       - store_artifacts:
           path: ~/project/alvarcarto-render-snapshot/images
+
+      - slack/notify:
+          message: "<< pipeline.parameters.server_env >> testing has finished! Visual diffs are now available in artifacts."
 
       - slack/status:
           fail_only: true
