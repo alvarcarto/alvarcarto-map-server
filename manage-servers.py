@@ -366,7 +366,7 @@ def is_install_ready_to_continue(server):
     result = c.run('cat {}'.format(INSTALL_EXIT_CODE_FILE), hide=True).stdout.strip()
     if result != '0':
       # Try to tail last lines from install log
-      c.run('tail -n 1000 {}'.format(path.join(config['MAP_SERVER_INSTALL_DIR'], 'screenlog.0')), warn=True)
+      c.run('tail -n 1000 {}'.format(path.join(config['MAP_SERVER_INSTALL_DIR'], 'screenlog.0')), hide=False, warn=True)
       raise Exception('install.sh exited with non-zero exit code!')
 
     return True
