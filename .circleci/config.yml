@@ -1,4 +1,8 @@
 version: 2.1
+
+orbs:
+  slack: circleci/slack@3.4.2
+
 parameters:
   start_install:
     type: boolean
@@ -26,10 +30,16 @@ workflows:
     when: << pipeline.parameters.start_install >>
     jobs:
       - start_install
+      - slack/status:
+          fail_only: true
+          only_for_branches: master
 
   start_install_qa_automatic:
     jobs:
       - launch_qa_install
+      - slack/status:
+          fail_only: true
+          only_for_branches: master
 
     triggers:
         # Every night at 1AM UTC, meaning 03:00 (winter) or 04:00 (summer) Helsinki time
@@ -42,7 +52,12 @@ workflows:
 
   start_install_reserve_automatic:
     jobs:
+      - slack/notify:
+          message: "Starting reserve production server installation"
       - launch_reserve_install
+      - slack/status:
+          fail_only: true
+          only_for_branches: master
 
     triggers:
         # Every Friday at 19:00 (winter) or 20:00 (summer) Helsinki time depending on DST
@@ -67,11 +82,17 @@ workflows:
     when: << pipeline.parameters.wait_for_install >>
     jobs:
       - wait_for_install
+      - slack/status:
+          fail_only: true
+          only_for_branches: master
 
   finish_install:
     when: << pipeline.parameters.finish_install >>
     jobs:
       - finish_install
+      - slack/status:
+          fail_only: true
+          only_for_branches: master
 
   test_and_deploy_qa:
     when: << pipeline.parameters.test_and_deploy_qa >>
@@ -80,6 +101,11 @@ workflows:
       - test_server:
           requires:
             - restart_services
+      - slack/notify:
+          message: "QA deployment has finished! Visual diffs are now available in artifacts."
+      - slack/status:
+          fail_only: true
+          only_for_branches: master
 
   # This is a separate task so that we are able to independently install the server and
   # test installation if needed. Not sure if this separation will be useful but at least
@@ -87,10 +113,14 @@ workflows:
   test_and_deploy:
     when: << pipeline.parameters.test_and_deploy >>
     jobs:
+      - slack/notify:
+          message: "Starting to snapshot visual diffs for reserve production server"
       - restart_services
       - test_server:
           requires:
             - restart_services
+      - slack/approval-notification:
+          message: "Production deployment is pending approval. Visual diffs are available in artifacts."
       - approval_to_deploy:
           type: approval
           requires:
@@ -101,7 +131,9 @@ workflows:
       - update_snapshots:
           requires:
             - deploy_to_production
-
+      - slack/status:
+          fail_only: true
+          only_for_branches: master
 
 jobs:
   launch_qa_install:
