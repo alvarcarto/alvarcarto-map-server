@@ -141,6 +141,7 @@ jobs:
             bash .circleci/launch-start-install.sh reserve
 
       - slack/status:
+          failure_message: ':red_circle: A $CIRCLE_JOB job for << pipeline.parameters.server_env >> environment has failed!'
           fail_only: true
           only_for_branches: master
 
@@ -162,6 +163,7 @@ jobs:
             python manage-servers.py start_install $ALVAR_SERVER_ENV
 
       - slack/status:
+          failure_message: ':red_circle: A $CIRCLE_JOB job for << pipeline.parameters.server_env >> environment has failed!'
           fail_only: true
           only_for_branches: master
 
@@ -183,6 +185,7 @@ jobs:
             bash .circleci/wait-loop.sh $ALVAR_SERVER_ENV
 
       - slack/status:
+          failure_message: ':red_circle: A $CIRCLE_JOB job for << pipeline.parameters.server_env >> environment has failed!'
           fail_only: true
           only_for_branches: master
 
@@ -215,6 +218,7 @@ jobs:
           path: ~/project/artifacts
 
       - slack/status:
+          failure_message: ':red_circle: A $CIRCLE_JOB job for << pipeline.parameters.server_env >> environment has failed!'
           fail_only: true
           only_for_branches: master
 
@@ -265,6 +269,7 @@ jobs:
           message: "<< pipeline.parameters.server_env >> testing has finished! Visual diffs are now available in artifacts."
 
       - slack/status:
+          failure_message: ':red_circle: A $CIRCLE_JOB job for << pipeline.parameters.server_env >> environment has failed!'
           fail_only: true
           only_for_branches: master
 
@@ -288,6 +293,7 @@ jobs:
             sleep 120
 
       - slack/status:
+          failure_message: ':red_circle: A $CIRCLE_JOB job for << pipeline.parameters.server_env >> environment has failed!'
           fail_only: true
           only_for_branches: master
 
@@ -313,6 +319,7 @@ jobs:
             python manage-servers.py purge_cloudflare_cache
 
       - slack/status:
+          failure_message: ':red_circle: A $CIRCLE_JOB job for << pipeline.parameters.server_env >> environment has failed!'
           fail_only: true
           only_for_branches: master
 
@@ -348,5 +355,6 @@ jobs:
             NODE_OPTIONS=--max_old_space_size=6000 npm run snapshot -- --concurrency 2
 
       - slack/status:
+          failure_message: ':red_circle: A $CIRCLE_JOB job for << pipeline.parameters.server_env >> environment has failed!'
           fail_only: true
           only_for_branches: master
