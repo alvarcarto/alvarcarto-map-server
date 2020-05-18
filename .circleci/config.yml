@@ -97,6 +97,8 @@ workflows:
             - restart_services
       - slack/approval-notification:
           message: "Production deployment is pending approval. Visual diffs are available in artifacts."
+          requires:
+            - test_server
       - approval_to_deploy:
           type: approval
           requires:
