@@ -263,7 +263,9 @@ jobs:
           path: ~/project/alvarcarto-render-snapshot/images
 
       - slack/notify:
-          message: "<< pipeline.parameters.server_env >> testing has finished! Visual diffs are now available in artifacts."
+          message: "<< pipeline.parameters.server_env >> testing has finished! Visual diffs are now available."
+          title: 'See report'
+          title_link: 'https://alvarcarto-render-snapshots.s3-eu-west-1.amazonaws.com/temp/ci-build-${CIRCLE_BUILD_NUM}/report.html'
 
       - slack/status:
           failure_message: ':red_circle: A $CIRCLE_JOB job for << pipeline.parameters.server_env >> environment has failed!'
