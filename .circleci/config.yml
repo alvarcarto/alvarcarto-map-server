@@ -227,9 +227,6 @@ jobs:
       - image: circleci/node:10
     resource_class: large
     steps:
-      - slack/notify:
-          message: "Starting to snapshot visual diffs for << pipeline.parameters.server_env >> server"
-
       - checkout
 
       - run:
