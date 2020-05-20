@@ -351,7 +351,10 @@ jobs:
             export AWS_S3_BUCKET_NAME=alvarcarto-render-snapshots
             export AWS_ACCESS_KEY_ID="$SNAPSHOT_TOOL_AWS_ACCESS_KEY_ID"
             export AWS_SECRET_ACCESS_KEY="$SNAPSHOT_TOOL_AWS_SECRET_ACCESS_KEY"
+            echo "Add snapshots for production testing"
             NODE_OPTIONS=--max_old_space_size=6000 npm run snapshot -- --concurrency 2
+            echo "Add snapshots for QA testing (only uses helsinki location as the QA server doesn't have whole planet data)"
+            NODE_OPTIONS=--max_old_space_size=6000 npm run snapshot -- --concurrency 2 --main-location-id hki_c --only 'locationId:hki_c' --only 'orientation:portrait'
 
       - slack/status:
           failure_message: ':red_circle: A $CIRCLE_JOB job for << pipeline.parameters.server_env >> environment has failed!'
