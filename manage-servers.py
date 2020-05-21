@@ -31,8 +31,8 @@ config = {
 
 server_envs = {
   'qa': 'tile-api-qa',
-  'reserve': 'tile-api-reserve2',
-  'production': 'tile-api2'
+  'reserve': 'tile-api-reserve',
+  'production': 'tile-api'
 }
 
 for key, val in config.items():
