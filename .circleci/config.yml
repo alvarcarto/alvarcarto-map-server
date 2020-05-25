@@ -247,12 +247,18 @@ jobs:
             npm i
 
             # RENDER_API_KEY and PLACEMENT_API_KEY in circle ci env variables
-            export RENDER_API_URL="http://$IP:8001"
-            export PLACEMENT_API_URL="http://$IP:8003"
+            export RENDER_API_URL="http://$IP/render"
+            export PLACEMENT_API_URL="http://$IP/placement"
             export AWS_S3_BUCKET_NAME=alvarcarto-render-snapshots
             export AWS_ACCESS_KEY_ID="$SNAPSHOT_TOOL_AWS_ACCESS_KEY_ID"
             export AWS_SECRET_ACCESS_KEY="$SNAPSHOT_TOOL_AWS_SECRET_ACCESS_KEY"
 
+            # Test only one render via Caddy server. This makes sure caddy has been properly installed
+            NODE_OPTIONS=--max_old_space_size=6000 npm run compare -- --main-location-id hki_c --services tile --only 'mapStyle:bw'
+
+            # Test more extensively via direct node APIs
+            export RENDER_API_URL="http://$IP:8001"
+            export PLACEMENT_API_URL="http://$IP:8003"
             if [ "$ALVAR_SERVER_ENV" == "reserve" ]; then
               NODE_OPTIONS=--max_old_space_size=6000 npm run compare -- --concurrency 3
             else
