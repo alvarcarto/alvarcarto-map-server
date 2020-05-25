@@ -77,6 +77,19 @@ re-install the server and deploy new version to production with Circle CI cron t
 * Invalidate everything from CloudFlare cache
 
 
+### Reverting deployment
+
+If automatic install has failed, the previous production server can be brought back
+live by launching `switch_production` job in Circle CI:
+
+```
+source .env
+bash .circleci/launch-switch-production.sh
+```
+
+This script will switch the DNS entries back as they were before deployment.
+
+
 ### Diagram of the deployment process
 
 Diagram tries to capture the process in an overview. See Circle CI config for exact details.

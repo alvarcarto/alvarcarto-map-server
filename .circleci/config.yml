@@ -19,6 +19,9 @@ parameters:
   test_and_deploy_qa:
     type: boolean
     default: false
+  switch_production:
+    type: boolean
+    default: false
   server_env:
     default: 'qa'
     description: The target server environment for installation
@@ -76,6 +79,11 @@ workflows:
     when: << pipeline.parameters.finish_install >>
     jobs:
       - finish_install
+
+  switch_production:
+    when: << pipeline.parameters.switch_production >>
+    jobs:
+      - switch_production
 
   test_and_deploy_qa:
     when: << pipeline.parameters.test_and_deploy_qa >>
@@ -325,6 +333,27 @@ jobs:
 
       - slack/status:
           failure_message: ':red_circle: A $CIRCLE_JOB job for << pipeline.parameters.server_env >> environment has failed!'
+          fail_only: true
+          only_for_branches: master
+
+  switch_production:
+    docker:
+      - image: circleci/python:3.8
+    steps:
+      - checkout
+
+      - run:
+          name: Install dependencies
+          command: |
+            pip install -r requirements.txt
+
+      - deploy:
+          name: Switch production and reserve DNS entries
+          command: |
+            python manage-servers.py promote_reserve_to_production
+
+      - slack/status:
+          failure_message: ':red_circle: A $CIRCLE_JOB job has failed!'
           fail_only: true
           only_for_branches: master
 
