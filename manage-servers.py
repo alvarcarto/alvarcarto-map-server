@@ -385,12 +385,17 @@ def run_after_installation_tasks(server, alvar_env='prod'):
     remote_key_file = path.join(config['MAP_SERVER_INSTALL_DIR'], key_file)
     from_s3_to_server(c, key_file, remote_key_file)
 
+    logger.info('Stopping caddy while adding keys ..')
+    c.run('sudo systemctl stop caddy.service')
     c.run('sudo mkdir -p /etc/caddy')
     c.run('sudo mv {} /etc/caddy/cert.pem'.format(remote_cert_file))
     c.run('sudo mv {} /etc/caddy/key.pem'.format(remote_key_file))
     c.run('sudo chown caddy:caddy /etc/caddy/cert.pem /etc/caddy/key.pem')
     c.run('sudo chmod 644 /etc/caddy/cert.pem')
     c.run('sudo chmod 600 /etc/caddy/key.pem')
+    c.run('sudo ls -la /etc/caddy')
+    logger.info('Starting caddy again ..')
+    c.run('sudo systemctl start caddy.service')
 
     logger.info('SSH configuration ..')
     c.run('sudo sed -i \'s/PermitRootLogin yes/PermitRootLogin no/g\' /etc/ssh/sshd_config')
