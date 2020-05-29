@@ -270,7 +270,7 @@ jobs:
             if [ "$ALVAR_SERVER_ENV" == "reserve" ]; then
               NODE_OPTIONS=--max_old_space_size=6000 npm run compare -- --concurrency 3
             else
-              NODE_OPTIONS=--max_old_space_size=6000 npm run compare -- --concurrency 3 --main-location-id hki_c --only 'locationId:hki_c' --only 'orientation:portrait'
+              NODE_OPTIONS=--max_old_space_size=6000 npm run compare -- --concurrency 3 --main-location-id hki_c --only 'locationId:hki_c' --only 'orientation:portrait' --only 'size:+(null|A6|30x40cm)' --only 'mapStyle:bw' --only 'zoomLevel:+(11|14)'
             fi
 
       - store_artifacts:
