@@ -39,9 +39,9 @@ workflows:
       - launch_qa_install
 
     triggers:
-        # Every night at 1AM UTC, meaning 03:00 (winter) or 04:00 (summer) Helsinki time
+        # Every third day at 1AM UTC, meaning 03:00 (winter) or 04:00 (summer) Helsinki time
       - schedule:
-          cron: "0 1 * * *"
+          cron: "0 1 */3 * *"
           filters:
             branches:
               only:
